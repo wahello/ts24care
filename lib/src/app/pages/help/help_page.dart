@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/models/item_application_model.dart';
 import 'package:ts24care/src/app/pages/help/help_page_viewmodel.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/group_content_widget.dart';
 import 'package:ts24care/src/app/widgets/item_help_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24SlideWidget/ts24_slide_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
+
 class HelpPage extends StatefulWidget {
   static const String routeName = "/helpPage";
   @override
   _HelpPageState createState() => _HelpPageState();
 }
 
-class _HelpPageState extends State<HelpPage> {
+class _HelpPageState extends State<HelpPage> with AutomaticKeepAliveClientMixin{
   HelpPageViewModel viewModel = HelpPageViewModel();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   final _style = TextStyle(
     fontSize: 16,
   );
   Widget _body() {
     return SingleChildScrollView(
-
       child: Container(
-        color: Colors.grey[200],
+        color: ThemePrimary.backgroundColor,
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: <Widget>[
@@ -69,9 +73,12 @@ class _HelpPageState extends State<HelpPage> {
                 children: <Widget>[
                   Expanded(
                     flex: 2,
-                    child: ItemHelpWidget(
-                      icons: Icons.phone_in_talk,
-                      text: "Call custome service",
+                    child: TS24Button(
+                      onTap: (){},
+                      child: ItemHelpWidget(
+                        icons: Icons.phone_in_talk,
+                        text: "Call custome service",
+                      ),
                     ),
                   ),
                   Expanded(
@@ -80,9 +87,14 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                   Expanded(
                     flex: 2,
-                    child: ItemHelpWidget(
-                      icons: Icons.chat_bubble,
-                      text: "Live chat",
+                    child: TS24Button(
+                      onTap: (){
+                        viewModel.onTapChat();
+                      },
+                      child: ItemHelpWidget(
+                        icons: Icons.chat_bubble,
+                        text: "Live chat",
+                      ),
                     ),
                   ),
                 ],
@@ -96,7 +108,7 @@ class _HelpPageState extends State<HelpPage> {
 
   Widget _appBar() {
     return AppBar(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: ThemePrimary.backgroundColor,
       elevation: 0,
       title: Text(
         "Help",
@@ -104,7 +116,6 @@ class _HelpPageState extends State<HelpPage> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     viewModel.context = context;
@@ -114,178 +125,44 @@ class _HelpPageState extends State<HelpPage> {
         stream: viewModel.stream,
         builder: (context, snapshot) {
           return TS24Scaffold(
-            backgroundColor: Colors.grey[200],
+            backgroundColor: ThemePrimary.backgroundColor,
             appBar: _appBar(),
-//            body: _body(),
-            body:  NotificationListener<OverscrollIndicatorNotification>(
+            body: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (overScroll) {
                 overScroll.disallowGlow();
                 return;
               },
-              child:
-               CustomScrollView(
-              slivers: <Widget>[
-                SliverAppBar(
-                  expandedHeight: 220.0,
-                  floating: false,
-                  pinned: false,
-                  snap: false,
-                  elevation: 50,
-                  backgroundColor: Colors.transparent,
-                  flexibleSpace: FlexibleSpaceBar(
-                      centerTitle: true,
-                      background: Stack(
-                        children: <Widget>[
-                          Container(
-                            color: Colors.grey[200],
-                            alignment: Alignment.center,
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(bottom: 110),
-                            child: Swiper(
-                              onIndexChanged: viewModel.onIndexChanged,
-                              layout: SwiperLayout.DEFAULT,
-                              itemWidth: 50,
-                              itemHeight: 50,
-                              controller: viewModel.controller,
-                              outer: true,
-                              loop: false,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          width: 3,
-                                          color: index == viewModel.indexCurrent
-                                              ? Colors.blue
-                                              : Colors.black26)),
-                                  child: 
-//                                  Icon(
-//                                    Icons.phone_iphone,
-//                                    size: 65,
-//                                  ),
-                                  Image.network(viewModel.listApplication[index].imageLogo,height: 60,width: 60,fit: BoxFit.cover,)
-                                );
-                              },
-                              itemCount: viewModel.listApplication.length,
-//                              pagination: new SwiperPagination(),
-                              control:
-                                  new SwiperControl(color: Colors.transparent,disableColor: Colors.transparent),
-                              viewportFraction: 0.3,
-                              scale: 0.2,
-                            ),
-                          ),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            top: 120,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 35,
-                              color: Colors.grey[200],
-                              alignment: Alignment.center,
-                              child: Text(
-                                viewModel.listApplication[viewModel.indexCurrent].name,
-                                style: TextStyle(fontSize: 22),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            top: 170,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 35,
-//                              color: Colors.yellow,
-                              padding: EdgeInsets.only(left: 25, right: 25),
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  InkWell(
-                                    onTap:(){
-                                      viewModel.onTapAll();
-                                    },
-                                    child: Container(
-                                      width: 70,
-                                      height: 30,
-                                      alignment: Alignment.center,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          Icon(Icons.list,
-                                              color: Colors.grey[800]),
-                                          Text(
-                                            "All",
-                                            style: TextStyle(
-                                                color: Colors.grey[800]),
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          )
-                                        ],
-                                      ),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey[600],
-                                              width: 2.0),
-//                                        color: Colors.green,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: (){
-                                      viewModel.onTapAdd();
-                                    },
-                                    child: Container(
-                                      width: 70,
-                                      height: 30,
-                                      alignment: Alignment.center,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          Icon(Icons.add,
-                                              color: Colors.grey[800]),
-                                          Text(
-                                            "Add",
-                                            style: TextStyle(
-                                                color: Colors.grey[800]),
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          )
-                                        ],
-                                      ),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey[600],
-                                              width: 2.0),
-//                                        color: Colors.green,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
-                ),
-                new SliverList(
-                    delegate: new SliverChildListDelegate([_body()])),
-              ],
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverAppBar(
+                    expandedHeight: 220.0,
+                    floating: false,
+                    pinned: false,
+                    snap: false,
+                    elevation: 50,
+                    backgroundColor: Colors.transparent,
+                    flexibleSpace: FlexibleSpaceBar(
+                        centerTitle: true,
+                        background: TS24SlideWidget(
+                          listCurrentObject: viewModel.listApplication,
+                          listFullObject: ItemApplicationModel.listApplication,
+                          onChange: (index) {
+                            print(index);
+                          },
+                        )),
+                  ),
+                  new SliverList(
+                      delegate: new SliverChildListDelegate([_body()])),
+                ],
+              ),
             ),
-            ),
-
           );
         },
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

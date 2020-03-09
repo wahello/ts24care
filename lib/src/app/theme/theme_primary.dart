@@ -7,7 +7,9 @@ class ThemePrimary {
 
   static const colorDriverApp = Color(0xFF007658);
 
-  static const primaryFontFamily = "Quicksand";
+  static const backgroundColor = Color(0xFFF2F2F2);
+
+  static const primaryFontFamily = "SamsungOne";
 
   static const appBar_textTheme = TextTheme(
     title: TextStyle(
@@ -43,7 +45,7 @@ class ThemePrimary {
   );
   static theme() {
     return ThemeData(
-      fontFamily: "Quicksand",
+      fontFamily: "SamsungOne",
       primaryColor: primaryColor,
       //primaryColor: Colors.blue,
       backgroundColor: Colors.white,

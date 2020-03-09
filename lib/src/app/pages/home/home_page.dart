@@ -3,9 +3,10 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/item_newfeed_model.dart';
 import 'package:ts24care/src/app/pages/home/home_page_viewmodel.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/group_content_widget.dart';
 import 'package:ts24care/src/app/widgets/item_newfeed_widget.dart';
-import 'package:ts24care/src/app/widgets/ts24BottomScrollWithBackground/ts24_bottom_scroll_with_background_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24BottomScrollWithBackgroundWidget/ts24_bottom_scroll_with_background_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
@@ -15,11 +16,12 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   HomePageViewModel viewModel = HomePageViewModel();
   Widget _appBar() {
     return AppBar(
-      backgroundColor: Colors.white,
+      elevation: 0,
+      backgroundColor: ThemePrimary.backgroundColor,
       title: Text(
         "HOME",
         style: TextStyle(color: Colors.black87),
@@ -31,41 +33,60 @@ class _HomePageState extends State<HomePage> {
     Widget __content() {
       return SingleChildScrollView(
         child: Container(
-          color: Colors.grey[200],
+          color: ThemePrimary.backgroundColor,
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(width: 20,),
+                  SizedBox(
+                    width: 20,
+                  ),
                   TS24Button(
+                    onTap: () {},
                     padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
                     decoration: BoxDecoration(
-                        color: Colors.grey[400],
+                        color: Color(0xFFD9D9D9),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Center(
                         child: Text(
                       "Benefit",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF292929)),
                     )),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   TS24Button(
+                    onTap: () {},
                     padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
                     decoration: BoxDecoration(
-                        color: Colors.grey[400],
+                        color: Color(0xFFD9D9D9),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Center(
                         child: Text(
-                      "Benefit",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      "News & tips",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF292929)),
                     )),
                   ),
                 ],
               ),
+              SizedBox(
+                height: 20,
+              ),
               GroupContentWidget(
-                title: "New & tip",
+                title: "Community",
+                child: Container(
+                  height: 70,
+                ),
+              ),
+              GroupContentWidget(
+                title: "News and tips",
                 tapMore: () {
                   viewModel.tapMoreNewAndTips();
                 },
@@ -82,7 +103,10 @@ class _HomePageState extends State<HomePage> {
                   itemCount: ItemNewFeedModel.listItemNewFeedModel.length,
                   itemBuilder: (context, index) =>
 //                  Container(color: Colors.red,height: 500,)
-                      Container(
+                      TS24Button(
+                    onTap: () {},
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: ItemNewFeedHorizontalWidget(
                       title: ItemNewFeedModel.listItemNewFeedModel[index].title,
                       url: ItemNewFeedModel.listItemNewFeedModel[index].url,
@@ -98,7 +122,6 @@ class _HomePageState extends State<HomePage> {
 
     return TS24BottomScrollWithBackgroundWidget(
       shadow: false,
-      title: "",
       background: Container(
         height: 200,
         child: Swiper(
@@ -136,4 +159,8 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
-import 'package:ts24care/src/app/widgets/ts24BottomScrollWithBackground/ts24_bottom_scroll_with_background_viewmodel.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
+import 'package:ts24care/src/app/widgets/ts24BottomScrollWithBackgroundWidget/ts24_bottom_scroll_with_background_widget_viewmodel.dart';
 
 class TS24BottomScrollWithBackgroundWidget extends StatefulWidget {
   final Widget child;
@@ -19,8 +20,8 @@ class TS24BottomScrollWithBackgroundWidget extends StatefulWidget {
 
 class _TS24BottomScrollWithBackgroundWidgetState
     extends State<TS24BottomScrollWithBackgroundWidget> {
-  TS24BottomScrollWithBackgroundViewModel viewModel =
-      TS24BottomScrollWithBackgroundViewModel();
+  TS24BottomScrollWithBackgroundWidgetViewModel viewModel =
+      TS24BottomScrollWithBackgroundWidgetViewModel();
   GlobalKey _key = GlobalKey();
   Offset _position = Offset(0.0, 0.0);
   _getSizeAndPosition() {
@@ -61,8 +62,9 @@ class _TS24BottomScrollWithBackgroundWidgetState
                 child: widget.background,
               ),
               widget.shadow
-                  ? Positioned(
-                      top: viewModel.heightImageBackgroundCurrent - 20,
+                  ?
+              Positioned(
+                      top: viewModel.heightImageBackgroundCurrent-70,
                       left: 0,
                       right: 0,
                       child: Container(
@@ -99,10 +101,11 @@ class _TS24BottomScrollWithBackgroundWidgetState
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(30),
                       topLeft: Radius.circular(30)),
-                  color: Colors.grey[200],
+                  color: ThemePrimary.backgroundColor,
                 ),
                 child: Column(
                   children: <Widget>[
+                    (widget.title != null)?
                     Container(
                       height: 30,
                       alignment: Alignment.center,
@@ -110,7 +113,7 @@ class _TS24BottomScrollWithBackgroundWidgetState
                         widget.title,
                         style: TextStyle(color: Colors.black87, fontSize: 16),
                       ),
-                    ),
+                    ):SizedBox(height: 23,),
                     widget.child
                   ],
                 ),

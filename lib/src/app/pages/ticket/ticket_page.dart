@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/item_tickets_model.dart';
 import 'package:ts24care/src/app/pages/ticket/ticket_page_viewmodel.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/item_tickets_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
 class TicketsPage extends StatefulWidget {
@@ -11,7 +13,7 @@ class TicketsPage extends StatefulWidget {
   _TicketsPageState createState() => _TicketsPageState();
 }
 
-class _TicketsPageState extends State<TicketsPage> {
+class _TicketsPageState extends State<TicketsPage> with AutomaticKeepAliveClientMixin{
   TicketPageViewModel viewModel = TicketPageViewModel();
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class _TicketsPageState extends State<TicketsPage> {
     Widget _appBar() {
       return AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: ThemePrimary.backgroundColor,
         leading: InkWell(
           onTap: () {},
           child: Container(
@@ -30,7 +32,7 @@ class _TicketsPageState extends State<TicketsPage> {
               style: TextStyle(
                   color: Colors.grey,
                   fontSize: 16,
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.w500),
             ),
           ),
         ),
@@ -40,7 +42,10 @@ class _TicketsPageState extends State<TicketsPage> {
               "Your unsolved tickets (3)",
               style: TextStyle(color: Colors.black87),
             ),
-            Icon(Icons.keyboard_arrow_down,color: Colors.black87,)
+            Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.black87,
+            )
           ],
         ),
         actions: <Widget>[
@@ -49,7 +54,7 @@ class _TicketsPageState extends State<TicketsPage> {
               Icons.add,
               color: Colors.black87,
             ),
-            onPressed: (){
+            onPressed: () {
               viewModel.onTapCreateTicket();
             },
           )
@@ -57,15 +62,16 @@ class _TicketsPageState extends State<TicketsPage> {
         bottom: PreferredSize(
           child: Column(
             children: <Widget>[
-              Container(
-                height: 0.5,
-                color: Colors.grey[300],
-                width: MediaQuery.of(context).size.width,
-              ),
+//              Container(
+//                height: 0.5,
+//                color: Colors.grey[400],
+//                width: MediaQuery.of(context).size.width,
+//              ),
 //              SizedBox(
 //                height: 10,
 //              ),
               Container(
+//                color: Colors.white,
                 padding: EdgeInsets.all(15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,7 +81,7 @@ class _TicketsPageState extends State<TicketsPage> {
                       style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.w600),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -83,11 +89,11 @@ class _TicketsPageState extends State<TicketsPage> {
                       children: <Widget>[
                         Icon(
                           Icons.arrow_downward,
-                          color: Colors.blue,
+                          color: ThemePrimary.primaryColor,
                         ),
                         Text(
                           "Default",
-                          style: TextStyle(color: Colors.blue),
+                          style: TextStyle(color: ThemePrimary.primaryColor),
                         )
                       ],
                     )
@@ -102,22 +108,32 @@ class _TicketsPageState extends State<TicketsPage> {
     }
 
     Widget _body() {
-      return ListView.builder(
-          itemCount: ItemTicketsModel.listItemTickets.length,
-          itemBuilder: (context, index) {
-            var itemTickets = ItemTicketsModel.listItemTickets[index];
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              height: 90,
-              child: ItemTicketsWidget(
-                title: itemTickets.title,
-                avatarUrl: itemTickets.avatarUrl,
-                content: itemTickets.content,
-                name: itemTickets.userName,
-                time: itemTickets.time,
-              ),
-            );
-          });
+      return Container(
+        color: ThemePrimary.backgroundColor,
+        child: ListView.builder(
+            itemExtent: 110,
+            itemCount: ItemTicketsModel.listItemTickets.length,
+            itemBuilder: (context, index) {
+              var itemTickets = ItemTicketsModel.listItemTickets[index];
+              return TS24Button(
+                onTap: (){},
+                margin: EdgeInsets.only(top: 5, bottom: 5),
+                padding: EdgeInsets.only(top: 10,bottom: 10),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+//                height: 90,
+                child: ItemTicketsWidget(
+                  title: itemTickets.title,
+                  avatarUrl: itemTickets.avatarUrl,
+                  content: itemTickets.content,
+                  name: itemTickets.userName,
+                  time: itemTickets.time,
+                ),
+              );
+            }),
+      );
     }
 
     return ViewModelProvider(
@@ -133,4 +149,8 @@ class _TicketsPageState extends State<TicketsPage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

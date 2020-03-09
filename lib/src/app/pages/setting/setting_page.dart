@@ -10,7 +10,7 @@ class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SettingPageState extends State<SettingPage> with AutomaticKeepAliveClientMixin {
   SettingPageViewModel viewModel = SettingPageViewModel();
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class _SettingPageState extends State<SettingPage> {
         backgroundColorStart: Colors.grey[200],
         backgroundColorEnd: Colors.grey[200],
         title: Text("Settings",style: TextStyle(color: Colors.black87),),
-        elevation: 1,
+        elevation: 0,
       );
     }
     Widget _body(){
@@ -65,4 +65,8 @@ class _SettingPageState extends State<SettingPage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

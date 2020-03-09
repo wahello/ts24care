@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/item_help_model.dart';
 import 'package:ts24care/src/app/pages/help/faq/help_faq_page_viewmodel.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/group_content_widget.dart';
 import 'package:ts24care/src/app/widgets/item_help_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
@@ -20,8 +21,8 @@ class _FAQPageState extends State<FAQPage> {
     viewModel.context = context;
     Widget _appBar() {
       return TS24AppBar(
-        backgroundColorStart: Colors.grey[200],
-        backgroundColorEnd: Colors.grey[200],
+        backgroundColorStart: ThemePrimary.backgroundColor,
+        backgroundColorEnd: ThemePrimary.backgroundColor,
         title: Text(
           "FAQ",
           style: TextStyle(color: Colors.black87),
@@ -89,7 +90,7 @@ class _FAQPageState extends State<FAQPage> {
         stream: viewModel.stream,
         builder: (context, snapshot) {
           return TS24Scaffold(
-            backgroundColor: Colors.grey[200],
+            backgroundColor: ThemePrimary.backgroundColor,
             appBar: _appBar(),
             body: _body(),
           );

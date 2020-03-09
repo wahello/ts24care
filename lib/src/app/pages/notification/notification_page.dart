@@ -10,7 +10,8 @@ class NotificationsPage extends StatefulWidget {
   _NotificationsPageState createState() => _NotificationsPageState();
 }
 
-class _NotificationsPageState extends State<NotificationsPage> {
+class _NotificationsPageState extends State<NotificationsPage>
+    with AutomaticKeepAliveClientMixin {
   NotificationPageViewModel viewModel = NotificationPageViewModel();
   @override
   Widget build(BuildContext context) {
@@ -34,9 +35,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
         builder: (context, snapshot) {
           return TS24Scaffold(
             appBar: _appBar(),
+            body: Container(),
           );
         },
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

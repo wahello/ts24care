@@ -36,6 +36,8 @@ dependencies:
   cloud_firestore: ^0.12.9+4
   encrypt: ^3.3.1
   hashids2: ^1.0.1
+  webview_flutter: ^0.3.19+9
+  flutter_webview_plugin: ^0.3.10+1
   ####
   fancy_bottom_navigation: ^0.3.2
   rflutter_alert: ^1.0.3
@@ -45,7 +47,8 @@ dependencies:
   flushbar: ^1.8.2
   flutter_swiper: ^1.1.6
   cached_network_image: ^2.0.0
-  easy_web_view: ^1.0.1
+
+  percent_indicator: ^2.1.1+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,6 +69,7 @@ flutter:
   assets:
     - assets/lang/
     - assets/images/
+    - assets/files/
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
@@ -107,5 +111,10 @@ flutter:
     - family: Aachenb
       fonts:
         - asset: assets/fonts/aachenb.ttf
+    - family: SamsungOne
+      fonts:
+        - asset: assets/fonts/Roboto-Medium.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/RobotoCondensed-Bold.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/item_newfeed_model.dart';
 import 'package:ts24care/src/app/pages/home/newsAndTips/home_news_and_tips_page_viewmodel.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/item_newfeed_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
 class NewsAndTipsPage extends StatefulWidget {
@@ -16,12 +18,6 @@ class _NewsAndTipsPageState extends State<NewsAndTipsPage> {
   NewsAndTipsPageViewModel viewModel = NewsAndTipsPageViewModel();
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
-          viewModel.controller.animateTo(
-              (MediaQuery.of(context).size.height - 100) * 0.35,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeIn);
-        }));
     super.initState();
   }
 
@@ -30,8 +26,8 @@ class _NewsAndTipsPageState extends State<NewsAndTipsPage> {
     viewModel.context = context;
     Widget _appBar() {
       return TS24AppBar(
-        backgroundColorEnd: Colors.white,
-        backgroundColorStart: Colors.white,
+        backgroundColorEnd: ThemePrimary.backgroundColor,
+        backgroundColorStart: ThemePrimary.backgroundColor,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -41,7 +37,7 @@ class _NewsAndTipsPageState extends State<NewsAndTipsPage> {
             Navigator.pop(context);
           },
         ),
-        elevation: 0.5,
+        elevation: 0,
         title: Text(
           "News and Tips",
           style: TextStyle(color: Colors.black87),
@@ -111,37 +107,24 @@ class _NewsAndTipsPageState extends State<NewsAndTipsPage> {
 
     Widget _body() {
       return Container(
-          color: Colors.grey[200],
-          child:
-//        ListView.builder(
-//            itemCount: ItemNewFeedModel.listItemNewFeedModel.length,
-//
-//            padding: EdgeInsets.only(bottom: 20),
-//            itemBuilder: (context, index) {
-//              return Container(
-//                margin: EdgeInsets.only(bottom: 20),
-//                alignment: Alignment.center,
-//                child: ItemNewFeedVerticalWidget(
-//                  title: ItemNewFeedModel.listItemNewFeedModel[index].title,
-//                  url: ItemNewFeedModel.listItemNewFeedModel[index].url,
-//                ),
-//              );
-//            }),
-              ListWheelScrollView(
-                  diameterRatio: 5,
-                  itemExtent: 150,
-                  controller: viewModel.controller,
-                  children: ItemNewFeedModel.listItemNewFeedModel
-                      .map((item) => Container(
-//                            height: 150,
-                            margin: EdgeInsets.only(bottom: 20),
-                            alignment: Alignment.center,
-                            child: ItemNewFeedVerticalWidget(
-                              title: item.title,
-                              url: item.url,
-                            ),
-                          ))
-                      .toList()));
+          color: ThemePrimary.backgroundColor,
+          child: ListView(
+              itemExtent: 150,
+              controller: viewModel.controller,
+              children: ItemNewFeedModel.listItemNewFeedModel
+                  .map((item) => TS24Button(
+                        onTap: (){},
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(15))
+                        ),
+                        margin: EdgeInsets.only(bottom: 10, top: 10),
+                        alignment: Alignment.center,
+                        child: ItemNewFeedVerticalWidget(
+                          title: item.title,
+                          url: item.url,
+                        ),
+                      ))
+                  .toList()));
     }
 
     return ViewModelProvider(

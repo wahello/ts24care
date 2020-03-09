@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/pages/help/feedback/help_feedback_page_viewmodel.dart';
-import 'package:ts24care/src/app/widgets/ts24BottomScrollWithBackground/ts24_bottom_scroll_with_background_widget.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
+import 'package:ts24care/src/app/widgets/ts24BottomScrollWithBackgroundWidget/ts24_bottom_scroll_with_background_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
@@ -28,8 +29,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
     viewModel.context = context;
     Widget _appBar() {
       return TS24AppBar(
-        backgroundColorEnd: Colors.grey[200],
-        backgroundColorStart: Colors.grey[200],
+        backgroundColorEnd: ThemePrimary.backgroundColor,
+        backgroundColorStart: ThemePrimary.backgroundColor,
         title: Text(
           "Feedback",
           style: TextStyle(color: Colors.black87),

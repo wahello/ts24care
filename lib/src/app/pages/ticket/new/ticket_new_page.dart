@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page_viewmodel.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
@@ -17,9 +18,9 @@ class _TicketNewPageState extends State<TicketNewPage> {
     viewModel.context = context;
     Widget _appBar() {
       return TS24AppBar(
-        backgroundColorEnd: Colors.grey[200],
-        backgroundColorStart: Colors.grey[200],
-        elevation: 1,
+        backgroundColorEnd: ThemePrimary.backgroundColor,
+        backgroundColorStart: ThemePrimary.backgroundColor,
+        elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.close,
@@ -48,7 +49,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
     Widget _body() {
       Widget __background() {
         return Container(
-          color: Colors.grey[100],
+          color: Colors.white,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: ListView(
@@ -77,7 +78,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.grey[400],
+                              color: Colors.grey[350],
                             ),
                             child: Icon(
                               Icons.person_add,
@@ -121,7 +122,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
                     ),
                     Text(
                       "See all",
-                      style: TextStyle(color: Colors.blue, fontSize: 18),
+                      style: TextStyle(color: ThemePrimary.primaryColor, fontSize: 18),
                     )
                   ],
                 ),
@@ -193,6 +194,10 @@ class _TicketNewPageState extends State<TicketNewPage> {
               child: Column(
                 children: <Widget>[
                   Container(
+                    height: 0.5,
+                    color: ThemePrimary.backgroundColor,
+                  ),
+                  Container(
                     width: MediaQuery.of(context).size.width,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -203,14 +208,14 @@ class _TicketNewPageState extends State<TicketNewPage> {
                             Text(
                               "Public replay",
                               style: TextStyle(
-                                  color: Colors.blue,
+                                  color: ThemePrimary.primaryColor,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold),
                             ),
                             IconButton(
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.blue,
+                                color: ThemePrimary.primaryColor,
                               ),
                               onPressed: () {},
                             )
@@ -220,13 +225,13 @@ class _TicketNewPageState extends State<TicketNewPage> {
                           children: <Widget>[
                             Icon(
                               Icons.add,
-                              color: Colors.blue,
+                              color: ThemePrimary.primaryColor,
                               size: 16,
                             ),
                             Text(
                               "CC",
                               style: TextStyle(
-                                  color: Colors.blue,
+                                  color: ThemePrimary.primaryColor,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold),
                             )

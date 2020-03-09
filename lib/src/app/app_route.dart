@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/pages/help/faq/help_faq_page.dart';
 import 'package:ts24care/src/app/pages/help/feedback/help_feedback_page.dart';
+import 'package:ts24care/src/app/pages/help/helpChat/helpChat_page.dart';
 import 'package:ts24care/src/app/pages/home/newsAndTips/home_news_and_tips_page.dart';
 import 'package:ts24care/src/app/pages/login/login_page.dart';
 import 'package:ts24care/src/app/pages/notification/notification_page.dart';
@@ -24,7 +25,8 @@ class Routes {
     FeedbackPage.routeName: (context) => FeedbackPage(),
     TicketNewPage.routeName: (context) => TicketNewPage(),
     TabsPage.routeName: (context) => TabsPage(),
-    NotificationsPage.routeName: (context)=> NotificationsPage()
+    NotificationsPage.routeName: (context) => NotificationsPage(),
+    HelpChatPage.routeName: (context) => HelpChatPage(),
   };
 }
 

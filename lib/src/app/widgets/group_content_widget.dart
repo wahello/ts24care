@@ -15,7 +15,7 @@ class GroupContentWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.all(10),
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
             color: Colors.transparent,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -23,24 +23,25 @@ class GroupContentWidget extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[500],
+                      fontSize: 15,
+                      color: Colors.grey[600],
                       fontWeight: FontWeight.bold),
                 ),
                 (tapMore != null)?
                 InkWell(
                   onTap: tapMore,
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
+                    padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                     child: Text(
                       "View more",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           color: ThemePrimary.primaryColor,
+                          fontFamily: "SamsungOne",
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                ):Container(),
+                ):Container(padding: EdgeInsets.all(15),child: SizedBox(),),
               ],
             ),
           ),

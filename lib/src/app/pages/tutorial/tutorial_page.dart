@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/pages/tutorial/tutorial_page_viewmodel.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
@@ -48,7 +49,7 @@ class _TutorialPageState extends State<TutorialPage> {
                                 "Smarter Notifications",
                                 style: TextStyle(
                                     fontSize: 22,
-                                    color: Colors.blue,
+                                    color: ThemePrimary.primaryColor,
                                     fontWeight: FontWeight.w700),
                                 textAlign: TextAlign.center,
                               ),
@@ -97,7 +98,7 @@ class _TutorialPageState extends State<TutorialPage> {
                   height: 55,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.blue),
+                      color: ThemePrimary.primaryColor),
                   child: Center(
                     child: Text(
                       "Get Started",
