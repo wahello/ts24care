@@ -1,6 +1,100 @@
 {
-    "LOGIN_PAGE": {
-
-    },
-    "VERSION": "Version"
+  "LOGIN_PAGE": {
+    "WELCOME_TITLE": "Welcome Back",
+    "SUB_TITLE": "Login go continue",
+    "EMAIL": "EMAIL",
+    "EMAIL_HINT": "Enter your email address",
+    "PASSWORD": "PASSWORD",
+    "PASSWORD_HINT": "Enter your password",
+    "PASSWORD_FORGET": "Forget",
+    "PASSWORD_REMEMBER": "Remember me",
+    "LOGIN_BUTTON": "Login",
+    "NO_ACCOUNT": "No have account yet?",
+    "CREATE_ACCOUNT_BUTTON": "Create an account"
+  },
+  "FORGET_PASSWORD_PAGE": {
+    "TITLE": "Forgot Password",
+    "SUB_TITLE": "You just input a registration email and we will send a link to reset password",
+    "EMAIL": "Email",
+    "EMAIL_HINT": "Enter your email",
+    "SUBMIT_BUTTON": "Submit",
+    "NO_ACCOUNT": "Don't have an account",
+    "CREATE_ACCOUNT": "Sign up"
+  },
+  "CREATE_NEW_PASSWORD_PAGE": {
+    "TITLE": "Create New Password",
+    "SUB_TITLE": "Please create a new password. Password must be alphanumeric",
+    "PASSWORD": "Password",
+    "PASSWORD_HINT": "Enter your password",
+    "PASSWORD_CONFIRM": "Enter your email",
+    "PASSWORD_CONFIRM_HINT": "Enter your confirm password",
+    "DONE_BUTTON": "Submit",
+    "NO_ACCOUNT": "Don't have an account",
+    "CREATE_ACCOUNT": "Sign up"
+  },
+  "NOTIFICATIONS_PAGE": {
+    "TITLE": "Notifications",
+    "RECENT_ITEMS": "Recent Items",
+    "APPS": "Apps",
+    "BLOCKED": "Blocked"
+  },
+  "SETTINGS_PAGE": {
+    "NOTIFICATIONS": "Notifications",
+    "LEAVE_FEEDBACK": "Leave feedback",
+    "LICENSES": "Licenses",
+    "PRIVACY_POLICY": "Privacy policy",
+    "HELP_CENTER": "Help Center",
+    "ZENDESK_SUPPORT": "Zendesk support",
+    "SIGN_OUT": "Sign out"
+  },
+  "SETTINGS_NOTIFICATIONS_PAGE": {
+    "TITLE": "Notifications",
+    "ENABLE_NOTIFICATIONS": "Enable notifications",
+    "NOTIFY_ME_ABOUT": "Notify Me About",
+    "ALL_NEW_TICKETS": "All new tickets",
+    "TICKETS_I'M_FOLLOWING": "Tickets I'm following",
+    "TICKETS_I'M_CC'D_ON": "Tickets I'm CC'd on",
+    "TICKETS_ASSIGNED_TO_ME": "Tickets assigned to me",
+    "TICKETS_ASSIGNED_TO_MY_GROUPS": "Tickets assigned to my groups",
+    "MY_GROUPS": "My Groups",
+    "All_GROUPS": "All groups",
+    "SELECT_GROUPS": "Select groups",
+    "NOTIFICATION_FREQUENCY": "Notification Frequency",
+    "ALWAYS": "Always",
+    "DURING_SPECIFIC_HOURS": "During specific hours"
+  },
+  "SETTINGS_FEEDBACK_PAGE": {
+    "TITLE": "Feedback",
+    "I'M_TELLING_YOU_ABOUT": "I'm Telling You About",
+    "A_BUG": "A bug",
+    "AN_ENHANCEMENT": "An enhancement",
+    "KUDOS": "Kudos",
+    "DETAILS": "Details",
+    "PLEASE_TELL_US_THE_DETAILS": "Please tell us the details",
+    "HOW_ARE_WE_DOING": "How are we doing?"
+  },
+  "USER_PROFILE": {
+    "FULL_NAME": "Full name",
+    "AGE": "Age",
+    "ADDRESS": "Address",
+    "PHONE_NUMBER": "Phone number",
+    "EMAIL": "Email",
+    "INPUT_NAME": "Input name...",
+    "BIRTH_DAY": "Birthday",
+    "SELECT_DAY": "Select day",
+    "GENDER": "Gender",
+    "INPUT_PHONE": "Input phone number...",
+    "INPUT_EMAIL": "Input email...",
+    "INPUT_ADDRESS": "Input address..."
+  },
+  "COMMON": {
+    "SAVE": "Save",
+    "CROPPER": "Cropper",
+    "EMAIL_INVALID": "Email invalid",
+    "EMAIL_REQUITE": "Email require",
+    "PASS_REQUITE_LENGTH": "Length must be greater than 6",
+    "PASS_INVALID": "Password is invalid",
+    "PASS_NOT_TRUE": "Password is not true"
+  },
+  "VERSION": "Version"
 }

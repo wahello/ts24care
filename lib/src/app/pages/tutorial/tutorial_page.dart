@@ -18,9 +18,9 @@ class _TutorialPageState extends State<TutorialPage> {
   Widget build(BuildContext context) {
     viewModel.context = context;
     Widget _body() {
-      return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+      return SingleChildScrollView(
+//        width: MediaQuery.of(context).size.width,
+//        height: MediaQuery.of(context).size.height,
         child: Column(
           children: <Widget>[
             Container(
@@ -87,23 +87,22 @@ class _TutorialPageState extends State<TutorialPage> {
                 scale: 1,
               ),
             ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.center,
-                child: TS24Button(
-                  onTap: () {
-                    viewModel.onTapStart();
-                  },
-                  width: 350,
-                  height: 55,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: ThemePrimary.primaryColor),
-                  child: Center(
-                    child: Text(
-                      "Get Started",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+            SizedBox(height: 50,),
+            Container(
+              alignment: Alignment.center,
+              child: TS24Button(
+                onTap: () {
+                  viewModel.onTapStart();
+                },
+                width: 350,
+                height: 55,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: ThemePrimary.primaryColor),
+                child: Center(
+                  child: Text(
+                    "Get Started",
+                    style: TextStyle(color: Colors.white, fontSize: 18,fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

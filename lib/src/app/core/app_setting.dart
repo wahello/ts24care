@@ -6,13 +6,14 @@ import 'package:ts24care/src/app/provider/api.dart';
 
 final LocalStorage localStorage = new LocalStorage("localStorage");
 
-String domainApi = "https://www.bus2school.vn";
+// String domainApi = "https://www.bus2school.vn";
+String domainApi = "http://192.168.11.27:8069";
 
 const String client_id = 'XUanvRsb5NvRscvMfc6wNtgiHOF8F0';
 const String client_secret = 'c665Xgd3mt3SLbPVLdVjRawJg4kzd5';
 
-const String password_client_id = 'jwLXOqcQ14QD68jUrVlnfQiYXgAPyn';
-const String password_client_secret = 'a2EEtXnVfjf1QPRy7CAzkdPpbiYP0m';
+const String password_client_id = 'aeCf27wNJwtTrpO8v59OZNDcjPESyf';
+const String password_client_secret = 'SlcSGww1jUZPBEYFRPIMLHzDPcyv6z';
 
 const String admin_id = "bus2school";
 const String admin_password = "B@S#2019";

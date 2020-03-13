@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:ts24care/src/app/services/cloudFirestore-service.dart';
 
-Type _typeOf<T>() => T;
+//Type _typeOf<T>() => T;
 
 abstract class ViewModelBase extends Model {
   void dispose() {
@@ -43,9 +43,10 @@ class ViewModelProvider<T extends ViewModelBase> extends StatefulWidget {
   _ViewModelProviderState<T> createState() => _ViewModelProviderState<T>();
 
   static T of<T extends ViewModelBase>(BuildContext context) {
-    final type = _typeOf<_ViewModelProviderInherited<T>>();
+//    final type = _typeOf<_ViewModelProviderInherited<T>>();
     _ViewModelProviderInherited<T> provider = context
-        .getElementForInheritedWidgetOfExactType<_ViewModelProviderInherited>()
+        .getElementForInheritedWidgetOfExactType<
+            _ViewModelProviderInherited<T>>()
         ?.widget;
     return provider?.viewmodel;
   }

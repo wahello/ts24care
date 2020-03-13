@@ -15,7 +15,8 @@ class HelpPage extends StatefulWidget {
   _HelpPageState createState() => _HelpPageState();
 }
 
-class _HelpPageState extends State<HelpPage> with AutomaticKeepAliveClientMixin{
+class _HelpPageState extends State<HelpPage>
+    with AutomaticKeepAliveClientMixin {
   HelpPageViewModel viewModel = HelpPageViewModel();
   @override
   void initState() {
@@ -74,7 +75,7 @@ class _HelpPageState extends State<HelpPage> with AutomaticKeepAliveClientMixin{
                   Expanded(
                     flex: 2,
                     child: TS24Button(
-                      onTap: (){},
+                      onTap: () {},
                       child: ItemHelpWidget(
                         icons: Icons.phone_in_talk,
                         text: "Call custome service",
@@ -88,7 +89,7 @@ class _HelpPageState extends State<HelpPage> with AutomaticKeepAliveClientMixin{
                   Expanded(
                     flex: 2,
                     child: TS24Button(
-                      onTap: (){
+                      onTap: () {
                         viewModel.onTapChat();
                       },
                       child: ItemHelpWidget(
@@ -116,8 +117,10 @@ class _HelpPageState extends State<HelpPage> with AutomaticKeepAliveClientMixin{
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     viewModel.context = context;
     return ViewModelProvider(
       viewmodel: viewModel,
@@ -135,6 +138,7 @@ class _HelpPageState extends State<HelpPage> with AutomaticKeepAliveClientMixin{
               child: CustomScrollView(
                 slivers: <Widget>[
                   SliverAppBar(
+                    leading: Container(),
                     expandedHeight: 220.0,
                     floating: false,
                     pinned: false,

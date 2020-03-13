@@ -3,16 +3,22 @@ import 'package:ts24care/src/app/pages/help/faq/help_faq_page.dart';
 import 'package:ts24care/src/app/pages/help/feedback/help_feedback_page.dart';
 import 'package:ts24care/src/app/pages/help/helpChat/helpChat_page.dart';
 import 'package:ts24care/src/app/pages/home/newsAndTips/home_news_and_tips_page.dart';
+import 'package:ts24care/src/app/pages/login/createAccount/create_new_password.dart';
+import 'package:ts24care/src/app/pages/login/forgetPassword/forget_password.dart';
 import 'package:ts24care/src/app/pages/login/login_page.dart';
 import 'package:ts24care/src/app/pages/notification/notification_page.dart';
+import 'package:ts24care/src/app/pages/setting/settingsNotifications/settings_my_notifications.dart';
+import 'package:ts24care/src/app/pages/setting/userDetail/setting_user_detail_page.dart';
 import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
 import 'package:ts24care/src/app/pages/tutorial/tutorial_page.dart';
+import 'pages/setting/settingsFeedback/settings_feedback_page.dart';
 
 class Routes {
   static Widget defaultPage;
   static navigateDefaultPage() async {
     Routes.defaultPage = TutorialPage();
+//    Routes.defaultPage = LoginPage();
   }
 
   static final Map<String, WidgetBuilder> route = {
@@ -27,6 +33,14 @@ class Routes {
     TabsPage.routeName: (context) => TabsPage(),
     NotificationsPage.routeName: (context) => NotificationsPage(),
     HelpChatPage.routeName: (context) => HelpChatPage(),
+    ForgetPasswordPage.routeName: (context) => ForgetPasswordPage(),
+    LoginPage.routeName: (context) => LoginPage(),
+    CreateNewPasswordPage.routeName: (context) => CreateNewPasswordPage(),
+
+    // 10/03/2020
+    UserDetailPage.routeName: (context) => UserDetailPage(),
+    SettingsNotificationsPage.routeName: (context) => SettingsNotificationsPage(),
+    SettingsFeedbackPage.routeName: (context) => SettingsFeedbackPage(),
   };
 }
 

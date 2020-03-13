@@ -20,29 +20,33 @@ class _HelpChatPageState extends State<HelpChatPage> {
   @override
   Widget build(BuildContext context) {
     viewModel.context = context;
+    //viewModel.loadHtmlFromAssets();
     return ViewModelProvider(
       viewmodel: viewModel,
       child: StreamBuilder<Object>(
           stream: null,
           builder: (context, snapshot) {
             return WebviewScaffold(
-              url: 'http://192.168.11.27:8069/im_livechat/support/2',
-              // url: Uri.dataFromString("""<html><head>
-              //           <meta name="viewport" content="width=device-width, initial-scale=2">
-              //         <link rel="stylesheet" href="http://192.168.11.27:8069/im_livechat/external_lib.css"/>
-              //      <script type="text/javascript" src="http://192.168.11.27:8069/im_livechat/external_lib.js"></script>
-              //      <script type="text/javascript" src="http://192.168.11.27:8069/im_livechat/loader/2"></script>
-              //        </head>
-              //         <body>sss3</body>
-              //  </html>
-              //  """, mimeType: 'text/html').toString(),
+              url: "about:bank",
+//               url: Uri.dataFromString("""
+//  <html>
+
+//  <head>
+//  <script type="text/javascript" id="70a8d57a09a82a36c61acd840046028a" src="https://demo.livezilla.info/demo_dcc7ed08/script.php?id=70a8d57a09a82a36c61acd840046028a" defer></script>
+
+//  </head>
+//  <body>
+
+//  </body>
+
+//  </html>
+//                 """, mimeType: 'text/html').toString(),
               appBar: AppBar(
                 title: Text("Chat"),
               ),
-              withLocalStorage: true,
+
               withJavascript: true,
-              hidden: true,
-              allowFileURLs: true,
+              //hidden: true,
               resizeToAvoidBottomInset: true,
               initialChild: LoadingSpinner.loadingView(
                   context: viewModel.context, loading: true),

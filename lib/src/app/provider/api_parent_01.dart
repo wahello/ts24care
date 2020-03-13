@@ -23,4 +23,8 @@ class Api1 extends ApiMaster {
     result = await this.authorization(refresh: true);
     return result;
   }
+
+  Future<dynamic> getNews() async {
+    await this.authorization();
+  }
 }

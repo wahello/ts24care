@@ -1,6 +1,101 @@
 {
-    "LOGIN_PAGE": {
-
-    },
-    "VERSION": "Version"
+  "LOGIN_PAGE": {
+    "WELCOME_TITLE": "Chào Mừng",
+    "SUB_TITLE": "Đăng nhập để tiếp tục",
+    "EMAIL": "Địa chỉ emal",
+    "EMAIL_HINT": "Nhập địa chỉ email",
+    "PASSWORD": "Mật khẩu",
+    "PASSWORD_HINT": "Nhập mật khẩu",
+    "PASSWORD_FORGET": "Quên mật khẩu",
+    "PASSWORD_REMEMBER": "Ghi nhớ",
+    "LOGIN_BUTTON": "Đăng nhập",
+    "NO_ACCOUNT": "Chưa có tài khoản?",
+    "CREATE_ACCOUNT_BUTTON": "Tạo tài khoản"
+  },
+  "FORGET_PASSWORD_PAGE": {
+    "TITLE": "Quên Mật Khẩu",
+    "SUB_TITLE": "Điền địa chỉ mail bạn đã đăng ký. Chúng tôi sẽ gửi cho bạn đường dẫn khôi phục mật khẩu",
+    "EMAIL": "Địa chỉ email",
+    "EMAIL_HINT": "Nhập email",
+    "SUBMIT_BUTTON": "Gửi",
+    "NO_ACCOUNT": "Chưa có tài khoản",
+    "CREATE_ACCOUNT": "Đăng ký"
+  },
+  "CREATE_NEW_PASSWORD_PAGE": {
+    "TITLE": "Tạo Mới Mật Khẩu",
+    "SUB_TITLE": "Tạo mới mật khẩu. Mật khẩu bao gồm chữ và số",
+    "PASSWORD": "Mật khẩu",
+    "PASSWORD_HINT": "Nhập mật khẩu mới",
+    "PASSWORD_CONFIRM": "Xác nhận mật khẩu",
+    "PASSWORD_CONFIRM_HINT": "Nhập lại mật khẩu",
+    "DONE_BUTTON": "Hoàn tất",
+    "NO_ACCOUNT": "Chưa có tài khoản",
+    "CREATE_ACCOUNT": "Đăng ký"
+  },
+  "NOTIFICATIONS_PAGE": {
+    "TITLE": "Thông báo",
+    "RECENT_ITEMS": "Thông báo mới",
+    "APPS": "Apps",
+    "BLOCKED": "Blocked"
+  },
+  "SETTINGS_PAGE": {
+    "NOTIFICATIONS": "Thông báo",
+    "LEAVE_FEEDBACK": "Để lại phản hồi",
+    "LICENSES": "Điều khoản sử dụng",
+    "PRIVACY_POLICY": "Chính sách riêng tư",
+    "HELP_CENTER": "Trung tâm hỗ trợ",
+    "ZENDESK_SUPPORT": "Zendesk support",
+    "SIGN_OUT": "Đăng xuất"
+  },
+  "SETTINGS_NOTIFICATIONS_PAGE": {
+    "TITLE": "Thông báo",
+    "ENABLE_NOTIFICATIONS": "Bật thông báo",
+    "NOTIFY_ME_ABOUT": "Thông báo cho tôi",
+    "ALL_NEW_TICKETS": "All new tickets",
+    "TICKETS_I'M_FOLLOWING": "Tickets I'm following",
+    "TICKETS_I'M_CC'D_ON": "Tickets I'm CC'd on",
+    "TICKETS_ASSIGNED_TO_ME": "Tickets assigned to me",
+    "TICKETS_ASSIGNED_TO_MY_GROUPS": "Tickets assigned to my groups",
+    "MY_GROUPS": "Nhóm của tôi",
+    "All_GROUPS": "Tất cả nhóm",
+    "SELECT_GROUPS": "Chọn nhóm",
+    "NOTIFICATION_FREQUENCY": "Tần suất thông báo",
+    "ALWAYS": "Luôn luôn",
+    "DURING_SPECIFIC_HOURS": "Trong giờ cụ thể"
+  },
+  "SETTINGS_FEEDBACK_PAGE": {
+    "TITLE": "Phản hồi",
+    "I'M_TELLING_YOU_ABOUT": "Tôi đang nói với bạn về",
+    "A_BUG": "A bug",
+    "AN_ENHANCEMENT": "Tăng cường",
+    "KUDOS": "Danh tiếng",
+    "DETAILS": "Chi tiết",
+    "PLEASE_TELL_US_THE_DETAILS": "Xin vui lòng cho chúng tôi biết chi tiết",
+    "HOW_ARE_WE_DOING": "How are we doing?"
+  },
+  "USER_PROFILE": {
+    "FULL_NAME": "Họ và tên",
+    "AGE": "Tuổi",
+    "ADDRESS": "Địa chỉ",
+    "PHONE_NUMBER": "Số điện thoại",
+    "EMAIL": "Email",
+    "INPUT_NAME": "Nhập tên...",
+    "BIRTH_DAY": "Ngày sinh",
+    "SELECT_DAY": "Chọn ngày sinh",
+    "GENDER": "Giới tính",
+    "INPUT_PHONE": "Nhập số điện thoại...",
+    "INPUT_EMAIL": "Nhập email...",
+    "INPUT_ADDRESS": "Nhập địa chỉ..."
+  },
+  "COMMON": {
+    "SAVE": "Lưu",
+    "CROPPER": "Chỉnh sửa ảnh",
+    "EMAIL_REQUITE": "Email không được trống",
+    "EMAIL_INVALID": "Email không hợp lệ",
+    "PASS_REQUITE": "Mật khẩu không được trống",
+    "PASS_REQUITE_LENGTH": "Mật khẩu phải có ít nhất 6 ký tự",
+    "PASS_NOT_TRUE": "Mật khẩu không đúng",
+    "PASS_INVALID": "Mật khẩu không hợp lệ"
+  },
+  "VERSION": "Phiên bản"
 }

@@ -7,6 +7,7 @@ import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/group_content_widget.dart';
 import 'package:ts24care/src/app/widgets/item_newfeed_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24BottomScrollWithBackgroundWidget/ts24_bottom_scroll_with_background_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
@@ -16,12 +17,15 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   HomePageViewModel viewModel = HomePageViewModel();
   Widget _appBar() {
-    return AppBar(
+    return TS24AppBar(
+      leading: SizedBox(),
       elevation: 0,
-      backgroundColor: ThemePrimary.backgroundColor,
+      backgroundColorStart: ThemePrimary.backgroundColor,
+      backgroundColorEnd: ThemePrimary.backgroundColor,
       title: Text(
         "HOME",
         style: TextStyle(color: Colors.black87),
@@ -145,6 +149,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     viewModel.context = context;
     return ViewModelProvider(
       viewmodel: viewModel,
