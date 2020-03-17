@@ -9,8 +9,8 @@ final LocalStorage localStorage = new LocalStorage("localStorage");
 // String domainApi = "https://www.bus2school.vn";
 String domainApi = "http://192.168.11.27:8069";
 
-const String client_id = 'XUanvRsb5NvRscvMfc6wNtgiHOF8F0';
-const String client_secret = 'c665Xgd3mt3SLbPVLdVjRawJg4kzd5';
+const String client_id = '9QGhjXbApupARfpGGsskXUTQjoRD35';
+const String client_secret = '0wGQ7JkaLT68YMUQJFyUDKLsZutwbC';
 
 const String password_client_id = 'aeCf27wNJwtTrpO8v59OZNDcjPESyf';
 const String password_client_secret = 'SlcSGww1jUZPBEYFRPIMLHzDPcyv6z';

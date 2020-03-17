@@ -17,61 +17,63 @@ class HelpChatPage extends StatefulWidget {
 
 class _HelpChatPageState extends State<HelpChatPage> {
   HelpChatPageViewModel viewModel = HelpChatPageViewModel();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     viewModel.loadHtmlFromAssets();
+  }
+
   @override
   Widget build(BuildContext context) {
     viewModel.context = context;
-    //viewModel.loadHtmlFromAssets();
     return ViewModelProvider(
       viewmodel: viewModel,
       child: StreamBuilder<Object>(
-          stream: null,
+          stream: viewModel.stream,
           builder: (context, snapshot) {
             return WebviewScaffold(
-              url: "about:bank",
+              url: viewModel.url,
 //               url: Uri.dataFromString("""
 //  <html>
 
 //  <head>
-//  <script type="text/javascript" id="70a8d57a09a82a36c61acd840046028a" src="https://demo.livezilla.info/demo_dcc7ed08/script.php?id=70a8d57a09a82a36c61acd840046028a" defer></script>
-
+//     <meta charset="utf-8" />
+// <script type="text/javascript">
+//         var lz_data = {
+//             'overwrite': true,
+//             111: "Vuong Minh Luân",
+//             112: 'luanvm@ts24corp.com',
+//             113: 'TS24',
+//             114: '',
+//             116: '03033',
+//         };
+//     </script>
+// <!-- <script type="text/javascript" id="f0512c9fd83d905a40e0943ada9b218f" src="http://livechat.ts24.com.vn/livechat/script.php?id=f0512c9fd83d905a40e0943ada9b218f" defer></script>
+// -->
+//     <script type="text/javascript" id="3baf3e69f7d601c10ecba98720635323" src="http://demo.livezilla.info/demo_0c1e5ea0/script.php?id=3baf3e69f7d601c10ecba98720635323" defer></script>
 //  </head>
 //  <body>
 
 //  </body>
 
 //  </html>
-//                 """, mimeType: 'text/html').toString(),
+//                 """,
+//                       mimeType: 'text/html',
+//                       encoding: Encoding.getByName("utf-8"))
+//                   .toString(),
               appBar: AppBar(
                 title: Text("Chat"),
               ),
-
+//              appCacheEnabled: true,
               withJavascript: true,
-              //hidden: true,
+              hidden: true,
               resizeToAvoidBottomInset: true,
               initialChild: LoadingSpinner.loadingView(
                   context: viewModel.context, loading: true),
             );
           }),
     );
-    // return TS24Scaffold(
-    //   appBar: AppBar(
-    //     title: Text("Chat"),
-    //   ),
-    //   body: ViewModelProvider(
-    //     viewmodel: viewModel,
-    //     child: StreamBuilder<Object>(
-    //         stream: viewModel.stream,
-    //         builder: (context, snapshot) {
-    //           return WebView(
-    //             initialUrl:
-    //                 'http://res24-m2-20-1.s2.odoo24.vn/im_livechat/support/2',
-    //             javascriptMode: JavascriptMode.unrestricted,
-    //             onWebViewCreated: (WebViewController webViewController) {
-    //               viewModel.controller = webViewController;
-    //             },
-    //           );
-    //         }),
-    //   ),
-    // );
   }
 }

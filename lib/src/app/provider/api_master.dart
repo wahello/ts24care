@@ -6,6 +6,116 @@ import 'package:odoo_api/odoo_api_connector.dart';
 import 'package:odoo_api/odoo_user_response.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 
+// 1.	Hàm lấy danh sách bản tin phân trang.
+
+// 	http://192.168.11.20:8069/api/ts24care/listBlog
+
+// 	def listBlog(self,offset=0,limit=None,gmt=7, **kw)
+
+// 2.	Hàm  lấy danh sách bản tin trên banner.
+
+// 	http://192.168.11.20:8069/api/ts24care/listBlog_Top
+
+// 	def listBlog_Top(self,offset=0, limit=None,gmt=7,order=None, **kw)
+
+// 3.	Hàm  Tìm kiếm bản tin theo key word.
+
+// 	http://192.168.11.20:8069/api/ts24care/listSearchBlog_KeyWord
+
+// 	def listSearchBlog_KeyWord(self,keywork=None,offset=0, limit=None,gmt=7,order=None, **kw)
+
+// 3.1. Hàm lấy chi tiết nội dung bản tin bằng id
+
+// 	http://192.168.11.20:8069/api/ts24care/getContentBlog
+
+// 	def getContentBlog(self,id=0,offset=0, limit=None,gmt=7,order=None, **kw)
+
+// 4.	Hàm  Lấy danh sách ticket theo status.
+
+// 	http://192.168.11.20:8069/api/ts24care/listTicket_Status
+// 	def listTicket_Status(self, domain=None,stage=0, offset=0, limit=None, gmt=7, order=None, **kw)
+
+// 5.	Hàm  Tìm kiếm ticket theo keyword.
+
+// 	http://192.168.11.20:8069/api/ts24care/listSearchTicket_Keyword
+
+// 	def listSearchTicket_Keyword(self, keyword=None, stage=0, offset=0, limit=None, gmt=7, order=None, **kw)
+
+// 6.	Hàm  Tạo ticket.
+
+// 	http://192.168.11.20:8069/api/ts24care/createTicket
+
+// 	def createTicket(self, values=None, context=None, **kw)
+
+// 					{ 'message_main_attachment_id':1, 'subject': 'ticketsubject', 'description': 'ticket description', 'partner_id': 3, 'contact_name': 'ticket contact_name', 'email': 'ticketemail', 'user_id': 2, 'team_id': 2, 'date_deadline': '2020-03-11 17:38:21', 'date_closed': '2020-03-11 17:38:21', 'stage_id': 1, 'color':'', 'active':1, 'category_id':1, 'topic_id':1, 'resolve':0, 'cancel':0 }
+
+// 6.1 Hàm  Tạo Attachment
+
+// 	http://192.168.11.20:8069/api/ts24care/createAttachment
+
+// 	def createAttachment(self, values=None, context=None, **kw)
+
+// 	values : {'id':1,'name':'le lam le 1'',res_model': 'helpdesk.ticket',  'res_id': 1}
+
+// 6.2 Hàm tạo upload file attachment
+
+// 	http://192.168.11.20:8069/api/ts24care/uploadAttachmentFile
+
+// 	def uploadAttachmentFile(self, model, id, field=None, context=None, **kw)
+
+//     ufile : chon file
+
+// 7.	Hàm  Cập nhật ticket.
+
+// 	http://192.168.11.20:8069/api/ts24care/updateTicket
+
+// 	def updateTicket(self, id='0', offset=0, limit=None, gmt=7,
+// 						 order=None, values={}, **kw)
+
+// 						{
+
+// 						 'name': 'lengoclam',
+// 						   'email': 'mail@lam',
+// 						 'category_id': '1',
+// 						  'subject': 'subject lam'
+// 						}
+
+// 8.	Hàm  Lấy danh sách các dịch vụ khách hàng đang sử dụng.
+
+// 9.	Hàm lấy danh sách FAQ theo category.
+
+// 10.	Hàm tìm kiếm FAQ.
+
+// 11.	Hàn lấy danh sách category FAQ
+
+// 12.	Hàm đăng ký dịch vụ cho khách hàng.
+
+// "id" int4 DEFAULT nextval('knowsystem_article_id_seq'::regclass) NOT NULL,
+// "message_main_attachment_id" int4,
+// "name" varchar COLLATE "default" NOT NULL,
+// "description" text COLLATE "default",
+// "indexed_description" text COLLATE "default",
+// "kanban_description" text COLLATE "default",
+// "section_id" int4,
+// "write_revision_date" timestamp(6),
+// "write_revision_uid" int4,
+// "active" bool,
+// "views_number_internal" int4,
+// "used_in_email_compose" int4,
+// "likes_number" int4,
+// "dislikes_number" int4,
+// "likes_score" int4,
+// "create_uid" int4,
+// "create_date" timestamp(6),
+// "write_uid" int4,
+// "write_date" timestamp(6),
+// "access_token" varchar COLLATE "default",
+// "website_meta_title" varchar COLLATE "default",
+// "website_meta_description" text COLLATE "default",
+// "website_meta_keywords" varchar COLLATE "default",
+// "website_meta_og_img" varchar COLLATE "default",
+// "is_published" bool,
+
 enum GrandType { password, client_credentials }
 
 enum StatusCodeGetToken {
@@ -20,6 +130,7 @@ enum StatusCodeGetToken {
 class ApiMaster {
   String aliasName = "ApiMaster";
   String api = "$domainApi/api";
+  String nameCustomApi = "ts24care";
   String clientId = client_id;
   String clienSecret = client_secret;
   String username;
@@ -323,5 +434,10 @@ class ApiMaster {
       int index = rawCookie.indexOf(';');
       sessionId = (index == -1) ? rawCookie : rawCookie.substring(0, index);
     }
+  }
+
+  //Lấy avatar khách hàng
+  getImageByIdPartner(String id) {
+    return "$domainApi/web/image?model=res.partner&field=image&id=$id&session_id=$sessionId";
   }
 }

@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
-import 'package:ts24care/src/app/pages/login/forgetPassword/forget_password.dart';
 import 'package:ts24care/src/app/pages/login/login_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:flutter/services.dart';
@@ -41,42 +39,26 @@ class _LoginPageState extends State<LoginPage> {
     viewModel.context = context;
     var height = MediaQuery.of(context).size.height;
     var orientation = MediaQuery.of(context).orientation;
-    var ratioScreen = MediaQuery.of(context).devicePixelRatio;
 
     Widget _header({@required height}) {
-      Widget __boundCircle() {
-        return FittedBox(
-          fit: BoxFit.cover,
-          child: Container(
-            padding: EdgeInsets.all(2),
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                  50,
-                ),
-                border: Border.all(color: Colors.white30, width: 5)),
-            child: Container(
-              padding: EdgeInsets.all(2),
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    50,
-                  ),
-                  border: Border.all(color: Colors.white70, width: 5)),
-              child: Container(
-                padding: EdgeInsets.all(2),
-                height: 30,
-                width: 30,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      50,
-                    ),
-                    border: Border.all(color: Colors.white, width: 5)),
+      Widget __boundCircle({double size, Widget child, Color color}) {
+        return Container(
+          padding: EdgeInsets.all(2),
+          height: size,
+          width: size,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(
+                50,
               ),
-            ),
-          ),
+              border: Border.all(color: color, width: 5)),
+          child: child,
+        );
+      }
+
+      Widget __textHeader({text, TextStyle style}) {
+        return Text(
+          text,
+          style: style,
         );
       }
 
@@ -100,16 +82,25 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      __boundCircle(),
-                      Text(
-                        translation.text("LOGIN_PAGE.WELCOME_TITLE"),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(translation.text("LOGIN_PAGE.SUB_TITLE"),
+                      __boundCircle(
+                          size: 50.0,
+                          color: Colors.white30,
+                          child: __boundCircle(
+                              size: 40.0,
+                              color: Colors.white70,
+                              child: __boundCircle(
+                                size: 30.0,
+                                color: Colors.white,
+                              ))),
+                      __textHeader(
+                          text: translation.text("LOGIN_PAGE.WELCOME_TITLE"),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      __textHeader(
+                          text: translation.text("LOGIN_PAGE.SUB_TITLE"),
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 17,
@@ -133,14 +124,7 @@ class _LoginPageState extends State<LoginPage> {
           },
           child: Ink(
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    ThemePrimary.primaryColor,
-                    ThemePrimary.primaryColor
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
+                color: ThemePrimary.primaryColor,
                 borderRadius: BorderRadius.circular(2.0)),
             child: Container(
               color: Colors.transparent,
@@ -159,6 +143,13 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
 
+      __formLoginText({String text, TextStyle style}) {
+        return Text(
+          text,
+          style: style,
+        );
+      }
+
       Widget __createAccountButtonLandscape(
           {@required context, @required height}) {
         return Container(
@@ -172,25 +163,23 @@ class _LoginPageState extends State<LoginPage> {
                     minHeight: height > 550 ? 38 : 30),
                 width: double.infinity,
                 child: FlatButton(
-//                  borderSide: BorderSide(width: 0, color: Colors.transparent),
                   onPressed: () {
 //            viewModel.onTapCreateAccountButton(context);
                   },
                   child: Column(
                     children: <Widget>[
-                      Text(
-                        translation.text("LOGIN_PAGE.NO_ACCOUNT"),
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Text(
-                        translation.text("LOGIN_PAGE.CREATE_ACCOUNT_BUTTON"),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: ThemePrimary.primaryColor,
-                            decoration: TextDecoration.underline),
-                      )
+                      __formLoginText(
+                          text: translation.text("LOGIN_PAGE.NO_ACCOUNT"),
+                          style: TextStyle(
+                            color: Colors.grey,
+                          )),
+                      __formLoginText(
+                          text: translation
+                              .text("LOGIN_PAGE.CREATE_ACCOUNT_BUTTON"),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: ThemePrimary.primaryColor,
+                              decoration: TextDecoration.underline)),
                     ],
                   ),
                 ),
@@ -308,6 +297,13 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     Widget _createAccountButtonPortrait({@required context, @required height}) {
+      __createAccountButtonPortrait({text, style}) {
+        return Text(
+          text,
+          style: style,
+        );
+      }
+
       return Container(
         height: height * .15,
         child: Column(
@@ -321,19 +317,18 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Column(
                 children: <Widget>[
-                  Text(
-                    translation.text("LOGIN_PAGE.NO_ACCOUNT"),
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  Text(
-                    translation.text("LOGIN_PAGE.CREATE_ACCOUNT_BUTTON"),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: ThemePrimary.primaryColor,
-                        decoration: TextDecoration.underline),
-                  )
+                  __createAccountButtonPortrait(
+                      text: translation.text("LOGIN_PAGE.NO_ACCOUNT"),
+                      style: TextStyle(
+                        color: Colors.grey,
+                      )),
+                  __createAccountButtonPortrait(
+                      text:
+                          translation.text("LOGIN_PAGE.CREATE_ACCOUNT_BUTTON"),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: ThemePrimary.primaryColor,
+                          decoration: TextDecoration.underline)),
                 ],
               ),
             ),
@@ -343,7 +338,6 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     Widget _body({height}) {
-      print(height);
       return SingleChildScrollView(
         child: Container(
           child: Column(
@@ -357,7 +351,7 @@ class _LoginPageState extends State<LoginPage> {
               orientation == Orientation.portrait
                   ? _createAccountButtonPortrait(
                       context: context, height: height)
-                  : Text("")
+                  : Offstage()
             ],
           ),
         ),

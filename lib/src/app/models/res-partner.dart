@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ts24care/src/app/core/app_setting.dart';
+import 'package:ts24care/src/app/models/customer.dart';
 
 class ResPartner {
   dynamic sLastUpdate;
@@ -303,6 +304,15 @@ class ResPartner {
     this.xQrCode,
     this.xQrCodeImg,
   });
+
+  ResPartner.fromCustomer(Customer customer) {
+    if (customer.id != null) id = customer.id;
+    name = customer.name;
+    image = customer.photo;
+//    contactAddress = driver.contactAddress;
+//    email = driver.email;
+    phone = customer.phone;
+  }
 
   ResPartner.fromJson(Map<String, dynamic> json) {
     sLastUpdate = json['__last_update'];
@@ -759,12 +769,12 @@ class ResPartner {
     // data['street2'] = this.street2;
     // data['supplier'] = this.supplier;
     // data['team_id'] = this.teamId;
-    if (!(this.title is bool)) if (this.title != null)
-      data['title'] = this.title;
-    if (this.xClass != null) data['x_class'] = this.xClass;
-    if (this.xSchool != null) data['x_school'] = this.xSchool;
-    if (!(this.wkDob is bool)) if (this.wkDob != null)
-      data['wk_dob'] = this.wkDob;
+    // if (!(this.title is bool)) if (this.title != null)
+    //   data['title'] = this.title;
+    // if (this.xClass != null) data['x_class'] = this.xClass;
+    // if (this.xSchool != null) data['x_school'] = this.xSchool;
+    // if (!(this.wkDob is bool)) if (this.wkDob != null)
+    //   data['wk_dob'] = this.wkDob;
     // data['total_invoiced'] = this.totalInvoiced;
     // data['trust'] = this.trust;
     if (this.type != null) data['type'] = this.type;
@@ -790,8 +800,8 @@ class ResPartner {
     // data['write_date'] = this.writeDate;
     // data['write_uid'] = this.writeUid;
     // data['zip'] = this.zip;
-    if (this.xPosx != null) data['x_posx'] = this.xPosx;
-    if (this.xPosy != null) data['x_posy'] = this.xPosy;
+    // if (this.xPosx != null) data['x_posx'] = this.xPosx;
+    // if (this.xPosy != null) data['x_posy'] = this.xPosy;
     return data;
   }
 }
