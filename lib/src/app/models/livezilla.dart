@@ -47,6 +47,8 @@ class LiveZilla {
     if (this.ptp != null) data['ptp'] = this.ptp;
     if (this.ptl != null) data['ptl'] = this.ptl;
     if (this.pto != null) data['pto'] = this.pto;
+    // data['pth'] =
+    //     "https://web.ts24.com.vn/web/image/res.company/1/logo?unique=5e39e00";
     return data;
   }
 }

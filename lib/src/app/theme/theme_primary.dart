@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemePrimary {
-  static const primaryColor = Color(0xFFfdb615);
+  static const primaryColor = Color(0xFF18539F);
 
   static const gradientColor = Color(0xFFc49b29);
 

@@ -52,6 +52,9 @@ dependencies:
   image_picker: ^0.6.3+4
   image_cropper: ^1.2.1
   flutter_rating_bar: ^3.0.1+1
+  camera: ^0.5.7+4
+  video_player: ^0.10.0
+  path_provider: ^1.6.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

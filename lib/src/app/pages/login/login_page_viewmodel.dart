@@ -15,10 +15,14 @@ class LoginPageViewModel extends ViewModelBase {
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
 
-  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _emailController =  TextEditingController();
+
+  set emailSetter(email) { _emailController.text = email; }
+  set passSetter(pass) { _passController.text = pass; }
+
 
   get emailController => _emailController;
-  TextEditingController _passController = new TextEditingController();
+  TextEditingController _passController =  TextEditingController();
 
   get passController => _passController;
 
@@ -101,7 +105,8 @@ class LoginPageViewModel extends ViewModelBase {
         var customerInfo = await api.getCustomerInfoAfterLogin();
         if (customerInfo != null) {
           print("***********************************************************************");
-          print("Login ok customer info not null");
+          print("*                Login ok customer info not null                      *");
+          print("***********************************************************************");
         }
         LoadingDialog.hideLoadingDialog(context);
         ToastController.show(

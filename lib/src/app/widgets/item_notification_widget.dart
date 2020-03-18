@@ -46,7 +46,7 @@ class _ItemNotificationWidgetState extends State<ItemNotificationWidget> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  item.icon,
+                  Icon(item.iconData),
                   SizedBox(
                     width: 10,
                   ),

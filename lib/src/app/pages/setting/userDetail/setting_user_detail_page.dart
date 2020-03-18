@@ -1,30 +1,30 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
-import 'package:ts24care/src/app/models/user_model.dart';
+import 'package:ts24care/src/app/models/customer.dart';
 import 'package:ts24care/src/app/pages/setting/userDetail/setting_user_detail_page_viewmodel.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 import '../../../app_localizations.dart';
 
-
 class UserDetailPage extends StatefulWidget {
   static const String routeName = "/userDetailPage";
-  //final Parent parent;
-  //ProfilePage(this.parent);
+  final Customer customer;
+  UserDetailPage(this.customer);
   @override
   UserDetailPageState createState() => UserDetailPageState();
 }
 
-class UserDetailPageState extends State<UserDetailPage>{
+class UserDetailPageState extends State<UserDetailPage> {
   UserDetailPageViewModel viewModel = UserDetailPageViewModel();
   @override
   void initState() {
     // TODO: implement initState
-    //viewModel.parent = Parent();
+    viewModel.customer = Customer();
     //viewModel.imagePicker = widget.parent.photo;
     viewModel.initData();
 //    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
@@ -38,23 +38,27 @@ class UserDetailPageState extends State<UserDetailPage>{
 
   @override
   Widget build(BuildContext context) {
-
     viewModel.context = context;
+
+    final __styleTextLabel = TextStyle(
+        color: Colors.orange[800], fontWeight: FontWeight.bold, fontSize: 16);
 
     Widget _avatar() {
       Widget _initImage() {
+        // return Image(
+        //   image: viewModel.parent == null
+        //       ? AssetImage('assets/images/user.png')
+        //       : MemoryImage(viewModel.imagePicker),
+        //   fit: BoxFit.cover,
+        // );
         return Image(
-          image: (viewModel.user == null && viewModel.imagePicker == null)
+          image: (viewModel.customer == null && viewModel.imagePicker == null)
               ? AssetImage('assets/images/user.png')
-              : (viewModel.user != null && viewModel.imagePicker == null
-              ? (viewModel.user.photo == null
-              ? AssetImage('assets/images/user.png')
-              : NetworkImage(viewModel.user.photo))
-              : MemoryImage(viewModel.imagePicker)),
-          fit: BoxFit.cover,
-        );
-        return Image(
-          image: NetworkImage("https://bain.design/wp-content/uploads/2013/03/People-Avatar-Set-Rectangular-13.jpg"),
+              : (viewModel.customer != null && viewModel.imagePicker == null
+                  ? (viewModel.customer.photo == null
+                      ? AssetImage('assets/images/user.png')
+                      : NetworkImage(viewModel.customer.photo))
+                  : MemoryImage(viewModel.imagePicker)),
           fit: BoxFit.cover,
         );
       }
@@ -91,7 +95,8 @@ class UserDetailPageState extends State<UserDetailPage>{
           ),
           child: IconButton(
             icon: Icon(Icons.edit, size: 30, color: Colors.white),
-            onPressed: () => viewModel.onImageButtonPressed(ImageSource.gallery),
+            onPressed: () =>
+                viewModel.onImageButtonPressed(ImageSource.gallery),
             iconSize: 20.0,
           ),
         ),
@@ -103,29 +108,29 @@ class UserDetailPageState extends State<UserDetailPage>{
             width: MediaQuery.of(context).size.width,
             child: Platform.isAndroid
                 ? FutureBuilder<void>(
-              future: viewModel.retrieveLostData(),
-              builder:
-                  (BuildContext context, AsyncSnapshot<void> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                  case ConnectionState.waiting:
-                    return _initImage();
-                  case ConnectionState.done:
-                    return _resultImage();
-                  default:
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(
-                          'Pick image/video error: ${snapshot.error}}',
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    } else {
-                      return _initImage();
-                    }
-                }
-              },
-            )
+                    future: viewModel.retrieveLostData(),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<void> snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return _initImage();
+                        case ConnectionState.done:
+                          return _resultImage();
+                        default:
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text(
+                                'Pick image/video error: ${snapshot.error}}',
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          } else {
+                            return _initImage();
+                          }
+                      }
+                    },
+                  )
                 : (_resultImage()),
           ),
           __editBtn,
@@ -164,7 +169,7 @@ class UserDetailPageState extends State<UserDetailPage>{
       );
     }
 
-    Widget _card(UserModel user) {
+    Widget _card(Customer customer) {
       return Container(
         margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
         child: Column(
@@ -181,19 +186,20 @@ class UserDetailPageState extends State<UserDetailPage>{
                       child: TextFormField(
                         controller: viewModel.nameEditingController,
                         style: TextStyle(fontSize: 18, color: Colors.black),
-                        //focusNode: viewModel.nameFocus,
+                        focusNode: viewModel.nameFocus,
                         decoration: InputDecoration(
                           labelText: translation.text("USER_PROFILE.FULL_NAME"),
-                          hintText: user != null
-                              ? user.name
+                          hintText: customer != null
+                              ? customer.name
                               : translation.text("USER_PROFILE.INPUT_NAME"),
-                          //labelStyle: __styleTextLabel,
+                          labelStyle: __styleTextLabel,
+                          errorText: viewModel.errorName,
                         ),
                         keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (v) {
-                          //viewModel.fieldFocusChange(context,
-                          //   viewModel.nameFocus, viewModel.phoneFocus);
+                          viewModel.fieldFocusChange(context,
+                              viewModel.nameFocus, viewModel.phoneFocus);
                         },
                       ),
                     ),
@@ -213,20 +219,21 @@ class UserDetailPageState extends State<UserDetailPage>{
                       child: TextFormField(
                         controller: viewModel.phoneEditingController,
                         style: TextStyle(fontSize: 18, color: Colors.black),
-                        //focusNode: viewModel.phoneFocus,
+                        focusNode: viewModel.phoneFocus,
                         decoration: InputDecoration(
-                          labelText: translation.text("USER_PROFILE.PHONE_NUMBER"),
-                          hintText: user != null
-                              ? user.phone.toString()
+                          labelText:
+                              translation.text("USER_PROFILE.PHONE_NUMBER"),
+                          hintText: customer != null
+                              ? customer.phone.toString()
                               : translation.text("USER_PROFILE.INPUT_PHONE"),
-                          //labelStyle: __styleTextLabel,
-                          //errorText: viewModel.errorPhone,
+                          labelStyle: __styleTextLabel,
+                          errorText: viewModel.errorPhone,
                         ),
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.number,
                         onFieldSubmitted: (v) {
-                          //viewModel.fieldFocusChange(context,
-                          //    viewModel.phoneFocus, viewModel.addressFocus);
+                          viewModel.fieldFocusChange(context,
+                              viewModel.phoneFocus, viewModel.addressFocus);
                         },
                       ),
                     ),
@@ -273,18 +280,19 @@ class UserDetailPageState extends State<UserDetailPage>{
                     child: Align(
                       alignment: Alignment.center,
                       child: TextFormField(
-                        //focusNode: viewModel.addressFocus,
+                        focusNode: viewModel.addressFocus,
                         controller: viewModel.addressEditingController,
                         decoration: InputDecoration(
-                          labelText: translation.text("USER_PROFILE.ADDRESS"),
-                          hintText: translation.text("USER_PROFILE.INPUT_ADDRESS"),
-                          //labelStyle: __styleTextLabel,
-                        ),
+                            labelText: translation.text("USER_PROFILE.ADDRESS"),
+                            hintText:
+                                translation.text("USER_PROFILE.INPUT_ADDRESS"),
+                            labelStyle: __styleTextLabel,
+                            errorText: viewModel.errorAddress),
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.text,
                         onFieldSubmitted: (v) {
-                          //viewModel.addressFocus.unfocus();
-                          //viewModel.saveParent(viewModel.parent);
+                          viewModel.addressFocus.unfocus();
+                          viewModel.saveCustomer(viewModel.customer);
                         },
                       ),
                     ),
@@ -316,86 +324,94 @@ class UserDetailPageState extends State<UserDetailPage>{
       );
     }
 
-
-
     // TODO: implement build
     return ViewModelProvider(
       viewmodel: viewModel,
       child: StreamBuilder(
         stream: viewModel.stream,
-        builder: (context,snapshot){
+        builder: (context, snapshot) {
           return Scaffold(
               body: Stack(
-                children: <Widget>[
-                  SingleChildScrollView(
-                    //controller: viewModel.scrollController,
-                    reverse: true,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 250,
-                          child: Stack(
-                            children: <Widget>[
-                              _avatar(),
-                              _backButton(),
-                            ],
-                          ),
-                        ),
-                        _card(viewModel.user),
-                        SizedBox(
-                          height: 80,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      height: 50,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey[500],
-                                  offset: Offset(0.0, 1.5),
-                                  blurRadius: 1.5,
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                                onTap: () {
-                                  //_handleSelectLanguage();
-                                  //viewModel.onTapSave();
-                                },
-                                child: Center(
-                                  child: Text(
-                                    translation
-                                        .text("COMMON.SAVE")
-                                        .toUpperCase(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 16),
-                                  ),
-                                )),
-                          ),
-                        ),
+            children: <Widget>[
+              SingleChildScrollView(
+                //controller: viewModel.scrollController,
+                reverse: true,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 250,
+                      child: Stack(
+                        children: <Widget>[
+                          _avatar(),
+                          _backButton(),
+                        ],
                       ),
                     ),
-                  )
-                ],
+                    _card(viewModel.customer),
+                    SizedBox(
+                      height: 80,
+                    ),
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 50,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: ThemePrimary.primaryColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[500],
+                            offset: Offset(0.0, 1.5),
+                            blurRadius: 1.5,
+                          ),
+                        ],
+                        //borderRadius: BorderRadius.circular(10.0)
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                            onTap: () async {
+                              LoadingDialog.showLoadingDialog(context,
+                                  translation.text("COMMON.IN_PROCESS"));
+                              viewModel
+                                  .saveCustomer(viewModel.customer)
+                                  .then((v) {
+                                if (v) {
+                                  LoadingDialog.hideLoadingDialog(context);
+                                  Navigator.pop(context);
+                                } else {
+                                  LoadingDialog.hideLoadingDialog(context);
+//                                      Navigator.pop(context);
+                                }
+                              });
+                            },
+                            child: Center(
+                              child: Text(
+                                translation.text("COMMON.SAVE").toUpperCase(),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white),
+                              ),
+                            )),
+                      ),
+                    ),
+                  ),
+                ),
               )
-          );
+            ],
+          ));
         },
       ),
     );
   }
+
 //  void _handleSelectLanguage() {
 //    viewModel.selectedLanguage = viewModel.selectedLanguage == 1 ? 2 : 1;
 //    print('lang ${viewModel.selectedLanguage}');

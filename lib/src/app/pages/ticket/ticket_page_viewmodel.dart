@@ -75,7 +75,8 @@ class TicketPageViewModel extends ViewModelBase {
         ? listTicketHistory.where((item) => compareText(item, text)).toList()
         : listTicketHistory;
   }
-  onTapItemTicketHistory(String text){
+
+  onTapItemTicketHistory(String text) {
     searchBarController.setQueryText(text);
     searchBarController.state.onUnFocus();
     onQuerySubmitted(text);

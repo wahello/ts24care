@@ -309,7 +309,7 @@ class ResPartner {
     if (customer.id != null) id = customer.id;
     name = customer.name;
     image = customer.photo;
-//    contactAddress = driver.contactAddress;
+    street = customer.contactAddress;
 //    email = driver.email;
     phone = customer.phone;
   }

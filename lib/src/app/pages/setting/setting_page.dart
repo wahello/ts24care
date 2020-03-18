@@ -1,7 +1,9 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/pages/setting/setting_viewmodel.dart';
 
 import '../../app_localizations.dart';
@@ -20,29 +22,46 @@ class _SettingPageState extends State<SettingPage>
   double _sigmaY = 5.0; // from 0-10
   double _opacity = 0.2; // from 0-1.0
 
+  void _handleSelectLanguage(CustomPopupMenu choice) {
+    viewModel.selectedLanguage = choice;
+    viewModel.onChangeLanguage(choice.subTitle);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     viewModel.context = context;
-    /*Widget _appBar(){
-      return TS24AppBar(
-        backgroundColorStart: Colors.grey[200],
-        backgroundColorEnd: Colors.grey[200],
-        title: Text("Settings",style: TextStyle(color: Colors.black87),),
-        elevation: 0,
-      );
-    }*/
+
+//    final userImage = CachedNetworkImage(
+//      imageUrl: viewModel.customer.photo,
+//      imageBuilder: (context, imageProvider) => Container(
+//        height: 100.0,
+//        width: 100.0,
+//        decoration: BoxDecoration(
+//          // color: Colors.red,
+//          image: DecorationImage(
+//              image: imageProvider,
+//              // MemoryImage(viewModel.parent.photo)
+//              fit: BoxFit.cover),
+//          shape: BoxShape.circle,
+//        ),
+//      ),
+//    );
+
     Widget _body() {
       Widget __userInfo() {
         return Stack(
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 180,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage('assets/images/user.png'),
+            CachedNetworkImage(
+              imageUrl: viewModel.customer.photo,
+              imageBuilder: (context, imageProvider) => Container(
+                width: double.infinity,
+                height: 180,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: imageProvider,
+                      // MemoryImage(viewModel.parent.photo)
+                      fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -62,21 +81,26 @@ class _SettingPageState extends State<SettingPage>
                   viewModel.onTapUserDetail();
                 },
                 child: Container(
-                    margin: EdgeInsets.only(top: 20, bottom: 40),
-                    height: 100,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFDEDEDF),
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Color(0xFFDEDEDF), width: 4),
+                  margin: EdgeInsets.only(top: 20, bottom: 40),
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFDEDEDF),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Color(0xFFDEDEDF), width: 4),
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: viewModel.customer.photo,
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: imageProvider,
+                              // MemoryImage(viewModel.parent.photo)
+                              fit: BoxFit.cover),
+                          shape: BoxShape.circle),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50.0),
-                      child: CircleAvatar(
-                        child:
-                            Image(image: AssetImage('assets/images/user.png')),
-                      ),
-                    )),
+                  ),
+                ),
               ),
             ),
             Positioned.fill(
@@ -84,7 +108,7 @@ class _SettingPageState extends State<SettingPage>
               child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                    'Tran Duc Thuan',
+                    viewModel.customer.name,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -130,6 +154,46 @@ class _SettingPageState extends State<SettingPage>
         );
       }
 
+      //viewModel.selectedLanguage.title
+      Widget _buildIconTileLanguages(
+          IconData icon, String title, String currentLang) {
+        return PopupMenuButton<CustomPopupMenu>(
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                  title: Text(
+                    title,
+                    style: TextStyle(color: Colors.grey[800], fontSize: 16),
+                  ),
+                  subtitle: Text(currentLang,
+                      style: TextStyle(color: Colors.grey, fontSize: 14)),
+                  trailing: Icon(icon, color: Colors.grey[800])),
+              Container(
+                margin: EdgeInsets.only(left: 20, right: 20),
+                height: 0.5,
+                color: Colors.grey[300],
+              )
+            ],
+          ),
+//          elevation:  30.2,
+          initialValue: viewModel.selectedLanguage,
+          onSelected: _handleSelectLanguage,
+          offset: Offset(50, viewModel.selectedLanguage.id == 0 ? 50 : 100),
+          itemBuilder: (BuildContext context) {
+            return viewModel.listLanguages.map((CustomPopupMenu vehicle) {
+              return PopupMenuItem<CustomPopupMenu>(
+                height: 50,
+                value: vehicle,
+                child: Text(
+                  vehicle.title.toString(),
+                  style: TextStyle(fontSize: 14),
+                ),
+              );
+            }).toList();
+          },
+        );
+      }
+
       return ListView(
         children: <Widget>[
           __userInfo(),
@@ -147,10 +211,16 @@ class _SettingPageState extends State<SettingPage>
               }),
           __item(
               title: translation.text("SETTINGS_PAGE.LICENSES"),
-              iconTrailing: Icons.navigate_next),
+              iconTrailing: Icons.navigate_next,
+              onTap: () {
+                viewModel.onTapLicenses();
+              }),
           __item(
               title: translation.text("SETTINGS_PAGE.PRIVACY_POLICY"),
-              iconTrailing: Icons.navigate_next),
+              iconTrailing: Icons.navigate_next,
+              onTap: () {
+                viewModel.onTapPolicy();
+              }),
           __item(
               title: translation.text("SETTINGS_PAGE.HELP_CENTER"),
               iconTrailing: Icons.navigate_next),
@@ -158,7 +228,15 @@ class _SettingPageState extends State<SettingPage>
               title: translation.text("SETTINGS_PAGE.ZENDESK_SUPPORT"),
               subtitle: "${translation.text("VERSION")} 2.2.7",
               iconTrailing: Icons.navigate_next),
-          __item(title: translation.text("SETTINGS_PAGE.SIGN_OUT")),
+          _buildIconTileLanguages(
+              Icons.navigate_next,
+              translation.text("SETTINGS_PAGE.LANGUAGES"),
+              viewModel.selectedLanguage.title),
+          __item(
+              title: translation.text("SETTINGS_PAGE.SIGN_OUT"),
+              onTap: () {
+                viewModel.onTapLogout();
+              }),
         ],
       );
     }

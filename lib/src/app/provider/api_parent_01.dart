@@ -3,7 +3,12 @@ import 'dart:convert';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/models/blog-post.dart';
 import 'package:ts24care/src/app/models/customer.dart';
+import 'package:ts24care/src/app/models/helpdesk-stage.dart';
 import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
+import 'package:ts24care/src/app/models/knowsystem-article.dart';
+import 'package:ts24care/src/app/models/knowsystem-article.dart';
+import 'package:ts24care/src/app/models/knowsystem-section.dart';
+import 'package:ts24care/src/app/models/product-category.dart';
 import 'package:ts24care/src/app/models/res-partner.dart';
 import 'api_master.dart';
 import 'package:http/http.dart' as http;
@@ -160,7 +165,7 @@ class Api1 extends ApiMaster {
     });
   }
 
-  ///Lấy danh sách blog
+  ///Lấy danh sách bản tin
   Future<List<BlogPost>> searchBlogs(
       {String keyword, int offset, int limit}) async {
     await this.authorization();
@@ -280,6 +285,168 @@ class Api1 extends ApiMaster {
     });
   }
 
+  ///Lấy danh sách status tickets
+  ///
+  Future<List<HelpDeskStage>> getStatusTicket() async {
+    await this.authorization();
+    body = new Map();
+    body["fields"] = ["name"];
+
+    var params = convertSerialize(body);
+    List<HelpDeskStage> listResult = new List();
+    return http
+        .get('${this.api}/search_read/helpdesk.stage?$params',
+            headers: this.headers)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        print(list);
+        if (list.length > 0)
+          listResult =
+              list.map((item) => HelpDeskStage.fromJson(item)).toList();
+      }
+      return listResult;
+    }).catchError((error) {
+      return listResult;
+    });
+  }
+
+  ///Lấy danh sách category FAQ
+  Future<List<KnowsystemSection>> getCategoryFAQ() async {
+    await this.authorization();
+    List<KnowsystemSection> listResult = new List();
+    body = new Map();
+    return http
+        .post('${this.api}/${this.nameCustomApi}/listCategoryParentFAQ',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult =
+              list.map((item) => KnowsystemSection.fromJson(item)).toList();
+        }
+      }
+
+      return listResult;
+    }).catchError((error) {
+      return listResult;
+    });
+  }
+
+  ///Lấy danh sách FAQ theo category
+  ///@Param int id
+  Future<List<KnowsystemArticle>> getListFAQByCategoryId(
+      {int categoryId, int offset, int limit}) async {
+    await this.authorization();
+    List<KnowsystemArticle> listResult = new List();
+    body = new Map();
+    body["category_id"] = categoryId.toString();
+    body["offset"] = offset.toString();
+    body["limit"] = limit.toString();
+    body["gmt"] = DateTime.now().timeZoneOffset.inHours.toString();
+    return http
+        .post('${this.api}/${this.nameCustomApi}/listFAQCategory',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult =
+              list.map((item) => KnowsystemArticle.fromJson(item)).toList();
+        }
+      }
+
+      return listResult;
+    }).catchError((error) {
+      return listResult;
+    });
+  }
+
+  ///Tìm kiếm FAQ
+  Future<List<KnowsystemArticle>> searchFAQ(
+      {String keyword, int offset, int limit}) async {
+    await this.authorization();
+    List<KnowsystemArticle> listResult = new List();
+    body = new Map();
+    body["offset"] = offset.toString();
+    body["limit"] = limit.toString();
+    body["gmt"] = DateTime.now().timeZoneOffset.inHours.toString();
+    body["keyword"] = keyword;
+    return http
+        .post('${this.api}/${this.nameCustomApi}/listSearchFAQ_Keyword',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        this.updateCookie(response);
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult =
+              list.map((item) => KnowsystemArticle.fromJson(item)).toList();
+        }
+      }
+
+      return listResult;
+    }).catchError((error) {
+      return listResult;
+    });
+  }
+
+  ///Lấy chi tiết FAQ
+  ///
+  Future<KnowsystemArticle> getFAQDetail(int id) async {
+    await this.authorization();
+    body = new Map();
+    body["domain"] = [
+      ['id', '=', id],
+    ];
+
+    var params = convertSerialize(body);
+    List<KnowsystemArticle> listResult = new List();
+    KnowsystemArticle knowsystemArticle;
+    return http
+        .get('${this.api}/search_read/knowsystem.article?$params',
+            headers: this.headers)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        print(list);
+        if (list.length > 0)
+          listResult =
+              list.map((item) => KnowsystemArticle.fromJson(item)).toList();
+        knowsystemArticle = listResult[0];
+      }
+      return knowsystemArticle;
+    }).catchError((error) {
+      return knowsystemArticle;
+    });
+  }
+
+  ///Lấy danh sách các dịch vụ khách hàng đang sử dụng
+  Future<List<ProductCategory>> getCategoryTS24Product() async {
+    await this.authorization();
+    List<ProductCategory> listResult = new List();
+    Customer customer = Customer();
+    body = new Map();
+    body["partner_id"] = customer.id.toString();
+    return http
+        .post('${this.api}/${this.nameCustomApi}/listProduct_Category_Active',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult =
+              list.map((item) => ProductCategory.fromJson(item)).toList();
+        }
+      }
+
+      return listResult;
+    }).catchError((error) {
+      return listResult;
+    });
+  }
+
   ///Update thông tin khách hàng
   ///
   ///Success - Trả về true
@@ -301,6 +468,57 @@ class Api1 extends ApiMaster {
         //print(list);
       } else {
         result = false;
+      }
+      return result;
+    });
+  }
+
+  ///Hàm tạo ticket
+  ///
+  ///Success - Trả về new id
+  ///
+  ///Fail - Trả về null
+  Future<dynamic> insertTickets(HelpdeskTicket ticket) async {
+    await this.authorization();
+    body = new Map();
+    body["values"] = json.encode(ticket.toJson());
+    return http
+        .post('${this.api}/${this.nameCustomApi}/createTicket',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      var result;
+      if (response.statusCode == 200) {
+        var list = json.decode(response.body);
+        if (list is List) result = list[0];
+        //print(list);
+      } else {
+        result = null;
+      }
+      return result;
+    });
+  }
+
+  ///Hàm update ticket
+  ///
+  ///Success - Trả về true
+  ///
+  ///Fail - Trả về false
+  Future<dynamic> updateTickets(HelpdeskTicket ticket) async {
+    await this.authorization();
+    body = new Map();
+    body["id"] = ticket.id.toString();
+    body["values"] = json.encode(ticket.toJson());
+    return http
+        .post('${this.api}/${this.nameCustomApi}/updateTicket',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      var result;
+      if (response.statusCode == 200) {
+        var list = json.decode(response.body);
+        if (list is List) result = list[0];
+        //print(list);
+      } else {
+        result = null;
       }
       return result;
     });

@@ -33,13 +33,19 @@ import 'package:ts24care/src/app/core/app_setting.dart';
 // 4.	Hàm  Lấy danh sách ticket theo status.
 
 // 	http://192.168.11.20:8069/api/ts24care/listTicket_Status
-// 	def listTicket_Status(self, domain=None,stage=0, offset=0, limit=None, gmt=7, order=None, **kw)
+// 	def listTicket_Status(self,partner_id='0',stage='0', offset=0, limit=None, gmt=7, order='create_date DESC', **kw)
+
+//  4.1.	Hàm  Lấy chi tiet ticket theo id.
+
+//  http://192.168.11.20:8069/api/ts24care/getTicket
+
+//  def getTicket(self, id=0, offset=0, limit=None, gmt=7, order=None, **kw)
 
 // 5.	Hàm  Tìm kiếm ticket theo keyword.
 
 // 	http://192.168.11.20:8069/api/ts24care/listSearchTicket_Keyword
 
-// 	def listSearchTicket_Keyword(self, keyword=None, stage=0, offset=0, limit=None, gmt=7, order=None, **kw)
+// 	def listSearchTicket_Keyword(self, keyword=None,partner_id='0', stage=0, offset=0, limit=None, gmt=7, order=None, **kw)
 
 // 6.	Hàm  Tạo ticket.
 
@@ -55,7 +61,9 @@ import 'package:ts24care/src/app/core/app_setting.dart';
 
 // 	def createAttachment(self, values=None, context=None, **kw)
 
-// 	values : {'id':1,'name':'le lam le 1'',res_model': 'helpdesk.ticket',  'res_id': 1}
+// 	values : {'id':1,'name':'le lam le 1','res_model': 'helpdesk.ticket',  'res_id': 1,
+//                      'datas_fname': 'lam1.jpg',
+//                      'name': 'lam1.jpg'}
 
 // 6.2 Hàm tạo upload file attachment
 
@@ -82,39 +90,77 @@ import 'package:ts24care/src/app/core/app_setting.dart';
 
 // 8.	Hàm  Lấy danh sách các dịch vụ khách hàng đang sử dụng.
 
+// http://192.168.11.20:8069/api/ts24care/listProduct_Category_Active
+
+// def listProduct_Category_Active(self, partner_id='0', offset=0, limit=None, gmt=7, order=None, **kw)
+
 // 9.	Hàm lấy danh sách FAQ theo category.
+
+// http://192.168.11.20:8069/api/ts24care/listFAQCategory
+
+// def listFAQCategory(self, domain=None, category_id='0', offset=0, limit=None, gmt=7, order=None, **kw)
 
 // 10.	Hàm tìm kiếm FAQ.
 
+// http://192.168.11.20:8069/api/ts24care/listSearchFAQ_Keyword
+
+// def listSearchFAQ_Keyword(self, keyword=None, stage=0, offset=0, limit=None, gmt=7, order=None, **kw)
+
 // 11.	Hàn lấy danh sách category FAQ
+
+// http://192.168.11.20:8069/api/ts24care/listCategoryParentFAQ
+
+// def listCategoryParentFAQ(self, domain=None, offset=0, limit=None, gmt=7, order=None, **kw)
 
 // 12.	Hàm đăng ký dịch vụ cho khách hàng.
 
-// "id" int4 DEFAULT nextval('knowsystem_article_id_seq'::regclass) NOT NULL,
-// "message_main_attachment_id" int4,
-// "name" varchar COLLATE "default" NOT NULL,
-// "description" text COLLATE "default",
-// "indexed_description" text COLLATE "default",
-// "kanban_description" text COLLATE "default",
-// "section_id" int4,
-// "write_revision_date" timestamp(6),
-// "write_revision_uid" int4,
-// "active" bool,
-// "views_number_internal" int4,
-// "used_in_email_compose" int4,
-// "likes_number" int4,
-// "dislikes_number" int4,
-// "likes_score" int4,
-// "create_uid" int4,
-// "create_date" timestamp(6),
-// "write_uid" int4,
-// "write_date" timestamp(6),
-// "access_token" varchar COLLATE "default",
-// "website_meta_title" varchar COLLATE "default",
-// "website_meta_description" text COLLATE "default",
-// "website_meta_keywords" varchar COLLATE "default",
-// "website_meta_og_img" varchar COLLATE "default",
-// "is_published" bool,
+// 13. tao mail message va attachment
+
+// http://192.168.11.20:8069/api/ts24care/createMail_Message_Attachment_Rel
+
+// def createMail_Message_Attachment_Rel(self, Mailvalues=None, AttachmentValues=None, context=None, **kw)
+
+// Mailvalues = {
+// 'id':1,
+// 'subject':'lam test',
+// 'date':'2020-03-18 09:39:09',
+// 'body':'<p>HR Department created</p>',
+// 'parent_id':2,
+// 'model':'mail.channel',
+// 'res_id':1,
+// 'record_name':'sale',
+// 'message_type':'email',
+// 'subtype_id':1,
+// 'mail_activity_type_id':1,
+// 'email_from':'',
+// 'author_id':2,
+// 'no_auto_thread':1,
+// 'message_id':2,
+// 'reply_to':'abc',
+
+// 'moderation_status':'',
+// 'moderator_id':1,
+// 'layout':'',
+// 'add_sign':1,
+// 'create_uid':2,
+// 'create_date':'2020-03-18 09:39:09',
+// 'write_uid':2,
+// 'write_date':'2020-03-18 09:39:09'
+// }
+
+// AttachmentValues = {'id':1,'name':'le lam le 1','res_model': 'helpdesk.ticket',  'res_id': 1,
+//                      'datas_fname': 'lam1.jpg',
+//                      'name': 'lam1.jpg'}
+
+// 14. tao mail_message va list attachment
+
+// http://192.168.11.20:8069/api/ts24care/createMail_Message
+
+//  def createMail_Message(self, values=None, listAttachment_id=None, context=None, **kw)
+
+//  values : { 'id':1, 'subject':'lam test', 'date':'2020-03-18 09:39:09', 'body':'<p>HR Department created</p>', 'parent_id':2, 'model':'mail.channel', 'res_id':1, 'record_name':'sale', 'message_type':'email', 'subtype_id':1, 'mail_activity_type_id':1, 'email_from':'', 'author_id':2, 'no_auto_thread':1, 'message_id':2, 'reply_to':'abc',  'moderation_status':'', 'moderator_id':1, 'layout':'', 'add_sign':1, 'create_uid':2, 'create_date':'2020-03-18 09:39:09', 'write_uid':2, 'write_date':'2020-03-18 09:39:09' }
+
+//  listAttachment_id:[{'id':1},{'id':2},{'id':3}]
 
 enum GrandType { password, client_credentials }
 

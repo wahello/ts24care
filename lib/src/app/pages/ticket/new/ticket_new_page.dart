@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
@@ -182,6 +183,37 @@ class _TicketNewPageState extends State<TicketNewPage> {
       }
 
       Widget __inputText() {
+        Widget ___buildMenuIcon({IconData iconData,void onSelected(CustomPopupMenu customPopupMenu)}) {
+          return PopupMenuButton<CustomPopupMenu>(
+            child: IconButton(icon: Icon(Icons.attach_file,color: ThemePrimary.primaryColor,),
+            ),
+//          elevation:  30.2,
+            //initialValue: viewModel.selectedLanguage,
+            onSelected: onSelected,
+            //offset: Offset(50, viewModel.selectedLanguage.id == 0 ? 50 : 100),
+            itemBuilder: (BuildContext context) {
+              return CustomPopupMenu.listMenuAttachment.map((CustomPopupMenu item) {
+                return PopupMenuItem<CustomPopupMenu>(
+                  height: 50,
+                  value: item,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(item.iconData,color: ThemePrimary.primaryColor,),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        item.title.toString(),
+                        style: TextStyle(fontSize: 14,color: Colors.grey[700]),
+                      )
+                    ],
+                  ),
+                );
+              }).toList();
+            },
+          );
+        }
         return Positioned(
           left: 0,
           right: 0,
@@ -257,8 +289,11 @@ class _TicketNewPageState extends State<TicketNewPage> {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.image),
+                          ___buildMenuIcon(
+                            iconData: Icons.attach_file,
+                            onSelected: (customPopupMenu){
+                              viewModel.onSelected(customPopupMenu.state);
+                            }
                           ),
                           SizedBox(
                             width: 10,

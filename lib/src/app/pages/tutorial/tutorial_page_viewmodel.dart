@@ -24,12 +24,15 @@ class TutorialPageViewModel extends ViewModelBase {
     // api.getBlogById(55).then((onValue) {
     //   print(onValue);
     // });
-    Navigator.pushNamed(context, TabsPage.routeName);
-    api
-        .checkLogin(username: "demo@ts24corp.com", password: "123456")
-        .then((onValue) {
-      // print(onValue);
-      api.getCustomerInfoAfterLogin();
+    //Navigator.pushNamed(context, TabsPage.routeName);
+    // api
+    //     .checkLogin(username: "demo@ts24corp.com", password: "123456")
+    //     .then((onValue) {
+    //   // print(onValue);
+    //   api.getCustomerInfoAfterLogin();
+    //  });
+    api.getStatusTicket().then((onValue) {
+      print(onValue);
     });
   }
 }
