@@ -45,16 +45,21 @@
     "ALL_BUTTON": "Tất cả" ,
     "ADD_BUTTON": "Thêm",
     "ID_IDENTIFY": "Tên dịch vụ",
-    "SERVICE_LIST": "Dịch vụ đã mua",
+    "SERVICE_LIST": "Các dịch vụ đã đăng ký",
     "CREATE_DATE": "Ngày đăng ký",
     "EXPIRE_DATE": "Ngày hết hạn"
   },
   "FAQ_DETAIL_PAGE": {
-    "TITLE": "FAQ chi tiết",
+    "TITLE": "FAQ",
     "GUIDANCE_TITLE": "Xem bài bài viết để biết thêm thông tin",
     "NO_DATA": "Chưa có dữ liệu",
     "RECENT": "Gần đây",
     "RESULT": "Kết quả"
+  },
+  "WANRRANTY_DETAIL_PAGE": {
+    "DATE_REMAINING": "Ngày còn lại",
+    "SERIAL": "Số serial",
+    "PHONE": "Điện thoại"
   },
   "WAITING_MESSAGE": {
     "PERMISSION_CONNECT": "Đang kiểm tra quyền truy cập...",

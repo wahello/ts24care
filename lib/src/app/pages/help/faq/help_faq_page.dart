@@ -57,35 +57,36 @@ class _FAQPageState extends State<FAQPage> {
             SizedBox(
               height: 20,
             ),
-            GroupContentWidget(
-                title: "FAQ",
-                child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1.1,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
-                  padding: EdgeInsets.only(left: 0, right: 0, bottom: 0),
-                  itemCount: viewModel.listCategory.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      child: ItemHelpWidget(
-                        showCircle: true,
-                        categoryId:
-                            viewModel.listCategoryHaveColorsAndImages[index].id,
-                        iconPath: viewModel
-                            .listCategoryHaveColorsAndImages[index].urlIcon,
-                        text: viewModel
-                            .listCategoryHaveColorsAndImages[index].name,
-                        color: viewModel
-                            .listCategoryHaveColorsAndImages[index].color,
-                      ),
-                    );
-                  },
-                )),
+            Container(
+              padding: EdgeInsets.all(15),
+              child: GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 1.1,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                padding: EdgeInsets.only(left: 0, right: 0, bottom: 0),
+                itemCount: viewModel.listCategory.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    child: ItemHelpWidget(
+                      showCircle: true,
+                      categoryId:
+                          viewModel.listCategoryHaveColorsAndImages[index].id,
+                      iconPath: viewModel
+                          .listCategoryHaveColorsAndImages[index].urlIcon,
+                      text: viewModel
+                          .listCategoryHaveColorsAndImages[index].name,
+                      color: viewModel
+                          .listCategoryHaveColorsAndImages[index].color,
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       );
@@ -142,9 +143,9 @@ class _FAQPageState extends State<FAQPage> {
             ),
             title: Text(
               'FAQ',
-              style: TextStyle(color: Colors.black87),
+              style: TextStyle(color: Colors.black87, fontSize: 16),
             ),
-            backgroundColor: ThemePrimary.backgroundColor,
+            backgroundColor: Colors.white,
             primaryColor: ThemePrimary.primaryColor,
             searchBarStateCallBack: (_) {},
             onQueryChangedCallBack: (_) {},

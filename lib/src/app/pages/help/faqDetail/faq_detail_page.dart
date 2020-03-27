@@ -39,7 +39,7 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
     // TODO: implement initState
     super.initState();
     viewModel.getListFAQByCategoryId(
-        widget.listParams[0]); // as that [categoryId, color, iconPath]
+        widget.listParams[0]); // as that [categoryId, color, iconPath, name]
   }
 
   @override
@@ -54,7 +54,7 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
         backgroundColorEnd: ThemePrimary.backgroundColor,
         backgroundColorStart: ThemePrimary.backgroundColor,
         title: Text(
-          translation.text('FAQ_DETAIL_PAGE.TITLE'),
+          '${translation.text('FAQ_DETAIL_PAGE.TITLE')} ${widget.listParams[3]}',
           style: TextStyle(color: Colors.black87),
         ),
         elevation: 0,
@@ -160,7 +160,7 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
               right: 150,
               child: Image.network(
                 widget.listParams[2],
-                fit: BoxFit.cover, //as that  [categoryId, color, iconPath]
+                fit: BoxFit.cover, //as that  [categoryId, color, iconPath, name]
               ),
             )
           ],

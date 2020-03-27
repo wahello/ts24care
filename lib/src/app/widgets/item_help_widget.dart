@@ -31,7 +31,7 @@ class ItemHelpWidget extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(
                       context, FaqDetailPage.routeName,
-                      arguments: [categoryId, color, iconPath]);
+                      arguments: [categoryId, color, iconPath, text]);
                 },
                 child: Container(
                     width: 70,

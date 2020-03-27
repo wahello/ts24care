@@ -10,7 +10,6 @@ import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/group_content_widget.dart';
 import 'package:ts24care/src/app/widgets/item_help_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24SlideWidget/ts24_slide_widget.dart';
-import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
@@ -50,6 +49,7 @@ class _HelpPageState extends State<HelpPage>
     return Material(
       child: InkWell(
         onTap: () {
+          fullObject.name = nameService;
           Navigator.pushNamed(context, ProductWarrantyDetailPage.routeName,
               arguments: fullObject);
         },
@@ -308,7 +308,7 @@ class _HelpPageState extends State<HelpPage>
 
   Widget _appBar() {
     return AppBar(
-      // leading: Offstage(),
+//      leading: Offstage(),
       backgroundColor: ThemePrimary.backgroundColor,
       elevation: 0,
       title: Text(
@@ -367,9 +367,11 @@ class _HelpPageState extends State<HelpPage>
                                   listFullObject:
                                       ItemApplicationModel.listApplication,
                                   onChange: (index) {
-                                    var idCategoryProduct = viewModel.listApplication[index]
+                                    var idCategoryProduct = viewModel
+                                        .listApplication[index]
                                         .idCategoryServices;
-                                    viewModel.onCategoryIndexChanged(idCategoryProduct);
+                                    viewModel.onCategoryIndexChanged(
+                                        idCategoryProduct);
                                     var categoryArticleId = viewModel
                                         .listApplication[index]
                                         .idCategoryArticle;

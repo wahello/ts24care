@@ -563,6 +563,27 @@ class Api1 extends ApiMaster {
     });
   }
 
+  ///Download attachment theo id
+  ///@param int id
+  Future<dynamic> getUrlDownloadAttachment(int id) async {
+    await this.authorization();
+    body = new Map();
+    body["id"] = id.toString();
+    return http
+        .post('${this.api}/${this.nameCustomApi}/downloadAttachment',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        return list;
+      }
+
+      return null;
+    }).catchError((error) {
+      return null;
+    });
+  }
+
   ///Tạo attachment file
   ///@param
   Future<dynamic> insertAttachMent(

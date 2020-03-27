@@ -38,9 +38,11 @@ class ProductWarranty {
   dynamic xOrderType;
   dynamic xRemainAmount;
   dynamic xTokenId;
+  dynamic name;
 
   ProductWarranty(
-      {this.sLastUpdate,
+      {this.name,
+        this.sLastUpdate,
       this.accept1,
       this.comment,
       this.createDate,

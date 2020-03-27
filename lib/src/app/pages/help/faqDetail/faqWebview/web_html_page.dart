@@ -31,6 +31,7 @@ class _WebHtmlPageState extends State<WebHtmlPage> {
 
   Widget _appBar(String title){
     return AppBar(
+      backgroundColor: Colors.white,
       title: Text(title ==  null ? '': title,overflow: TextOverflow.ellipsis, ),
     );
   }

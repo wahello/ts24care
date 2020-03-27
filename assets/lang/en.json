@@ -42,7 +42,7 @@
     "CALL_SERVICE": "Call customer service",
     "LIVE_CHAT": "Live chat",
     "VIEW_MORE": "View more",
-    "SERVICE_LIST": "Dịch vụ đã mua",
+    "SERVICE_LIST": "Services payment",
     "ALL_BUTTON": "All" ,
     "ADD_BUTTON": "Add",
     "ID_IDENTIFY": "Service Name",
@@ -50,11 +50,16 @@
     "EXPIRE_DATE": "Expire date"
   },
   "FAQ_DETAIL_PAGE": {
-    "TITLE": "FAQ DETAIL",
+    "TITLE": "FAQ",
     "GUIDANCE_TITLE": "Choose article to read more information",
     "NO_DATA": "No have data yet",
     "RECENT": "Recent",
     "RESULT": "Result"
+  },
+  "WANRRANTY_DETAIL_PAGE": {
+    "DATE_REMAINING": "Date remaining",
+    "SERIAL": "Serial number",
+    "PHONE": "Phone"
   },
   "WAITING_MESSAGE": {
     "PERMISSION_CONNECT": "Checking access permission...",

@@ -76,7 +76,6 @@ class HelpPageViewModel extends ViewModelBase {
         this.updateState();
       }
     }
-
   }
 
 //  fetch listProductWarranty when category product changed
@@ -98,7 +97,6 @@ class HelpPageViewModel extends ViewModelBase {
     } catch (e) {
       print(e);
     }
-
   }
 
 //  fetch article by category id
