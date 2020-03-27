@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/pages/help/faq/help_faq_page.dart';
 import 'package:ts24care/src/app/pages/help/feedback/help_feedback_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24BottomScrollWithBackgroundWidget/ts24_bottom_scroll_with_background_widget.dart';
@@ -26,6 +27,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   @override
   Widget build(BuildContext context) {
+    var media = MediaQuery.of(context);
+    final List<dynamic> categoryId = ModalRoute.of(context).settings.arguments;
+    viewModel.getListFAQByCategoryId(categoryId[0]);
     viewModel.context = context;
     Widget _appBar() {
       return TS24AppBar(
@@ -42,7 +46,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             color: Colors.black87,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, FAQPage.routeName);
           },
         ),
       );
@@ -53,9 +57,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
     Widget _body() {
       Widget __itemList(String text) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              alignment: Alignment.centerLeft,
+//              height: media.size.height * .7,
+//              alignment: Alignment.topLeft,
               padding: EdgeInsets.only(top: 10, bottom: 10),
               child: Text(
                 text,
@@ -79,37 +85,18 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
       Widget __content() {
         return Column(
-          children: <Widget>[
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "just enough width so slides handing off screen are partially. While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-            __itemList(
-                "While charging the device, device seems to heat up. Why is this?"),
-          ],
-        );
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: viewModel.listArticle.length == 0
+                ? <Widget>[Text('No data')]
+                : viewModel.listArticle.map((item) {
+                    return __itemList(item.name);
+                  }).toList()
+//          <Widget>[
+//            __itemList(
+//                "While charging the device, device seems to heat up. Why is this?"),
+//
+//          ],
+            );
       }
 
       return TS24BottomScrollWithBackgroundWidget(

@@ -2,12 +2,13 @@ import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/helper/validator-helper.dart';
+import 'package:ts24care/src/app/pages/help/help_page.dart';
+import 'package:ts24care/src/app/pages/home/home_page.dart';
 import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
 import 'package:ts24care/src/app/provider/api_master.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 import 'forgetPassword/forget_password.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
-
 
 class LoginPageViewModel extends ViewModelBase {
   final formKey = GlobalKey<FormState>();
@@ -15,14 +16,18 @@ class LoginPageViewModel extends ViewModelBase {
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
 
-  TextEditingController _emailController =  TextEditingController();
+  TextEditingController _emailController = TextEditingController();
 
-  set emailSetter(email) { _emailController.text = email; }
-  set passSetter(pass) { _passController.text = pass; }
+  set emailSetter(email) {
+    _emailController.text = email;
+  }
 
+  set passSetter(pass) {
+    _passController.text = pass;
+  }
 
   get emailController => _emailController;
-  TextEditingController _passController =  TextEditingController();
+  TextEditingController _passController = TextEditingController();
 
   get passController => _passController;
 
@@ -83,10 +88,8 @@ class LoginPageViewModel extends ViewModelBase {
     return false;
   }
 
-
   // check login
   void onLoginButtonClicked() async {
-
     if (isValidInfo()) {
       //Show loading message
       LoadingDialog.showLoadingDialog(
@@ -104,9 +107,7 @@ class LoginPageViewModel extends ViewModelBase {
         // get info customer
         var customerInfo = await api.getCustomerInfoAfterLogin();
         if (customerInfo != null) {
-          print("***********************************************************************");
-          print("*                Login ok customer info not null                      *");
-          print("***********************************************************************");
+          print("LOGIN OK");
         }
         LoadingDialog.hideLoadingDialog(context);
         ToastController.show(
@@ -115,7 +116,8 @@ class LoginPageViewModel extends ViewModelBase {
             message: translation.text("WAITING_MESSAGE.PERMISSION_CONNECT"));
 
         Future.delayed(const Duration(milliseconds: 300), () {
-          Navigator.pushReplacementNamed(context, TabsPage.routeName);
+          Navigator.pushReplacementNamed(context, TabsPage.routeName,
+              arguments: TabsArgument(routeChildName: HelpPage.routeName));
         });
 //         Navigator.popAndPushNamed(context, TabsPage.routeName,
 //             arguments: TabsArgument(routeChildName: HomePage.routeName));
@@ -125,11 +127,9 @@ class LoginPageViewModel extends ViewModelBase {
             context, translation.text("ERROR_MESSAGE.WRONG_LOGIN"));
       }
     }
-
   }
 
   void onForgetPasswordClicked() {
     Navigator.pushReplacementNamed(context, ForgetPasswordPage.routeName);
   }
-
 }

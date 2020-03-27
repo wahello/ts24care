@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24SlideWidget/ts24_slide_widget_viewmodel.dart';
@@ -15,6 +16,7 @@ class TS24SlideWidget extends StatefulWidget {
   final List<dynamic> listCurrentObject;
   final TS24SlideCallback onAddItem;
   final TS24SlideCallbackIndexChange onChange;
+
   const TS24SlideWidget(
       {Key key,
       @required this.listFullObject,
@@ -22,12 +24,14 @@ class TS24SlideWidget extends StatefulWidget {
       this.onAddItem,
       this.onChange})
       : super(key: key);
+
   @override
   _TS24SlideWidgetState createState() => _TS24SlideWidgetState();
 }
 
 class _TS24SlideWidgetState extends State<TS24SlideWidget> {
   TS24SlideWidgetViewModel viewModel = TS24SlideWidgetViewModel();
+
   @override
   void initState() {
     viewModel.listApplication = widget.listCurrentObject;
@@ -43,7 +47,7 @@ class _TS24SlideWidgetState extends State<TS24SlideWidget> {
         return InkWell(
           onTap: onTap,
           child: Container(
-            width: 70,
+            padding: EdgeInsets.all(2),
             height: 30,
             alignment: Alignment.center,
             child: Row(
@@ -60,8 +64,8 @@ class _TS24SlideWidgetState extends State<TS24SlideWidget> {
               ],
             ),
             decoration: BoxDecoration(
+                color: Colors.transparent,
                 border: Border.all(color: Colors.grey[600], width: 2.0),
-//                                        color: Colors.green,
                 borderRadius: BorderRadius.circular(15)),
           ),
         );
@@ -101,22 +105,22 @@ class _TS24SlideWidgetState extends State<TS24SlideWidget> {
                 itemBuilder: (BuildContext context, int index) {
                   return (index == viewModel.indexCurrent)
                       ? CircularPercentIndicator(
-                          radius: 100.0,
-                          animation: true,
-                          animationDuration: 1000,
-                          lineWidth: 3.0,
-                          percent: 1,
-                          startAngle: 0,
-                          center: Image.network(
-                            viewModel.listApplication[index].imageLogo,
-                            height: 60,
-                            width: 60,
-                            fit: BoxFit.cover,
-                          ),
-                          circularStrokeCap: CircularStrokeCap.butt,
-                          backgroundColor: Colors.black26,
-                          progressColor: ThemePrimary.primaryColor,
-                        )
+                        radius: 100.0,
+                        animation: true,
+                        animationDuration: 1000,
+                        lineWidth: 3.0,
+                        percent: 1,
+                        startAngle: 0,
+                        center: Image.network(
+                          viewModel.listApplication[index].imageLogo,
+                          height: 60,
+                          width: 60,
+                          fit: BoxFit.cover,
+                        ),
+                        circularStrokeCap: CircularStrokeCap.butt,
+                        backgroundColor: Colors.black26,
+                        progressColor: ThemePrimary.primaryColor,
+                      )
                       : Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
@@ -171,15 +175,16 @@ class _TS24SlideWidgetState extends State<TS24SlideWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     __button(
-                        name: "All",
+                        name: translation.text('HELP_PAGE.ALL_BUTTON'),
                         iconData: Icons.list,
                         onTap: () => viewModel.onTapAll()),
-                    __button(
-                        name: "Add",
-                        iconData: Icons.add,
-                        onTap: () {
-                          viewModel.onTapAdd(widget.onAddItem);
-                        }),
+
+//                    __button(
+//                        name: translation.text('HELP_PAGE.ADD_BUTTON'),
+//                        iconData: Icons.add,
+//                        onTap: () {
+//                          viewModel.onTapAdd(widget.onAddItem);
+//                        }),
                   ],
                 ),
               ),

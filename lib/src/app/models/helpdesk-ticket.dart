@@ -1,14 +1,14 @@
 class HelpdeskTicket {
   dynamic sLastUpdate;
   dynamic active;
-  List<dynamic> attachmentIds;
+  dynamic attachmentIds;
   dynamic cancel;
-  List<dynamic> categoryId;
+  dynamic categoryId;
   dynamic color;
-  List<dynamic> companyId;
+  dynamic companyId;
   dynamic contactName;
   dynamic createDate;
-  List<dynamic> createUid;
+  dynamic createUid;
   dynamic dateClosed;
   dynamic dateDb;
   dynamic dateDeadline;
@@ -20,31 +20,31 @@ class HelpdeskTicket {
   dynamic id;
   dynamic kanbanState;
   dynamic messageAttachmentCount;
-  List<dynamic> messageChannelIds;
-  List<dynamic> messageFollowerIds;
+  dynamic messageChannelIds;
+  dynamic messageFollowerIds;
   dynamic messageHasError;
   dynamic messageHasErrorCounter;
   List<dynamic> messageIds;
   dynamic messageIsFollower;
-  List<dynamic> messageMainAttachmentId;
+  dynamic messageMainAttachmentId;
   dynamic messageNeedaction;
   dynamic messageNeedactionCounter;
-  List<dynamic> messagePartnerIds;
+  dynamic messagePartnerIds;
   dynamic messageUnread;
   dynamic messageUnreadCounter;
   dynamic name;
-  List<dynamic> partnerId;
+  dynamic partnerId;
   dynamic priority;
   dynamic resolve;
-  List<dynamic> reviews;
-  List<dynamic> stageId;
+  dynamic reviews;
+  dynamic stageId;
   dynamic subject;
-  List<dynamic> teamId;
+  dynamic teamId;
   dynamic topicId;
-  List<dynamic> userId;
-  List<dynamic> websiteMessageIds;
+  dynamic userId;
+  dynamic websiteMessageIds;
   dynamic writeDate;
-  List<dynamic> writeUid;
+  dynamic writeUid;
 
   HelpdeskTicket(
       {this.sLastUpdate,
@@ -112,7 +112,7 @@ class HelpdeskTicket {
     dateSystem = json['date_system'];
     description = json['description'];
     displayName = json['display_name'];
-    email = json['email'];
+    email = json['email'] is bool ? "" : json['email'];
     id = json['id'];
     kanbanState = json['kanban_state'];
     messageAttachmentCount = json['message_attachment_count'];
@@ -120,7 +120,7 @@ class HelpdeskTicket {
     messageFollowerIds = json['message_follower_ids'];
     messageHasError = json['message_has_error'];
     messageHasErrorCounter = json['message_has_error_counter'];
-    messageIds = json['message_ids'];
+    messageIds = json['message_ids'] is bool ? [] : json['message_ids'];
     messageIsFollower = json['message_is_follower'];
     messageMainAttachmentId = json['message_main_attachment_id'];
     messageNeedaction = json['message_needaction'];
@@ -129,7 +129,7 @@ class HelpdeskTicket {
     messageUnread = json['message_unread'];
     messageUnreadCounter = json['message_unread_counter'];
     name = json['name'];
-    partnerId = json['partner_id'];
+    partnerId = json['partner_id'] is bool ? [] : json['partner_id'];
     priority = json['priority'];
     resolve = json['resolve'];
     reviews = json['reviews'];
@@ -137,7 +137,7 @@ class HelpdeskTicket {
     subject = json['subject'];
     teamId = json['team_id'];
     topicId = json['topic_id'];
-    userId = json['user_id'];
+    userId = json['user_id'] is bool ? [] : json['user_id'];
     websiteMessageIds = json['website_message_ids'];
     writeDate = json['write_date'];
     writeUid = json['write_uid'];

@@ -8,9 +8,15 @@ class TS24BottomScrollWithBackgroundWidget extends StatefulWidget {
   final Widget background;
   final String title;
   final bool shadow;
+  final OnFreshCallback onFreshCallback;
 
   const TS24BottomScrollWithBackgroundWidget(
-      {Key key, this.background, this.title, this.shadow = true, this.child})
+      {Key key,
+      this.background,
+      this.title,
+      this.shadow = true,
+      this.child,
+      this.onFreshCallback})
       : super(key: key);
 
   @override
@@ -30,16 +36,23 @@ class _TS24BottomScrollWithBackgroundWidgetState
     if (viewModel.currentOffset != _position.dy)
       viewModel.getHeightImageBackground(_position.dy);
     viewModel.currentOffset = _position.dy;
+    viewModel.streamController111.sink.add(_position.dy);
   }
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
-          final RenderBox renderBox = _key.currentContext.findRenderObject();
-          _position = renderBox.localToGlobal(Offset.zero);
-          viewModel.heightViewBackground =
-              _position.dy - viewModel.heightAppbar;
-        }));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      viewModel.heightViewBackground = _position.dy - viewModel.heightAppbar;
+      viewModel.streamController111.sink.add(viewModel.heightViewBackground);
+    }
+//    => setState(() {
+//          final RenderBox renderBox = _key.currentContext.findRenderObject();
+//          _position = renderBox.localToGlobal(Offset.zero);
+//          viewModel.heightViewBackground =
+//              _position.dy - viewModel.heightAppbar;
+//
+//        })
+        );
     super.initState();
   }
 
@@ -51,47 +64,52 @@ class _TS24BottomScrollWithBackgroundWidgetState
         return Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          color: Colors.black54,
-          child: Stack(
-            children: <Widget>[
-              AnimatedContainer(
-                duration: Duration(microseconds: 1),
-                curve: Curves.linear,
-                height: viewModel.heightImageBackgroundCurrent,
-                width: MediaQuery.of(context).size.width,
-                child: widget.background,
-              ),
-              widget.shadow
-                  ?
-              Positioned(
-                      top: viewModel.heightImageBackgroundCurrent-70,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black38,
-                                  spreadRadius: 10,
-                                  blurRadius: 20,
-                                  offset: Offset(10, -30)),
-                              BoxShadow(
-                                  color: Colors.black54,
-                                  spreadRadius: 15,
-                                  blurRadius: 50,
-                                  offset: Offset(0, 0)),
-                            ]),
-                      ),
-                    )
-                  : SizedBox()
-            ],
-          ),
+          color: Colors.transparent,
+          child: StreamBuilder<double>(
+              stream: viewModel.streamController111.stream,
+              builder: (context, snapshot) {
+                // fix red screen when snapshot not have data yet
+                if(snapshot.data == null) return Offstage();
+                return Stack(
+                  children: <Widget>[
+                    AnimatedContainer(
+                      duration: Duration(microseconds: 1),
+                      curve: Curves.linear,
+                      height: snapshot.data,
+                      width: MediaQuery.of(context).size.width,
+                      child: widget.background,
+                    ),
+                    widget.shadow
+                        ? Positioned(
+                            top: snapshot.data - 70,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black38,
+                                        spreadRadius: 10,
+                                        blurRadius: 20,
+                                        offset: Offset(10, -30)),
+                                    BoxShadow(
+                                        color: Colors.black54,
+                                        spreadRadius: 15,
+                                        blurRadius: 50,
+                                        offset: Offset(0, 0)),
+                                  ]),
+                            ),
+                          )
+                        : SizedBox()
+                  ],
+                );
+              }),
         );
       }
 
-      Widget __content(ScrollController scrollController) {
+      Widget __content() {
         return Container(
           color: Colors.transparent,
           child: Column(
@@ -105,15 +123,19 @@ class _TS24BottomScrollWithBackgroundWidgetState
                 ),
                 child: Column(
                   children: <Widget>[
-                    (widget.title != null)?
-                    Container(
-                      height: 30,
-                      alignment: Alignment.center,
-                      child: Text(
-                        widget.title,
-                        style: TextStyle(color: Colors.black87, fontSize: 16),
-                      ),
-                    ):SizedBox(height: 23,),
+                    (widget.title != null)
+                        ? Container(
+                            height: 30,
+                            alignment: Alignment.center,
+                            child: Text(
+                              widget.title,
+                              style: TextStyle(
+                                  color: Colors.black87, fontSize: 16),
+                            ),
+                          )
+                        : SizedBox(
+                            height: 23,
+                          ),
                     widget.child
                   ],
                 ),
@@ -133,21 +155,41 @@ class _TS24BottomScrollWithBackgroundWidgetState
             maxChildSize: 1,
             builder: (context, scrollController) {
               viewModel.controller = scrollController;
-
               Future.delayed((Duration(milliseconds: 1))).then((_) {
                 if (scrollController.offset < 1) {
                   _getSizeAndPosition();
                   print(scrollController.offset);
                 }
               });
-
-              return Container(
-                key: _key,
-                child: SingleChildScrollView(
-                  controller: viewModel.controller,
-                  child: __content(viewModel.controller),
-                ),
-              );
+              return widget.onFreshCallback != null
+                  ? RefreshIndicator(
+                      onRefresh: widget.onFreshCallback,
+                      child: Container(
+                        key: _key,
+                        child:
+//                  CustomScrollView(
+//                    controller: viewModel.controller,
+////                    physics:
+////                    AlwaysScrollableScrollPhysics(),
+////                           NeverScrollableScrollPhysics(),
+////                    primary: false,
+//                    slivers: [__content()],
+//                  )
+                            ListView(
+                          controller: viewModel.controller,
+                          children: <Widget>[__content()],
+                        ),
+                      ),
+                    )
+                  : Container(
+//                color: Colors.white,
+                      key: _key,
+                      child:
+                          ListView(
+                        controller: viewModel.controller,
+                        children: <Widget>[__content()],
+                      ),
+                    );
             },
           )
         ],

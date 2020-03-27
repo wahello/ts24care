@@ -190,8 +190,8 @@ class ApiMaster {
   Map<String, dynamic> body;
   String _accessToken = "";
   get accessToken => _accessToken;
-  DateTime _expiresIn;
-  get expiresIn => _expiresIn;
+  dynamic expiresIn;
+
   ApiMaster();
 
   ApiMaster.fromJson(Map<String, dynamic> json) {
@@ -273,8 +273,9 @@ class ApiMaster {
           print(response.body);
           var result = jsonDecode(response.body);
           _accessToken = result["access_token"];
-          _expiresIn =
-              DateTime.now().add(Duration(seconds: result["expires_in"]));
+          if (grandType == GrandType.client_credentials)
+            expiresIn =
+                DateTime.now().add(Duration(seconds: result["expires_in"]));
           headers[HttpHeaders.authorizationHeader] = "Bearer $_accessToken";
           print('headers: $headers');
           return StatusCodeGetToken.TRUE;
@@ -301,9 +302,9 @@ class ApiMaster {
       //kiểm tra nếu grandType thay đổi
       if (grandType == grandTypeTemp) {
         //kiểm tra nếu token tồn tại
-        if (_expiresIn != null) {
+        if (expiresIn != null) {
           DateTime currentTime = DateTime.now();
-          var diffTime = _expiresIn.difference(currentTime).inSeconds;
+          var diffTime = expiresIn.difference(currentTime).inSeconds;
           print(diffTime);
           //lấy lại token.
           if (diffTime <= 0) result = await getToken();
@@ -484,6 +485,11 @@ class ApiMaster {
 
   //Lấy avatar khách hàng
   getImageByIdPartner(String id) {
-    return "$domainApi/web/image?model=res.partner&field=image&id=$id&session_id=$sessionId";
+    return "$domainApi/web/image?model=res.partner&field=image&id=$id&$sessionId";
+  }
+
+  //Lấy avatar nhân viên
+  getImageByIdUser(String id) {
+    return "$domainApi/web/image?model=res.user&field=image&id=$id&$sessionId";
   }
 }

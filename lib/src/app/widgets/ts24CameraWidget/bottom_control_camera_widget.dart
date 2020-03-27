@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24CameraWidget/ts24_camera_widget_viewmodel.dart';
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
@@ -42,10 +43,12 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
             border: Border.all(color: Colors.white, width: 3)),
         child: TS24Button(
           onTap: () {
-            if (widget.viewModel.indexSwipe == 1) {
-              setState(() {
-                widget.viewModel.isRecorder = !widget.viewModel.isRecorder;
-              });
+            if (widget.viewModel.isCamera) {
+              widget.viewModel.toogleFlatRunCamera();
+            }
+            if (widget.viewModel.isTakePicture &&
+                widget.viewModel.isCamera == false) {
+              widget.viewModel.onTakePictureButtonPressed(mounted);
             }
           },
           alignment: Alignment.center,
@@ -54,17 +57,31 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(50)),
             color: Colors.transparent,
-//                          shape: BoxShape.circle,
           ),
           child: AnimatedContainer(
-            width: widget.viewModel.isRecorder ? 35 : 60,
-            height: widget.viewModel.isRecorder ? 35 : 60,
+            width: widget.viewModel.isCamera &&
+                    !widget.viewModel.isTakePicture &&
+                    widget.viewModel.isRecorderStarting
+                ? 35
+                : 60,
+            height: widget.viewModel.isCamera &&
+                    !widget.viewModel.isTakePicture &&
+                    widget.viewModel.isRecorderStarting
+                ? 35
+                : 60,
             duration: Duration(milliseconds: 200),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                  Radius.circular(widget.viewModel.isRecorder ? 5 : 50)),
-              color: widget.viewModel.isRecorder ? Colors.red : Colors.white,
-//                          shape: BoxShape.circle,
+              borderRadius: BorderRadius.all(Radius.circular(
+                  widget.viewModel.isCamera &&
+                          !widget.viewModel.isTakePicture &&
+                          widget.viewModel.isRecorderStarting
+                      ? 5
+                      : 50)),
+              color: widget.viewModel.isCamera &&
+                      !widget.viewModel.isTakePicture &&
+                      widget.viewModel.isRecorderStarting
+                  ? Colors.red
+                  : Colors.white,
             ),
           ),
         ),
@@ -98,7 +115,9 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
               shape: BoxShape.rectangle,
               color: Colors.white,
               image: DecorationImage(
-                  image: AssetImage("assets/images/vegetable_natural.jpg"),
+                  image: widget.viewModel.imagePath == null
+                      ? AssetImage("assets/images/vegetable_natural.jpg")
+                      : AssetImage(widget.viewModel.imagePath),
                   fit: BoxFit.cover),
               borderRadius: BorderRadius.circular(5)),
         ),
@@ -110,46 +129,56 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          AnimatedContainer(
-            duration: Duration(milliseconds: 500),
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: widget.viewModel.isRecorder
-                      ? Colors.transparent
-                      : Colors.black12,
-                  borderRadius: BorderRadius.circular(15)),
-              child: Text(
-                'Picture',
-                style: TextStyle(
-                    color: widget.viewModel.isRecorder
-                        ? Colors.white
-                        : ThemePrimary.primaryColor),
-              )),
+          GestureDetector(
+            onTap: () {
+              widget.viewModel.updateTitleCameraAndPicture('picture');
+            },
+            child: AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: widget.viewModel.isTakePicture
+                        ? Colors.black38
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8)),
+                child: Text(
+                  'Picture',
+                  style: TextStyle(
+                      color: widget.viewModel.isTakePicture
+                          ? ThemePrimary.primaryColor
+                          : Colors.white),
+                )),
+          ),
           SizedBox(
             width: 5,
           ),
-          AnimatedContainer(
-            duration: Duration(milliseconds: 500),
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: widget.viewModel.isRecorder
-                      ? Colors.black12
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(15)),
-              child: Text(
-                'Camera',
-                style: TextStyle(
-                    color: widget.viewModel.isRecorder
-                        ? ThemePrimary.primaryColor
-                        : Colors.white),
-              )),
+          GestureDetector(
+            onTap: () {
+              widget.viewModel.updateTitleCameraAndPicture('camera');
+            },
+            child: AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: widget.viewModel.isCamera
+                        ? Colors.black38
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8)),
+                child: Text(
+                  'Camera',
+                  style: TextStyle(
+                      color: widget.viewModel.isCamera
+                          ? ThemePrimary.primaryColor
+                          : Colors.white),
+                )),
+          ),
         ],
       );
     }
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 140,
+      height: MediaQuery.of(context).size.height * .22,
       color: Colors.black12,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

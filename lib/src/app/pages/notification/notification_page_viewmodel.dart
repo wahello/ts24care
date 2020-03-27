@@ -21,11 +21,10 @@ class NotificationPageViewModel extends ViewModelBase{
 
   NotificationPageViewModel(){
     choices = <Choice>[
-      Choice(title: translation.text("NOTIFICATIONS_PAGE.RECENT_ITEMS"), list: ItemNotificationModel.listItemNewNotificationModel),
-      Choice(title: translation.text("NOTIFICATIONS_PAGE.APPS"), list: ItemNotificationModel.listItemNewNotificationModel),
-      Choice(title: translation.text("NOTIFICATIONS_PAGE.BLOCKED"), list: ItemNotificationModel.listItemNewNotificationModel)
+      Choice(title: translation.text("NOTIFICATIONS_PAGE.RECENT_ITEMS"), list: ItemNotificationModel.listNotifications()),
+      //Choice(title: translation.text("NOTIFICATIONS_PAGE.APPS"), list: ItemNotificationModel.listNotifications()),
+      //Choice(title: translation.text("NOTIFICATIONS_PAGE.BLOCKED"), list: ItemNotificationModel.listNotifications())
     ];
-
 
   }
 //  onHandleMenuItemNotification(CustomPopupMenu menu, {List<ItemNotificationModel> listNotificationOfChoices, ItemNotificationModel itemNotificationModel}){

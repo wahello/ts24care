@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
-import 'package:ts24care/src/app/models/item_help_model.dart';
+import 'package:ts24care/src/app/models/knowsystem-article.dart';
 import 'package:ts24care/src/app/pages/help/faq/help_faq_page_viewmodel.dart';
+import 'package:ts24care/src/app/pages/help/faqDetail/faqArticleDetail/faq_article_detail_web_view_page.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/group_content_widget.dart';
 import 'package:ts24care/src/app/widgets/item_help_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24SearchBarWidget/ts24_search_bar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
-import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 class FAQPage extends StatefulWidget {
   static const String routeName = "/FAQpage";
+
   @override
   _FAQPageState createState() => _FAQPageState();
 }
 
 class _FAQPageState extends State<FAQPage> {
   FAQPageViewModel viewModel = FAQPageViewModel();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     viewModel.context = context;
@@ -33,15 +43,10 @@ class _FAQPageState extends State<FAQPage> {
             Icons.arrow_back,
             color: Colors.black87,
           ),
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-          )
-        ],
       );
     }
 
@@ -53,34 +58,70 @@ class _FAQPageState extends State<FAQPage> {
               height: 20,
             ),
             GroupContentWidget(
-              title: "FAQ",
-              child: GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 1.1,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                padding: EdgeInsets.only(left: 0, right: 0, bottom: 0),
-                itemCount: ItemHelpModel.listItemHelpModel.length,
-                itemBuilder: (context, index) =>
-//                  Container(color: Colors.red,height: 500,)
-                    Container(
-//                  height: 30,
-//                  width: 20,
-//                  color: Colors.red,
-                  child: ItemHelpWidget(
-                    showCircle: true,
-                    icons: ItemHelpModel.listItemHelpModel[index].icon,
-                    text: ItemHelpModel.listItemHelpModel[index].textName,
+                title: "FAQ",
+                child: GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 1.1,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
                   ),
-                ),
-              ),
-            )
+                  padding: EdgeInsets.only(left: 0, right: 0, bottom: 0),
+                  itemCount: viewModel.listCategory.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      child: ItemHelpWidget(
+                        showCircle: true,
+                        categoryId:
+                            viewModel.listCategoryHaveColorsAndImages[index].id,
+                        iconPath: viewModel
+                            .listCategoryHaveColorsAndImages[index].urlIcon,
+                        text: viewModel
+                            .listCategoryHaveColorsAndImages[index].name,
+                        color: viewModel
+                            .listCategoryHaveColorsAndImages[index].color,
+                      ),
+                    );
+                  },
+                )),
           ],
         ),
+      );
+    }
+
+    Widget _renderResultSearch(List<KnowsystemArticle> listResultItem) {
+      return ListView.builder(
+        itemCount: listResultItem.length,
+        itemBuilder: (context, index) {
+          return Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, FaqArticleDetailPage.routeName,
+                    arguments: [
+                      [listResultItem[index].description],
+                      listResultItem[index].name
+                    ]);
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    child: ListTile(
+                      title: Text(listResultItem[index].name.toString()),
+                      subtitle: Text(
+                        listResultItem[index].createDate.toString(),
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       );
     }
 
@@ -89,11 +130,35 @@ class _FAQPageState extends State<FAQPage> {
       child: StreamBuilder(
         stream: viewModel.stream,
         builder: (context, snapshot) {
-          return TS24Scaffold(
+          return TS24SearchBarWidget(
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black87,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: Text(
+              'FAQ',
+              style: TextStyle(color: Colors.black87),
+            ),
             backgroundColor: ThemePrimary.backgroundColor,
-            appBar: _appBar(),
-            body: _body(),
+            primaryColor: ThemePrimary.primaryColor,
+            searchBarStateCallBack: (_) {},
+            onQueryChangedCallBack: (_) {},
+            onQuerySubmittedCallBack: viewModel.onQuerySubmitted,
+            countResult: viewModel.listResultSearch.length,
+            resultWidget: _renderResultSearch(viewModel.listResultSearch),
+            contentWidget: viewModel.listCategory.length == 0 ? Offstage() :_body()
+               ,
           );
+//            TS24Scaffold(
+//            backgroundColor: ThemePrimary.backgroundColor,
+//            appBar: _appBar(),
+//            body: _body(),
+//          );
         },
       ),
     );

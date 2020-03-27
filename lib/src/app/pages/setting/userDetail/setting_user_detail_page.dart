@@ -14,13 +14,16 @@ import '../../../app_localizations.dart';
 class UserDetailPage extends StatefulWidget {
   static const String routeName = "/userDetailPage";
   final Customer customer;
+
   UserDetailPage(this.customer);
+
   @override
   UserDetailPageState createState() => UserDetailPageState();
 }
 
 class UserDetailPageState extends State<UserDetailPage> {
   UserDetailPageViewModel viewModel = UserDetailPageViewModel();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -41,7 +44,9 @@ class UserDetailPageState extends State<UserDetailPage> {
     viewModel.context = context;
 
     final __styleTextLabel = TextStyle(
-        color: Colors.orange[800], fontWeight: FontWeight.bold, fontSize: 16);
+        color: ThemePrimary.primaryColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 16);
 
     Widget _avatar() {
       Widget _initImage() {
@@ -194,6 +199,12 @@ class UserDetailPageState extends State<UserDetailPage> {
                               : translation.text("USER_PROFILE.INPUT_NAME"),
                           labelStyle: __styleTextLabel,
                           errorText: viewModel.errorName,
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: new BorderSide(
+                                  color: Colors.black, width: 0.25)),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: new BorderSide(
+                                  color: ThemePrimary.primaryColor, width: 1)),
                         ),
                         keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.next,
@@ -228,12 +239,20 @@ class UserDetailPageState extends State<UserDetailPage> {
                               : translation.text("USER_PROFILE.INPUT_PHONE"),
                           labelStyle: __styleTextLabel,
                           errorText: viewModel.errorPhone,
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: new BorderSide(
+                                  color: Colors.black, width: 0.25)),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: new BorderSide(
+                                  color: ThemePrimary.primaryColor, width: 1)),
                         ),
-                        textInputAction: TextInputAction.next,
+                        textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.number,
                         onFieldSubmitted: (v) {
-                          viewModel.fieldFocusChange(context,
-                              viewModel.phoneFocus, viewModel.addressFocus);
+                          viewModel.phoneFocus.unfocus();
+                          viewModel.saveCustomer(viewModel.customer);
+//                          viewModel.fieldFocusChange(context,
+//                              viewModel.phoneFocus, viewModel.addressFocus);
                         },
                       ),
                     ),
@@ -276,46 +295,48 @@ class UserDetailPageState extends State<UserDetailPage> {
               child: Row(
                 children: <Widget>[
                   Flexible(
-                    flex: 4,
+                    flex: 2,
                     child: Align(
                       alignment: Alignment.center,
                       child: TextFormField(
-                        focusNode: viewModel.addressFocus,
-                        controller: viewModel.addressEditingController,
-                        decoration: InputDecoration(
-                            labelText: translation.text("USER_PROFILE.ADDRESS"),
-                            hintText:
-                                translation.text("USER_PROFILE.INPUT_ADDRESS"),
-                            labelStyle: __styleTextLabel,
-                            errorText: viewModel.errorAddress),
-                        textInputAction: TextInputAction.done,
-                        keyboardType: TextInputType.text,
-                        onFieldSubmitted: (v) {
-                          viewModel.addressFocus.unfocus();
-                          viewModel.saveCustomer(viewModel.customer);
-                        },
-                      ),
+                          enabled: false,
+                          focusNode: viewModel.addressFocus,
+                          controller: viewModel.addressEditingController,
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                          decoration: InputDecoration(
+                              labelText:
+                                  translation.text("USER_PROFILE.ADDRESS"),
+                              hintText: translation
+                                  .text("USER_PROFILE.INPUT_ADDRESS"),
+                              labelStyle: __styleTextLabel,
+                              errorText: viewModel.errorAddress),
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.text),
                     ),
-                  ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15.0),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                children: <Widget>[
                   Flexible(
-                    flex: 1,
+                    flex: 2,
                     child: Align(
                       alignment: Alignment.center,
-                      child: InkWell(
-                        onTap: () {
-                          //viewModel.onTapPickMaps();
-                        },
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          child: Icon(
-                            Icons.location_on,
-                            //color: ThemePrimary.primaryColor,
-                          ),
-                        ),
-                      ),
+                      child: TextFormField(
+                          enabled: false,
+                          controller: viewModel.companyEditingController,
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                          decoration: InputDecoration(
+                            labelText: translation.text("USER_PROFILE.COMPANY"),
+                            hintText: translation.text("USER_PROFILE.COMPANY"),
+                            labelStyle: __styleTextLabel,
+                          )),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

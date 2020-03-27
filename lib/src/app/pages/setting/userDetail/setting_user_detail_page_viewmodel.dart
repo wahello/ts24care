@@ -18,6 +18,7 @@ class UserDetailPageViewModel extends ViewModelBase {
   TextEditingController nameEditingController = new TextEditingController();
   TextEditingController phoneEditingController = new TextEditingController();
   TextEditingController addressEditingController = new TextEditingController();
+  TextEditingController companyEditingController = new TextEditingController();
 
   Uint8List imagePicker;
   File imageFile;
@@ -60,6 +61,7 @@ class UserDetailPageViewModel extends ViewModelBase {
           (customer.contactAddress is bool || customer.contactAddress == null)
               ? ''
               : customer.contactAddress.toString();
+      companyEditingController.text = customer.companyName;
     }
   }
 
@@ -116,6 +118,7 @@ class UserDetailPageViewModel extends ViewModelBase {
     nameEditingController.dispose();
     phoneEditingController.dispose();
     addressEditingController.dispose();
+    companyEditingController.dispose();
   }
 
   updateCustomer(Customer customer) {

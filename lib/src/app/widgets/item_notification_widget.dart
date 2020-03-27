@@ -25,42 +25,42 @@ class _ItemNotificationWidgetState extends State<ItemNotificationWidget> {
   Widget build(BuildContext context) {
     viewModel = ViewModelProvider.of(context);
 
-    Widget _buildMenuIcon() {
-      return PopupMenuButton<CustomPopupMenu>(
-        child: IconButton(icon: Icon(Icons.more_vert)),
-//          elevation:  30.2,
-        //initialValue: viewModel.selectedLanguage,
-        onSelected: (CustomPopupMenu menu) {
-          if (menu.id == 1) {
-            print('Delete');
-            widget.listNotification.remove(widget.notification);
-            viewModel.updateState();
-          }
-        },
-        //offset: Offset(50, viewModel.selectedLanguage.id == 0 ? 50 : 100),
-        itemBuilder: (BuildContext context) {
-          return CustomPopupMenu.listMenu.map((CustomPopupMenu item) {
-            return PopupMenuItem<CustomPopupMenu>(
-              height: 50,
-              value: item,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Icon(item.iconData),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    item.title.toString(),
-                    style: TextStyle(fontSize: 14),
-                  )
-                ],
-              ),
-            );
-          }).toList();
-        },
-      );
-    }
+//    Widget _buildMenuIcon() {
+//      return PopupMenuButton<CustomPopupMenu>(
+//        child: IconButton(icon: Icon(Icons.more_vert)),
+////          elevation:  30.2,
+//        //initialValue: viewModel.selectedLanguage,
+//        onSelected: (CustomPopupMenu menu) {
+//          if (menu.id == 1) {
+//            print('Delete');
+//            widget.listNotification.remove(widget.notification);
+//            viewModel.updateState();
+//          }
+//        },
+//        //offset: Offset(50, viewModel.selectedLanguage.id == 0 ? 50 : 100),
+//        itemBuilder: (BuildContext context) {
+//          return CustomPopupMenu.listMenu.map((CustomPopupMenu item) {
+//            return PopupMenuItem<CustomPopupMenu>(
+//              height: 50,
+//              value: item,
+//              child: Row(
+//                mainAxisAlignment: MainAxisAlignment.start,
+//                children: <Widget>[
+//                  Icon(item.iconData),
+//                  SizedBox(
+//                    width: 10,
+//                  ),
+//                  Text(
+//                    item.title.toString(),
+//                    style: TextStyle(fontSize: 14),
+//                  )
+//                ],
+//              ),
+//            );
+//          }).toList();
+//        },
+//      );
+//    }
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8),
@@ -102,17 +102,17 @@ class _ItemNotificationWidgetState extends State<ItemNotificationWidget> {
               ],
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Container(
-                padding: EdgeInsets.only(right: 5),
-                alignment: Alignment.centerRight,
-                child: _buildMenuIcon()
-//              IconButton(icon: Icon(Icons.more_vert), onPressed: (){
-//                onEdit();
-//              }),
-                ),
-          )
+//          Expanded(
+//            flex: 1,
+//            child: Container(
+//                padding: EdgeInsets.only(right: 5),
+//                alignment: Alignment.centerRight,
+//                child: _buildMenuIcon()
+////              IconButton(icon: Icon(Icons.more_vert), onPressed: (){
+////                onEdit();
+////              }),
+//                ),
+//          )
         ],
       ),
     );

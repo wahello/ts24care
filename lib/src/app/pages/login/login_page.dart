@@ -192,105 +192,102 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       Widget __emailPasswordField() {
-        return AspectRatio(
-          aspectRatio: orientation == Orientation.landscape
-              ? 3 / 2
-              : height < 550 ? 1 : 1.27,
-          child: Container(
-            height: height < 550 ? height * .6 : height * .5,
-            padding: EdgeInsets.only(right: 30, left: 30, top: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  translation.text("LOGIN_PAGE.EMAIL"),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+        return Container(
+//            height: height < 550 ? height * .6 : height * .5,
+          padding: EdgeInsets.only(right: 30, left: 30, top: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                translation.text("LOGIN_PAGE.EMAIL"),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextFormField(
+                focusNode: viewModel.emailFocusNode,
+                controller: viewModel.emailController,
+                decoration: InputDecoration(
+                    errorText: viewModel.errorEmail,
+                    hintText: translation.text("LOGIN_PAGE.EMAIL_HINT"),
+                    hintStyle: TextStyle(
+                      fontSize: 13,
+                    )),
+                onFieldSubmitted: (_) {
+                  viewModel.fieldFocusChange(context,
+                      viewModel.emailFocusNode, viewModel.passwordFocusNode);
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                translation.text("LOGIN_PAGE.PASSWORD"),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Stack(
+                children: <Widget>[
+                  TextFormField(
+                    focusNode: viewModel.passwordFocusNode,
+                    controller: viewModel.passController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        errorText: viewModel.errorPass,
+                        hintText:
+                            translation.text("LOGIN_PAGE.PASSWORD_HINT"),
+                        hintStyle: TextStyle(
+                          fontSize: 13,
+                        )),
+                    onFieldSubmitted: (_) {
+                      viewModel.onLoginButtonClicked();
+                    },
                   ),
-                ),
-                TextFormField(
-                  focusNode: viewModel.emailFocusNode,
-                  controller: viewModel.emailController,
-                  decoration: InputDecoration(
-                      errorText: viewModel.errorEmail,
-                      hintText: translation.text("LOGIN_PAGE.EMAIL_HINT"),
-                      hintStyle: TextStyle(
-                        fontSize: 13,
-                      )),
-                  onFieldSubmitted: (_) {
-                    viewModel.fieldFocusChange(context,
-                        viewModel.emailFocusNode, viewModel.passwordFocusNode);
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  translation.text("LOGIN_PAGE.PASSWORD"),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Stack(
-                  children: <Widget>[
-                    TextFormField(
-                      focusNode: viewModel.passwordFocusNode,
-                      controller: viewModel.passController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          errorText: viewModel.errorPass,
-                          hintText:
-                              translation.text("LOGIN_PAGE.PASSWORD_HINT"),
-                          hintStyle: TextStyle(
-                            fontSize: 13,
-                          )),
-                      onFieldSubmitted: (_) {
-                        viewModel.onLoginButtonClicked();
-                      },
-                    ),
-                    Positioned(
-                      right: 0,
-                      child: GestureDetector(
-                          onTap: () {
-                            viewModel.onForgetPasswordClicked();
-                          },
-                          child: Text(
-                            translation.text("LOGIN_PAGE.PASSWORD_FORGET"),
-                            style: TextStyle(
-                                color: ThemePrimary.primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12),
-                          )),
-                    )
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    Checkbox(
-                      value: true,
-                      checkColor: ThemePrimary.primaryColor,
-                      activeColor: Colors.white,
-                      onChanged: (value) {},
-                    ),
-                    Text(
-                      translation.text("LOGIN_PAGE.PASSWORD_REMEMBER"),
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 22,
-                ),
-                __loginButton(),
-                orientation == Orientation.landscape
-                    ? __createAccountButtonLandscape(
-                        context: context, height: height)
-                    : Offstage()
-              ],
-            ),
+                  Positioned(
+                    right: 0,
+                    child: GestureDetector(
+                        onTap: () {
+                          viewModel.onForgetPasswordClicked();
+                        },
+                        child: Text(
+                          translation.text("LOGIN_PAGE.PASSWORD_FORGET"),
+                          style: TextStyle(
+                              color: ThemePrimary.primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12),
+                        )),
+                  )
+                ],
+              ),
+
+// remember password
+//              Row(
+//                children: <Widget>[
+//                  Checkbox(
+//                    value: true,
+//                    checkColor: ThemePrimary.primaryColor,
+//                    activeColor: Colors.white,
+//                    onChanged: (value) {},
+//                  ),
+//                  Text(
+//                    translation.text("LOGIN_PAGE.PASSWORD_REMEMBER"),
+//                    style: TextStyle(
+//                      color: Colors.grey,
+//                      fontSize: 12,
+//                    ),
+//                  )
+//                ],
+//              ),
+              SizedBox(
+                height: 30,
+              ),
+              __loginButton(),
+//              orientation == Orientation.landscape
+//                  ? __createAccountButtonLandscape(
+//                      context: context, height: height)
+//                  : Offstage()
+            ],
           ),
         );
       }
@@ -324,13 +321,16 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         color: Colors.grey,
                       )),
-                  __createAccountButtonPortrait(
-                      text:
-                          translation.text("LOGIN_PAGE.CREATE_ACCOUNT_BUTTON"),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: ThemePrimary.primaryColor,
-                          decoration: TextDecoration.underline)),
+
+// create button lanscapse
+
+//                  __createAccountButtonPortrait(
+//                      text:
+//                          translation.text("LOGIN_PAGE.CREATE_ACCOUNT_BUTTON"),
+//                      style: TextStyle(
+//                          fontWeight: FontWeight.bold,
+//                          color: ThemePrimary.primaryColor,
+//                          decoration: TextDecoration.underline)),
                 ],
               ),
             ),
@@ -341,21 +341,22 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget _body({height}) {
       return SingleChildScrollView(
-        child: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              _header(height: height),
-              SizedBox(
-                height: 15,
-              ),
-              _formLogin(height: height),
-              orientation == Orientation.portrait
-                  ? _createAccountButtonPortrait(
-                      context: context, height: height)
-                  : Offstage()
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            _header(height: height),
+            SizedBox(
+              height: 15,
+            ),
+            _formLogin(height: height),
+
+// create account
+//            orientation == Orientation.portrait
+//                ? _createAccountButtonPortrait(
+//                    context: context, height: height)
+//                : Offstage()
+
+          ],
         ),
       );
     }

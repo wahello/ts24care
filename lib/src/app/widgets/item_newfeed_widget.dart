@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:ts24care/src/app/models/item_newfeed_model.dart';
 
 class ItemNewFeedHorizontalWidget extends StatefulWidget {
   final String url;
@@ -21,12 +22,19 @@ class _ItemNewFeedHorizontalWidgetState
       children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.circular(25.0),
-          child: Image.network(
-            widget.url,
-            fit: BoxFit.cover,
-            width: MediaQuery.of(context).size.width * 0.43,
-            height: MediaQuery.of(context).size.width * 0.43,
-          ),
+          child: widget.url != null
+              ? Image.network(
+                  widget.url,
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width * 0.43,
+                  height: MediaQuery.of(context).size.width * 0.43,
+                )
+              : Image.asset(
+                  "assets/images/vegetable_natural.jpg",
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width * 0.43,
+                  height: MediaQuery.of(context).size.width * 0.43,
+                ),
         ),
 //        Container(
 ////          width: MediaQuery.of(context).size.width * 0.3,
@@ -47,7 +55,7 @@ class _ItemNewFeedHorizontalWidgetState
 //          height: 200,
           child: Text(
             widget.title,
-            style: TextStyle(fontSize: 16,fontWeight: FontWeight.w100),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w100),
             maxLines: 2,
           ),
         )
@@ -57,10 +65,9 @@ class _ItemNewFeedHorizontalWidgetState
 }
 
 class ItemNewFeedVerticalWidget extends StatefulWidget {
-  final String url;
-  final String title;
+  final ItemNewFeedModel itemNewFeedModel;
 
-  const ItemNewFeedVerticalWidget({Key key, this.url, this.title})
+  const ItemNewFeedVerticalWidget({Key key, this.itemNewFeedModel})
       : super(key: key);
   @override
   _ItemNewFeedVerticalWidgetState createState() =>
@@ -78,12 +85,19 @@ class _ItemNewFeedVerticalWidgetState extends State<ItemNewFeedVerticalWidget> {
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(25.0),
-            child: Image.network(
-              widget.url,
-              fit: BoxFit.cover,
-              width: MediaQuery.of(context).size.width * 0.33,
-              height: MediaQuery.of(context).size.width * 0.33,
-            ),
+            child: widget.itemNewFeedModel.avatarUrl != null
+                ? Image.network(
+                    widget.itemNewFeedModel.avatarUrl,
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width * 0.33,
+                    height: MediaQuery.of(context).size.width * 0.33,
+                  )
+                : Image.asset(
+                    "assets/images/vegetable_natural.jpg",
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width * 0.33,
+                    height: MediaQuery.of(context).size.width * 0.33,
+                  ),
           ),
           Expanded(
             child: Container(
@@ -94,16 +108,19 @@ class _ItemNewFeedVerticalWidgetState extends State<ItemNewFeedVerticalWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    widget.title,
+                    widget.itemNewFeedModel.postDate.toString(),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                   Text(
-                    "Always-on care, for your device",
+                    widget.itemNewFeedModel.title.toString(),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
                   Text(
-                    "Always-on care, for your device",
+                    widget.itemNewFeedModel.subTitle.toString(),
                     style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -6,12 +6,24 @@ import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
 class TabsPage extends StatefulWidget {
   static const String routeName = '/tabs';
+  final TabsArgument args;
+  TabsPage(this.args);
   @override
   _TabsPageState createState() => _TabsPageState();
 }
 
+class TabsArgument {
+  final String routeChildName;
+  TabsArgument({this.routeChildName});
+}
+
 class _TabsPageState extends State<TabsPage> {
   TabsPageViewModel viewModel = TabsPageViewModel();
+  @override
+  void initState() {
+    super.initState();
+    viewModel.navigateChild(widget.args);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +34,20 @@ class _TabsPageState extends State<TabsPage> {
         stream: viewModel.stream,
         builder: (context, snapshot) {
           return TS24Scaffold(
+//            body:  viewModel.menu.page,
             body: PageView(
+              physics: NeverScrollableScrollPhysics(),
               controller: viewModel.controller,
-              onPageChanged: viewModel.onTap,
+              // onPageChanged: (index) {
+              //   print(index);
+              // },
               children: Menu.tabMenu.map((menu) => menu.page).toList(),
             ),
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
-              onTap: viewModel.onTap,
+              onTap: (index) {
+                viewModel.onTap(index);
+              },
               currentIndex: viewModel.menu.index,
               items: Menu.tabMenu
                   .map((item) => BottomNavigationBarItem(

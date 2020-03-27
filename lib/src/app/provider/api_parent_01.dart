@@ -1,14 +1,17 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/models/blog-post.dart';
 import 'package:ts24care/src/app/models/customer.dart';
 import 'package:ts24care/src/app/models/helpdesk-stage.dart';
 import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
-import 'package:ts24care/src/app/models/knowsystem-article.dart';
+import 'package:ts24care/src/app/models/ir-attachment.dart';
 import 'package:ts24care/src/app/models/knowsystem-article.dart';
 import 'package:ts24care/src/app/models/knowsystem-section.dart';
+import 'package:ts24care/src/app/models/mail-message.dart';
 import 'package:ts24care/src/app/models/product-category.dart';
+import 'package:ts24care/src/app/models/product-warranty.dart';
 import 'package:ts24care/src/app/models/res-partner.dart';
 import 'api_master.dart';
 import 'package:http/http.dart' as http;
@@ -93,6 +96,7 @@ class Api1 extends ApiMaster {
         "type",
         "user_id",
         "user_ids",
+        "vat"
       ];
       body["domain"] = [
         ['user_ids', '=', uid]
@@ -227,7 +231,7 @@ class Api1 extends ApiMaster {
   ///3: Solved
   ///4: Canceled
   Future<List<HelpdeskTicket>> getListTicketByStatus(
-      {int status, int offset, int limit}) async {
+      {int status = 0, int offset, int limit}) async {
     await this.authorization();
     List<HelpdeskTicket> listResult = new List();
     Customer customer = Customer();
@@ -242,6 +246,7 @@ class Api1 extends ApiMaster {
             headers: this.headers, body: body)
         .then((http.Response response) {
       if (response.statusCode == 200) {
+        this.updateCookie(response);
         List list = json.decode(response.body);
         if (list.length > 0) {
           listResult =
@@ -299,6 +304,7 @@ class Api1 extends ApiMaster {
             headers: this.headers)
         .then((http.Response response) {
       if (response.statusCode == 200) {
+        this.updateCookie(response);
         List list = json.decode(response.body);
         print(list);
         if (list.length > 0)
@@ -308,6 +314,34 @@ class Api1 extends ApiMaster {
       return listResult;
     }).catchError((error) {
       return listResult;
+    });
+  }
+
+  ///Lấy chi tiết ticket theo id
+  Future<HelpdeskTicket> getTicketById(int id) async {
+    await this.authorization();
+    List<HelpdeskTicket> listResult = new List();
+    HelpdeskTicket helpdeskTicket;
+    body = new Map();
+    body["id"] = id.toString();
+    body["gmt"] = DateTime.now().timeZoneOffset.inHours.toString();
+    return http
+        .post('${this.api}/${this.nameCustomApi}/getTicket',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        this.updateCookie(response);
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult =
+              list.map((item) => HelpdeskTicket.fromJson(item)).toList();
+          helpdeskTicket = listResult[0];
+        }
+      }
+
+      return helpdeskTicket;
+    }).catchError((error) {
+      return helpdeskTicket;
     });
   }
 
@@ -372,7 +406,7 @@ class Api1 extends ApiMaster {
     body["offset"] = offset.toString();
     body["limit"] = limit.toString();
     body["gmt"] = DateTime.now().timeZoneOffset.inHours.toString();
-    body["keyword"] = keyword;
+    body["keyword"] = keyword.toLowerCase();
     return http
         .post('${this.api}/${this.nameCustomApi}/listSearchFAQ_Keyword',
             headers: this.headers, body: body)
@@ -422,7 +456,7 @@ class Api1 extends ApiMaster {
     });
   }
 
-  ///Lấy danh sách các dịch vụ khách hàng đang sử dụng
+  ///Lấy danh sách các danh mục dịch vụ khách hàng đang sử dụng
   Future<List<ProductCategory>> getCategoryTS24Product() async {
     await this.authorization();
     List<ProductCategory> listResult = new List();
@@ -447,6 +481,135 @@ class Api1 extends ApiMaster {
     });
   }
 
+  ///Lấy danh sách dịch vụ theo danh mục
+  Future<List<ProductWarranty>> getProductWarrantyByCategoryId(
+      int cateId) async {
+    await this.authorization();
+    List<ProductWarranty> listResult = new List();
+    Customer customer = Customer();
+    body = new Map();
+    body["partner_id"] = customer.id.toString();
+    body["categ_id"] = cateId.toString();
+    return http
+        .post('${this.api}/${this.nameCustomApi}/listProduct_Warranty',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult =
+              list.map((item) => ProductWarranty.fromJson(item)).toList();
+        }
+      }
+
+      return listResult;
+    }).catchError((error) {
+      return listResult;
+    });
+  }
+
+  ///Hàm tạo ticket
+  ///
+  ///Success - Trả về new id
+  ///
+  ///Fail - Trả về null
+  Future<dynamic> insertTickets(
+      {HelpdeskTicket ticket, List<int> listAttachmentId}) async {
+    await this.authorization();
+    body = new Map();
+    body["values"] = json.encode(ticket.toJson());
+    body["listAttachment_id"] = listAttachmentId.toString();
+    var result;
+    return http
+        .post('${this.api}/${this.nameCustomApi}/createTicket',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        var list = json.decode(response.body);
+        if (list is List) result = list[0];
+        //print(list);
+      } else {
+        result = null;
+      }
+      return result;
+    }).catchError((error) {
+      return null;
+    });
+  }
+
+  ///Lấy attachment theo id
+  ///@param int id
+  Future<IrAttachment> getAttachmentById(int id) async {
+    await this.authorization();
+    List<IrAttachment> listResult = new List();
+    IrAttachment result;
+    body = new Map();
+    body["id"] = id.toString();
+    return http
+        .post('${this.api}/${this.nameCustomApi}/getAttachment',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult = list.map((item) => IrAttachment.fromJson(item)).toList();
+          result = listResult[0];
+        }
+      }
+
+      return result;
+    }).catchError((error) {
+      return result;
+    });
+  }
+
+  ///Tạo attachment file
+  ///@param
+  Future<dynamic> insertAttachMent(
+      {IrAttachment irAttachment, Uint8List file}) async {
+    await this.authorization();
+    body = new Map();
+    body["values"] = json.encode(irAttachment.toJson());
+    body["contentBase64"] = base64.encode(file);
+    return http
+        .post('${this.api}/${this.nameCustomApi}/createAttachment',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      var result;
+      if (response.statusCode == 200) {
+        var list = json.decode(response.body);
+        if (list is List) result = list[0];
+        //print(list);
+      } else {
+        result = null;
+      }
+      return result;
+    });
+  }
+
+  ///Tạo mail message và list attachment
+  Future<dynamic> insertMailMessageForTicket(
+      {MailMessage mailMessage, List<int> listAttachmentId}) async {
+    await this.authorization();
+    body = new Map();
+    body["values"] = json.encode(mailMessage.toJson());
+    body["listAttachment_id"] = listAttachmentId.toString();
+    return http
+        .post('${this.api}/${this.nameCustomApi}/createMail_Message',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      var result;
+      if (response.statusCode == 200) {
+        var list = json.decode(response.body);
+        if (list is List) result = list[0];
+        //print(list);
+      } else {
+        result = null;
+      }
+      return result;
+    });
+  }
+
   ///Update thông tin khách hàng
   ///
   ///Success - Trả về true
@@ -468,31 +631,6 @@ class Api1 extends ApiMaster {
         //print(list);
       } else {
         result = false;
-      }
-      return result;
-    });
-  }
-
-  ///Hàm tạo ticket
-  ///
-  ///Success - Trả về new id
-  ///
-  ///Fail - Trả về null
-  Future<dynamic> insertTickets(HelpdeskTicket ticket) async {
-    await this.authorization();
-    body = new Map();
-    body["values"] = json.encode(ticket.toJson());
-    return http
-        .post('${this.api}/${this.nameCustomApi}/createTicket',
-            headers: this.headers, body: body)
-        .then((http.Response response) {
-      var result;
-      if (response.statusCode == 200) {
-        var list = json.decode(response.body);
-        if (list is List) result = list[0];
-        //print(list);
-      } else {
-        result = null;
       }
       return result;
     });

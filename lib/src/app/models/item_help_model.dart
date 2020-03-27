@@ -30,6 +30,12 @@ class ItemHelpModel{
     ),ItemHelpModel(
       icon: Icons.favorite,
       textName: "Life"
+    ),ItemHelpModel(
+      icon: Icons.home,
+      textName: "Life"
+    ),ItemHelpModel(
+      icon: Icons.work,
+      textName: "Life"
     ),
   ];
 }

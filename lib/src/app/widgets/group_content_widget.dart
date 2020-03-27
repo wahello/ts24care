@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 
 class GroupContentWidget extends StatelessWidget {
@@ -33,11 +34,10 @@ class GroupContentWidget extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                     child: Text(
-                      "View more",
+                      translation.text('HELP_PAGE.VIEW_MORE'),
                       style: TextStyle(
                           fontSize: 15,
                           color: ThemePrimary.primaryColor,
-                          fontFamily: "SamsungOne",
                           fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -49,6 +49,7 @@ class GroupContentWidget extends StatelessWidget {
           Container(
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(15),
+            margin: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
               color: Colors.white70,
               borderRadius: BorderRadius.all(Radius.circular(25))

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/pages/setting/setting_viewmodel.dart';
@@ -10,6 +11,7 @@ import '../../app_localizations.dart';
 
 class SettingPage extends StatefulWidget {
   static const String routeName = "/SettingsPage";
+
   @override
   _SettingPageState createState() => _SettingPageState();
 }
@@ -75,36 +77,40 @@ class _SettingPageState extends State<SettingPage>
                 ),
               ),
             ),
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  viewModel.onTapUserDetail();
-                },
-                child: Container(
-                  margin: EdgeInsets.only(top: 20, bottom: 40),
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFDEDEDF),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Color(0xFFDEDEDF), width: 4),
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: viewModel.customer.photo,
-                    imageBuilder: (context, imageProvider) => Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: imageProvider,
-                              // MemoryImage(viewModel.parent.photo)
-                              fit: BoxFit.cover),
-                          shape: BoxShape.circle),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                  onTap: () {
+                    viewModel.onTapUserDetail();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    //margin: EdgeInsets.only(top: 20, bottom: 40),
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFDEDEDF),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Color(0xFFDEDEDF), width: 4),
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: viewModel.customer.photo,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: imageProvider,
+                                // MemoryImage(viewModel.parent.photo)
+                                fit: BoxFit.cover),
+                            shape: BoxShape.circle),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
             Positioned.fill(
-              top: 100,
+              top: 130,
               child: Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -194,50 +200,61 @@ class _SettingPageState extends State<SettingPage>
         );
       }
 
-      return ListView(
-        children: <Widget>[
-          __userInfo(),
-          __item(
-              title: translation.text("SETTINGS_PAGE.NOTIFICATIONS"),
-              iconTrailing: Icons.navigate_next,
-              onTap: () {
-                viewModel.onTapSettingsNotifications();
-              }),
-          __item(
-              title: translation.text("SETTINGS_PAGE.LEAVE_FEEDBACK"),
-              iconTrailing: Icons.navigate_next,
-              onTap: () {
-                viewModel.onTapFeedback();
-              }),
-          __item(
-              title: translation.text("SETTINGS_PAGE.LICENSES"),
-              iconTrailing: Icons.navigate_next,
-              onTap: () {
-                viewModel.onTapLicenses();
-              }),
-          __item(
-              title: translation.text("SETTINGS_PAGE.PRIVACY_POLICY"),
-              iconTrailing: Icons.navigate_next,
-              onTap: () {
-                viewModel.onTapPolicy();
-              }),
-          __item(
-              title: translation.text("SETTINGS_PAGE.HELP_CENTER"),
-              iconTrailing: Icons.navigate_next),
-          __item(
-              title: translation.text("SETTINGS_PAGE.ZENDESK_SUPPORT"),
-              subtitle: "${translation.text("VERSION")} 2.2.7",
-              iconTrailing: Icons.navigate_next),
-          _buildIconTileLanguages(
-              Icons.navigate_next,
-              translation.text("SETTINGS_PAGE.LANGUAGES"),
-              viewModel.selectedLanguage.title),
-          __item(
-              title: translation.text("SETTINGS_PAGE.SIGN_OUT"),
-              onTap: () {
-                viewModel.onTapLogout();
-              }),
-        ],
+      return SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            __userInfo(),
+//          __item(
+//              title: translation.text("SETTINGS_PAGE.NOTIFICATIONS"),
+//              iconTrailing: Icons.navigate_next,
+//              onTap: () {
+//                viewModel.onTapSettingsNotifications();
+//              }),
+//          __item(
+//              title: translation.text("SETTINGS_PAGE.LEAVE_FEEDBACK"),
+//              iconTrailing: Icons.navigate_next,
+//              onTap: () {
+//                viewModel.onTapFeedback();
+//              }),
+            __item(
+                title: translation.text("SETTINGS_PAGE.LICENSES"),
+                iconTrailing: Icons.navigate_next,
+                onTap: () {
+                  viewModel.onTapLicenses();
+                }),
+            __item(
+                title: translation.text("SETTINGS_PAGE.PRIVACY_POLICY"),
+                iconTrailing: Icons.navigate_next,
+                onTap: () {
+                  viewModel.onTapPolicy();
+                }),
+//          __item(
+//              title: translation.text("SETTINGS_PAGE.HELP_CENTER"),
+//              iconTrailing: Icons.navigate_next),
+//          __item(
+//              title: translation.text("SETTINGS_PAGE.ZENDESK_SUPPORT"),
+//              subtitle: "${translation.text("VERSION")} 2.2.7",
+//              iconTrailing: Icons.navigate_next),
+            _buildIconTileLanguages(
+                Icons.navigate_next,
+                translation.text("SETTINGS_PAGE.LANGUAGES"),
+                viewModel.selectedLanguage.title),
+            __item(
+                title: translation.text("SETTINGS_PAGE.SIGN_OUT"),
+                onTap: () {
+                  viewModel.onTapLogout();
+                }),
+            SizedBox(height: 150),
+            Container(
+              alignment: Alignment.bottomCenter,
+              padding: EdgeInsets.only(bottom: 10, top: 10),
+              child: Text(
+                "${translation.text("VERSION")} $version",
+                textAlign: TextAlign.center,
+              ),
+            )
+          ],
+        ),
       );
     }
 

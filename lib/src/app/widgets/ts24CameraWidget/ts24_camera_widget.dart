@@ -121,7 +121,7 @@ class _TS24CameraWidgetState extends State<TS24CameraWidget>
                 GestureDetector(
                   child: _cameraPreviewWidget(),
                   onHorizontalDragEnd: (_) {
-                    viewModel.onIndexSwipeChanged();
+                    viewModel.updateTitleCameraAndPicture('swipe');
                   },
                 ),
                 _topControllerWidget(viewModel),

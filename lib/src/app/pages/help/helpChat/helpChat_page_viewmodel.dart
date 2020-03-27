@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/models/customer.dart';
 import 'package:ts24care/src/app/models/livezilla.dart';
 
 class HelpChatPageViewModel extends ViewModelBase {
@@ -29,11 +30,13 @@ class HelpChatPageViewModel extends ViewModelBase {
     //         mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
     //     .toString();
     url += "&";
+    Customer customer = Customer();
     LiveZilla live = LiveZilla();
-    live.ptn = "VuongMinhLuan1";
-    live.pte = "luanvm@ts24corp.com";
-    live.ptq = "hi";
-    live.ptp = "090788458";
+    live.ptn = customer.name;
+    live.pte = customer.email;
+    live.ptq = "";
+    live.ptp = customer.phone;
+    live.ptc = customer.tin;
     url += api.convertSerialize(live.toJson());
     print(url);
     this.updateState();

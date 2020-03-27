@@ -1,6 +1,6 @@
 {
   "LOGIN_PAGE": {
-    "WELCOME_TITLE": "Chào Mừng",
+    "WELCOME_TITLE": "Chào mừng đến với TS24Care",
     "SUB_TITLE": "Đăng nhập để tiếp tục",
     "EMAIL": "Địa chỉ email",
     "EMAIL_HINT": "Nhập địa chỉ email",
@@ -32,6 +32,30 @@
     "NO_ACCOUNT": "Chưa có tài khoản",
     "CREATE_ACCOUNT": "Đăng ký"
   },
+  "HELP_PAGE": {
+    "TITLE": "Trợ giúp",
+    "GROUP_TITLE_1": "FAQ",
+    "GROUP_SUBTITLE_1": "Tìm câu hỏi về dịch vụ bạn sử dụng",
+    "GROUP_TITLE_2": "Phản hồi",
+    "GROUP_SUBTITLE_2": "Gửi phản hồi của bạn về dịch vụ của chúng tôi",
+    "SEND_FEED_BACK": "Gửi phản hồi",
+    "CALL_SERVICE": "Gọi điện",
+    "LIVE_CHAT": "Chat trực tuyến",
+    "VIEW_MORE": "Xem thêm",
+    "ALL_BUTTON": "Tất cả" ,
+    "ADD_BUTTON": "Thêm",
+    "ID_IDENTIFY": "Tên dịch vụ",
+    "SERVICE_LIST": "Dịch vụ đã mua",
+    "CREATE_DATE": "Ngày đăng ký",
+    "EXPIRE_DATE": "Ngày hết hạn"
+  },
+  "FAQ_DETAIL_PAGE": {
+    "TITLE": "FAQ chi tiết",
+    "GUIDANCE_TITLE": "Xem bài bài viết để biết thêm thông tin",
+    "NO_DATA": "Chưa có dữ liệu",
+    "RECENT": "Gần đây",
+    "RESULT": "Kết quả"
+  },
   "WAITING_MESSAGE": {
     "PERMISSION_CONNECT": "Đang kiểm tra quyền truy cập...",
     "AUTH_ACCOUNT": "Đang xác thực tài khoản",
@@ -48,7 +72,8 @@
     "TITLE": "Thông báo",
     "RECENT_ITEMS": "Thông báo mới",
     "APPS": "Apps",
-    "BLOCKED": "Blocked"
+    "BLOCKED": "Blocked",
+    "NO_NOTIFICATIONS" : "Bạn chưa có thông báo mới"
   },
   "SETTINGS_PAGE": {
     "NOTIFICATIONS": "Thông báo",
@@ -57,6 +82,7 @@
     "PRIVACY_POLICY": "Chính sách riêng tư",
     "HELP_CENTER": "Trung tâm hỗ trợ",
     "ZENDESK_SUPPORT": "Zendesk support",
+    "LANGUAGES": "Ngôn ngữ",
     "SIGN_OUT": "Đăng xuất"
   },
   "SETTINGS_NOTIFICATIONS_PAGE": {
@@ -97,17 +123,58 @@
     "GENDER": "Giới tính",
     "INPUT_PHONE": "Nhập số điện thoại...",
     "INPUT_EMAIL": "Nhập email...",
-    "INPUT_ADDRESS": "Nhập địa chỉ..."
+    "INPUT_ADDRESS": "Nhập địa chỉ...",
+    "COMPANY" : "Công ty"
+  },
+  "POPUP_CONFIRM": {
+    "TITLE": "THÔNG BÁO",
+    "DESC_INFO": "Xác nhận thay đổi thông tin?",
+    "DESC_STATUS": "Xác nhận thay đổi trạng thái?",
+    "DESC_LOG_OUT": "Xác nhận đăng xuất?",
+    "DESC_DELETE_CHILD": "Bạn thực sự muốn xóa trẻ em này?",
+    "YES": "Có",
+    "NO": "Không",
+    "OK": "Đồng ý",
+    "CONTINUE": "Tiếp tục",
+    "CANCEL": "Hủy",
+    "CLOSE": "Đóng"
   },
   "COMMON": {
+    "LOADING_DATA": "Đang tải dữ liệu...",
+    "IN_PROCESS": "Đang xử lý...",
     "SAVE": "Lưu",
-    "CROPPER": "Chỉnh sửa ảnh",
+    "DATA_EMPTY": "Không có chuyến đi trong ngày",
+    "DATA_HISTORY_EMPTY": "Chưa có lịch sử chuyến",
+    "DATA_TICKET_EMPTY": "Không có thông tin vé để hiển thị",
     "EMAIL_REQUITE": "Email không được trống",
     "EMAIL_INVALID": "Email không hợp lệ",
     "PASS_REQUITE": "Mật khẩu không được trống",
     "PASS_REQUITE_LENGTH": "Mật khẩu phải có ít nhất 6 ký tự",
     "PASS_NOT_TRUE": "Mật khẩu không đúng",
-    "PASS_INVALID": "Mật khẩu không hợp lệ"
+    "PASS_INVALID": "Mật khẩu không hợp lệ",
+    "URL_REQUITE": "Url không được trống",
+    "URL_INVALID": "Url không hợp lệ",
+    "PHONE_REQUITE": "Sđt không được trống",
+    "PHONE_INVALID": "Sđt không hợp lệ",
+    "NAME_REQUITE": "Tên không được trống",
+    "NAME_INVALID": "Tên không hợp lệ",
+    "BIRTH_REQUITE": "Ngày sinh không được trống",
+    "BIRTH_INVALID": "Ngày sinh không hợp lệ",
+    "GENDER_REQUITE": "Giới tính không được trống",
+    "GENDER_INVALID": "Giới tính không đúng",
+    "SCHOOL_REQUITE": "Trường không được trống",
+    "SCHOOL_INVALID": "Tên trường không đúng",
+    "AGE_REQUITE": "Tuổi không được trống",
+    "AGE_INVALID": "Tuổi không hợp lệ",
+    "ADDRESS_REQUITE": "Địa chỉ không được trống",
+    "ADDRESS_INVALID": "Địa chỉ không đúng",
+    "MESSAGE_EMPTY": "Không có tin nhắn để hiển thị.",
+    "SUCCESS": "Thành công.",
+    "REGISTER_SUCCESS": "Đăng ký thành công...",
+    "REGISTER_FAIL": "Đăng ký thất bại do email đã tồn tại hoặc sự cố kỹ thuật. Vui lòng thử lại...",
+    "FAIL": "Thất bại",
+    "DELETE": "Xóa",
+    "CROPPER": "Chỉnh sửa ảnh"
   },
   "VERSION": "Phiên bản"
 }

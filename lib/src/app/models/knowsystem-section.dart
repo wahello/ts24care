@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class KnowsystemSection {
   dynamic sLastUpdate;
   dynamic active;
@@ -15,9 +17,13 @@ class KnowsystemSection {
   List<dynamic> userGroupIds;
   dynamic writeDate;
   List<dynamic> writeUid;
+  Color color;
+  String urlIcon;
 
   KnowsystemSection(
-      {this.sLastUpdate,
+      {this.color,
+      this.urlIcon,
+      this.sLastUpdate,
       this.active,
       this.articleIds,
       this.childIds,

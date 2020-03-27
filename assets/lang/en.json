@@ -1,6 +1,6 @@
 {
   "LOGIN_PAGE": {
-    "WELCOME_TITLE": "Welcome Back",
+    "WELCOME_TITLE": "Welcome to TS24Care",
     "SUB_TITLE": "Login go continue",
     "EMAIL": "EMAIL",
     "EMAIL_HINT": "Enter your email address",
@@ -32,6 +32,30 @@
     "NO_ACCOUNT": "Don't have an account",
     "CREATE_ACCOUNT": "Sign up"
   },
+  "HELP_PAGE": {
+    "TITLE": "Help",
+    "GROUP_TITLE_1": "FAQ",
+    "GROUP_SUBTITLE_1": "Find questions regarding your service",
+    "GROUP_TITLE_2": "Feedback",
+    "GROUP_SUBTITLE_2": "Send your feedback and get your answers to your questions right away?",
+    "SEND_FEED_BACK": "Send Feedback",
+    "CALL_SERVICE": "Call customer service",
+    "LIVE_CHAT": "Live chat",
+    "VIEW_MORE": "View more",
+    "SERVICE_LIST": "Dịch vụ đã mua",
+    "ALL_BUTTON": "All" ,
+    "ADD_BUTTON": "Add",
+    "ID_IDENTIFY": "Service Name",
+    "CREATE_DATE": "Create date",
+    "EXPIRE_DATE": "Expire date"
+  },
+  "FAQ_DETAIL_PAGE": {
+    "TITLE": "FAQ DETAIL",
+    "GUIDANCE_TITLE": "Choose article to read more information",
+    "NO_DATA": "No have data yet",
+    "RECENT": "Recent",
+    "RESULT": "Result"
+  },
   "WAITING_MESSAGE": {
     "PERMISSION_CONNECT": "Checking access permission...",
     "AUTH_ACCOUNT": "Validating account...",
@@ -48,7 +72,8 @@
     "TITLE": "Notifications",
     "RECENT_ITEMS": "Recent Items",
     "APPS": "Apps",
-    "BLOCKED": "Blocked"
+    "BLOCKED": "Blocked",
+    "NO_NOTIFICATIONS" : "You have no new notifications"
   },
   "SETTINGS_PAGE": {
     "NOTIFICATIONS": "Notifications",
@@ -57,6 +82,7 @@
     "PRIVACY_POLICY": "Privacy policy",
     "HELP_CENTER": "Help Center",
     "ZENDESK_SUPPORT": "Zendesk support",
+    "LANGUAGES": "Languages",
     "SIGN_OUT": "Sign out"
   },
   "SETTINGS_NOTIFICATIONS_PAGE": {
@@ -97,16 +123,58 @@
     "GENDER": "Gender",
     "INPUT_PHONE": "Input phone number...",
     "INPUT_EMAIL": "Input email...",
-    "INPUT_ADDRESS": "Input address..."
+    "INPUT_ADDRESS": "Input address...",
+    "COMPANY" : "Company"
+  },
+  "POPUP_CONFIRM": {
+    "TITLE": "NOTIFICATION",
+    "DESC_INFO": "Confirm information changes?",
+    "DESC_STATUS": "Confirm status changes?",
+    "DESC_LOG_OUT": "Confirm log out?",
+    "DESC_DELETE_CHILD": "Are you sure to delete this child profile?",
+    "YES": "Yes",
+    "NO": "No",
+    "OK": "Ok",
+    "CONTINUE": "Continue",
+    "CANCEL": "Cancel",
+    "CLOSE": "Close"
   },
   "COMMON": {
+    "LOADING_DATA": "Loading data...",
+    "IN_PROCESS": "In process...",
     "SAVE": "Save",
-    "CROPPER": "Cropper",
-    "EMAIL_INVALID": "Email invalid",
+    "DATA_EMPTY": "Data empty",
+    "DATA_HISTORY_EMPTY": "Data history trip is empty",
+    "DATA_TICKET_EMPTY": "Data empty",
     "EMAIL_REQUITE": "Email require",
-    "PASS_REQUITE_LENGTH": "Length must be greater than 6",
+    "EMAIL_INVALID": "Email is invalid",
+    "PASS_REQUITE": "Password require",
+    "PASS_REQUITE_LENGTH": "Password require min 6 characters",
     "PASS_INVALID": "Password is invalid",
-    "PASS_NOT_TRUE": "Password is not true"
+    "PASS_NOT_TRUE": "Password is not true",
+    "URL_REQUITE": "Url require",
+    "URL_INVALID": "Url is invalid",
+    "PHONE_REQUITE": "Phone require",
+    "PHONE_INVALID": "Phone is invalid",
+    "NAME_REQUITE": "Name requite",
+    "NAME_INVALID": "Name is invalid",
+    "BIRTH_REQUITE": "Birth day require",
+    "BIRTH_INVALID": "Birth day is invalid",
+    "GENDER_REQUITE": "Gender require",
+    "GENDER_INVALID": "Gender is invalid",
+    "SCHOOL_REQUITE": "School name require",
+    "SCHOOL_INVALID": "School name is invalid",
+    "AGE_REQUITE": "Age require",
+    "AGE_INVALID": "Age is invalid",
+    "ADDRESS_REQUITE": "Address require",
+    "ADDRESS_INVALID": "Address is invalid",
+    "MESSAGE_EMPTY": "Message is empty.",
+    "SUCCESS": "Success.",
+    "REGISTER_SUCCESS": "Register successfully...",
+    "REGISTER_FAIL": "Register fail. Email already exist or no internet connected. Please check again...",
+    "FAIL": "Fail",
+    "DELETE": "Delete",
+    "CROPPER": "Cropper"
   },
   "VERSION": "Version"
 }

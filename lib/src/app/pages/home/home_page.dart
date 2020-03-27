@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
-import 'package:ts24care/src/app/models/item_newfeed_model.dart';
 import 'package:ts24care/src/app/pages/home/home_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/group_content_widget.dart';
@@ -92,7 +91,7 @@ class _HomePageState extends State<HomePage>
               GroupContentWidget(
                 title: "News and tips",
                 tapMore: () {
-                  viewModel.tapMoreNewAndTips();
+                  viewModel.onTapMoreNewAndTips();
                 },
                 child: GridView.builder(
                   physics: NeverScrollableScrollPhysics(),
@@ -104,16 +103,18 @@ class _HomePageState extends State<HomePage>
                     mainAxisSpacing: 10,
                   ),
                   padding: EdgeInsets.only(left: 0, right: 0, bottom: 0),
-                  itemCount: ItemNewFeedModel.listItemNewFeedModel.length,
+                  itemCount: viewModel.listNewFeed.length,
                   itemBuilder: (context, index) =>
 //                  Container(color: Colors.red,height: 500,)
                       TS24Button(
-                    onTap: () {},
+                    onTap: () {
+                      viewModel.onTapBlogPost(viewModel.listNewFeed[index]);
+                    },
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: ItemNewFeedHorizontalWidget(
-                      title: ItemNewFeedModel.listItemNewFeedModel[index].title,
-                      url: ItemNewFeedModel.listItemNewFeedModel[index].url,
+                      title: viewModel.listNewFeed[index].title,
+                      url: viewModel.listNewFeed[index].avatarUrl,
                     ),
                   ),
                 ),
@@ -143,6 +144,9 @@ class _HomePageState extends State<HomePage>
 //                          scale: 0.2,
         ),
       ),
+      onFreshCallback: ()async{
+        viewModel.onLoad();
+      },
       child: __content(),
     );
   }

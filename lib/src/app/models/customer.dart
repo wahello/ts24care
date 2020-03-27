@@ -6,11 +6,15 @@ import 'package:ts24care/src/app/models/res-partner.dart';
 
 class Customer {
   int id;
+  int userId;
   dynamic name;
   dynamic photo;
   dynamic email;
   dynamic phone;
   dynamic contactAddress;
+  dynamic companyName;
+  dynamic companyId;
+  dynamic tin; //Tax identification number
   static dynamic aliasName = "Customer";
   static Customer _singleton;
 
@@ -25,30 +29,47 @@ class Customer {
 
   Customer.newInstance(
       {this.id,
+      this.userId,
       this.name,
       this.photo,
       this.email,
       this.phone,
-      this.contactAddress}) {
+      this.contactAddress,
+      this.companyName,
+      this.companyId,
+      this.tin}) {
     id = id;
+    userId = userId;
     name = name;
     photo = photo;
     email = email;
     phone = phone;
     contactAddress = contactAddress;
+    companyName = companyName;
+    companyId = companyId;
+    tin = tin;
   }
 
   fromResPartner(ResPartner resPartner) {
     id = resPartner.id;
+    if (resPartner.userIds is List) if (resPartner.userIds.length > 0)
+      userId = resPartner.userIds[0];
     name = (resPartner.name is bool) ? "" : resPartner.name;
     photo = resPartner.image;
     email = (resPartner.email is bool) ? "" : resPartner.email;
     phone = (resPartner.phone is bool) ? "" : resPartner.phone;
     contactAddress = (resPartner.street is bool) ? "" : resPartner.street;
+    if (resPartner.companyId is List) if (resPartner.companyId.length > 0) {
+      companyId = resPartner.companyId[0];
+
+      companyName = resPartner.companyId[1];
+    }
+    tin = (resPartner.vat is bool) ? "" : resPartner.vat;
   }
 
   fromJson(Map<dynamic, dynamic> json) {
     id = json['id'];
+    userId = json['userId'];
     name = json['name'];
     if (json['photo'] is List) {
       List photoUint8 = json['photo'];
@@ -58,16 +79,23 @@ class Customer {
     email = json['email'];
     phone = json['phone'];
     contactAddress = json['contactAddress'];
+    companyName = json['companyName'];
+    companyId = json['companyId'];
+    tin = json['tin'];
   }
 
   Map<dynamic, dynamic> toJson() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     data['id'] = this.id;
+    data['userId'] = this.userId;
     data['name'] = this.name;
     data['photo'] = this.photo;
     data['email'] = this.email;
     data['phone'] = this.phone;
     data['contactAddress'] = this.contactAddress;
+    data['companyName'] = this.companyName;
+    data['companyId'] = this.companyId;
+    data['tin'] = this.tin;
     return data;
   }
 
@@ -80,6 +108,7 @@ class Customer {
     if (ready) {
       if (localStorage.getItem(Customer.aliasName) != null) {
         localStorage.deleteItem(Customer.aliasName);
+        api.expiresIn = null;
         _singleton = null;
       }
     }
