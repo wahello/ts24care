@@ -8,6 +8,7 @@ class TS24BottomScrollWithBackgroundWidget extends StatefulWidget {
   final Widget background;
   final String title;
   final bool shadow;
+  final bool hideAppBar;
   final OnFreshCallback onFreshCallback;
 
   const TS24BottomScrollWithBackgroundWidget(
@@ -16,6 +17,7 @@ class TS24BottomScrollWithBackgroundWidget extends StatefulWidget {
       this.title,
       this.shadow = true,
       this.child,
+      this.hideAppBar = false,
       this.onFreshCallback})
       : super(key: key);
 
@@ -33,16 +35,19 @@ class _TS24BottomScrollWithBackgroundWidgetState
   _getSizeAndPosition() {
     final RenderBox renderBox = _key.currentContext.findRenderObject();
     _position = renderBox.localToGlobal(Offset.zero);
-    if (viewModel.currentOffset != _position.dy)
-      viewModel.getHeightImageBackground(_position.dy);
-    viewModel.currentOffset = _position.dy;
-    viewModel.streamController111.sink.add(_position.dy);
+//    if (viewModel.currentOffset != _position.dy)
+//      viewModel.getHeightImageBackground(_position.dy);
+    viewModel.currentOffset = widget.hideAppBar
+        ? _position.dy + viewModel.heightAppbar
+        : _position.dy;
+    viewModel.streamController111.sink.add(viewModel.currentOffset);
   }
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      viewModel.heightViewBackground = _position.dy - viewModel.heightAppbar;
+      viewModel.heightViewBackground =
+          _position.dy; // - viewModel.heightAppbar;
       viewModel.streamController111.sink.add(viewModel.heightViewBackground);
     }
 //    => setState(() {
@@ -69,7 +74,7 @@ class _TS24BottomScrollWithBackgroundWidgetState
               stream: viewModel.streamController111.stream,
               builder: (context, snapshot) {
                 // fix red screen when snapshot not have data yet
-                if(snapshot.data == null) return Offstage();
+                if (snapshot.data == null) return Offstage();
                 return Stack(
                   children: <Widget>[
                     AnimatedContainer(
@@ -111,7 +116,7 @@ class _TS24BottomScrollWithBackgroundWidgetState
 
       Widget __content() {
         return Container(
-          color: Colors.transparent,
+//          color: Colors.red,
           child: Column(
             children: <Widget>[
               Container(
@@ -136,7 +141,13 @@ class _TS24BottomScrollWithBackgroundWidgetState
                         : SizedBox(
                             height: 23,
                           ),
-                    widget.child
+//                    Expanded(
+//                      child:
+                    Container(
+//                        color: Colors.white,
+                      child: widget.child,
+                    ),
+//                    )
                   ],
                 ),
               )
@@ -165,6 +176,9 @@ class _TS24BottomScrollWithBackgroundWidgetState
                   ? RefreshIndicator(
                       onRefresh: widget.onFreshCallback,
                       child: Container(
+                        margin: EdgeInsets.all(0),
+                        padding: EdgeInsets.all(0),
+//                        color: Colors.blue,
                         key: _key,
                         child:
 //                  CustomScrollView(
@@ -175,19 +189,19 @@ class _TS24BottomScrollWithBackgroundWidgetState
 ////                    primary: false,
 //                    slivers: [__content()],
 //                  )
-                            ListView(
+                            SingleChildScrollView(
                           controller: viewModel.controller,
-                          children: <Widget>[__content()],
+                          child: __content(),
                         ),
                       ),
                     )
                   : Container(
+//                      color: Colors.yellow,
 //                color: Colors.white,
                       key: _key,
-                      child:
-                          ListView(
+                      child: SingleChildScrollView(
                         controller: viewModel.controller,
-                        children: <Widget>[__content()],
+                        child: __content(),
                       ),
                     );
             },

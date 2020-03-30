@@ -4,6 +4,7 @@ import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/pages/notification/notification_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
+import 'package:ts24care/src/app/widgets/empty_widget.dart';
 import 'package:ts24care/src/app/widgets/item_notification_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
@@ -33,7 +34,7 @@ class _NotificationsPageState extends State<NotificationsPage>
     viewModel.context = context;
     Widget _appBar() {
       return AppBar(
-        leading: IconButton(icon: Icon(Icons.menu, color: Colors.black)),
+        // leading: IconButton(icon: Icon(Icons.menu, color: Colors.black)),
         backgroundColor: ThemePrimary.backgroundColor,
         elevation: 0,
         title: Text(
@@ -231,6 +232,9 @@ class _NotificationsPageState extends State<NotificationsPage>
         builder: (context, snapshot) {
           return TS24Scaffold(
             appBar: _appBar(),
+//              body: EmptyWidget(
+//                message: "Chưa có thông báo mới.",
+//              )
             body: _body(),
           );
         },

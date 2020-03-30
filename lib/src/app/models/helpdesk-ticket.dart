@@ -1,7 +1,7 @@
 class HelpdeskTicket {
   dynamic sLastUpdate;
   dynamic active;
-  dynamic attachmentIds;
+  List<dynamic> attachmentIds;
   dynamic cancel;
   dynamic categoryId;
   dynamic color;

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/menu.dart';
-import 'package:ts24care/src/app/pages/help/help_page_viewmodel.dart';
-import 'package:ts24care/src/app/pages/home/home_page_viewmodel.dart';
-import 'package:ts24care/src/app/pages/setting/setting_viewmodel.dart';
+import 'package:ts24care/src/app/pages/help/helpChat/helpChat_page.dart';
 import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
-import 'package:ts24care/src/app/pages/ticket/ticket_page_viewmodel.dart';
+import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
 
 class TabsPageViewModel extends ViewModelBase {
   PageController controller;
@@ -33,5 +31,12 @@ class TabsPageViewModel extends ViewModelBase {
   void dispose() {
     controller.dispose();
     super.dispose();
+  }
+
+  onTapCreateTicket() {
+    Navigator.pushNamed(context, TicketNewPage.routeName);
+  }
+  onTapChat() {
+    Navigator.pushNamed(context, HelpChatPage.routeName);
   }
 }

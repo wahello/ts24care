@@ -1,7 +1,7 @@
 class MailMessage {
   dynamic sLastUpdate;
   dynamic addSign;
-  dynamic attachmentIds;
+  List<dynamic> attachmentIds;
   dynamic authorAvatar;
   dynamic authorId;
   dynamic body;

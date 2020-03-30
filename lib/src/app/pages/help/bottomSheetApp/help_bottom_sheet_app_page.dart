@@ -31,7 +31,7 @@ class _BottomSheetAppPageState extends State<BottomSheetAppPage> {
             height: 30,
             alignment: Alignment.center,
             child: Text(
-              "ALL APPLICATION",
+              "Tất cả ứng dụng",
               style: TextStyle(color: ThemePrimary.primaryColor),
             ),
           ),

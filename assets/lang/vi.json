@@ -47,7 +47,8 @@
     "ID_IDENTIFY": "Tên dịch vụ",
     "SERVICE_LIST": "Các dịch vụ đã đăng ký",
     "CREATE_DATE": "Ngày đăng ký",
-    "EXPIRE_DATE": "Ngày hết hạn"
+    "EXPIRE_DATE": "Ngày hết hạn",
+    "TODAY": "Hôm nay"
   },
   "FAQ_DETAIL_PAGE": {
     "TITLE": "FAQ",
@@ -59,7 +60,11 @@
   "WANRRANTY_DETAIL_PAGE": {
     "DATE_REMAINING": "Ngày còn lại",
     "SERIAL": "Số serial",
-    "PHONE": "Điện thoại"
+    "PHONE": "Điện thoại",
+    "LICENSE": "Giấy phép",
+    "NO_DATA": "Chưa có thông tin",
+    "DATE_EXPIRED": "Hết hạn",
+    "DATE_STRING": "ngày"
   },
   "WAITING_MESSAGE": {
     "PERMISSION_CONNECT": "Đang kiểm tra quyền truy cập...",

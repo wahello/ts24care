@@ -1,47 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
-import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:ts24care/src/app/pages/login/login_page.dart';
-import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
 
 class TutorialPageViewModel extends ViewModelBase {
+  List<String> urlImageSlide = [
+    "https://web.ts24.com.vn/web/image/363417/main_pic.png",
+    "https://web.ts24.com.vn/web/image/356272/graphic_gov.png",
+    "https://web.ts24.com.vn/web/image/341769/sodo_biz_main.png",
+    "https://web.ts24.com.vn/web/image/341830/sodo_pro_main.png"
+  ];
+  List<String> title = [
+    "GIẢI PHÁP \nQUẢN LÝ TỔNG THỂ CHO DOANH NGHIỆP",
+    "TS24gov",
+    "TS24biz",
+    "TS24pro"
+  ];
+  List<String> subTitle = [
+    "",
+    "Dịch vụ chính phủ điện tử cho doanh nghiệp",
+    "Dịch vụ quản lý theo nghiệp vụ",
+    "Dịch vụ quản lý tổng thể"
+  ];
   TutorialPageViewModel();
 
   onTapStart() {
-    Navigator.pushReplacementNamed(context, LoginPage.routeName);
-    // api
-    //     .checkLogin(username: "luan.vm@ts24corp.com", password: "ssbblss")
-    //     .then((onValue) {
-    //   print(onValue);
-    // });
-    // api.getListBlogs(offset: 0, limit: 20).then((onValue) {
-    //   print(onValue);
-    // });
-    // api.searchBlogs(keyword: "de", offset: 0, limit: 20).then((onValue) {
-    //   print(onValue);
-    // });
-
-    // api.getBlogById(55).then((onValue) {
-    //   print(onValue);
-    // });
-    //Navigator.pushNamed(context, TabsPage.routeName);
-    // api
-    //     .checkLogin(username: "demo@ts24corp.com", password: "123456")
-    //     .then((onValue) async {
-    //   // print(onValue);
-    //   await api.getCustomerInfoAfterLogin();
-    //   api.getListTicketByStatus(offset: 0, limit: 20).then((value) {
-    //     print(value);
-    //   });
-    // });
-    // api.getStatusTicket().then((onValue) {
-    //   print(onValue);
-    // });
-    // HelpdeskTicket ticket = HelpdeskTicket();
-    // ticket.partnerId = [8];
-    // ticket.subject = "Test1";
-    // ticket.description = "abcd";
-    // api.insertTickets(ticket: ticket, listAttachmentId: [949]);
+    Navigator.pushNamed(context, LoginPage.routeName);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/pages/home/home_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
+import 'package:ts24care/src/app/widgets/float_button_widget.dart';
 import 'package:ts24care/src/app/widgets/group_content_widget.dart';
 import 'package:ts24care/src/app/widgets/item_newfeed_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24BottomScrollWithBackgroundWidget/ts24_bottom_scroll_with_background_widget.dart';
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage>
       backgroundColorStart: ThemePrimary.backgroundColor,
       backgroundColorEnd: ThemePrimary.backgroundColor,
       title: Text(
-        "HOME",
+        "Trang chủ",
         style: TextStyle(color: Colors.black87),
       ),
     );
@@ -40,56 +41,56 @@ class _HomePageState extends State<HomePage>
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    width: 20,
-                  ),
-                  TS24Button(
-                    onTap: () {},
-                    padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
-                    decoration: BoxDecoration(
-                        color: Color(0xFFD9D9D9),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Center(
-                        child: Text(
-                      "Benefit",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF292929)),
-                    )),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  TS24Button(
-                    onTap: () {},
-                    padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
-                    decoration: BoxDecoration(
-                        color: Color(0xFFD9D9D9),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Center(
-                        child: Text(
-                      "News & tips",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF292929)),
-                    )),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
+//              Row(
+//                mainAxisAlignment: MainAxisAlignment.start,
+//                children: <Widget>[
+//                  SizedBox(
+//                    width: 20,
+//                  ),
+//                  TS24Button(
+//                    onTap: () {},
+//                    padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
+//                    decoration: BoxDecoration(
+//                        color: Color(0xFFD9D9D9),
+//                        borderRadius: BorderRadius.all(Radius.circular(10))),
+//                    child: Center(
+//                        child: Text(
+//                      "Benefit",
+//                      style: TextStyle(
+//                          fontWeight: FontWeight.w600,
+//                          color: Color(0xFF292929)),
+//                    )),
+//                  ),
+//                  SizedBox(
+//                    width: 10,
+//                  ),
+//                  TS24Button(
+//                    onTap: () {},
+//                    padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
+//                    decoration: BoxDecoration(
+//                        color: Color(0xFFD9D9D9),
+//                        borderRadius: BorderRadius.all(Radius.circular(10))),
+//                    child: Center(
+//                        child: Text(
+//                      "News & tips",
+//                      style: TextStyle(
+//                          fontWeight: FontWeight.w600,
+//                          color: Color(0xFF292929)),
+//                    )),
+//                  ),
+//                ],
+//              ),
+//              SizedBox(
+//                height: 20,
+//              ),
+//              GroupContentWidget(
+//                title: "Community",
+//                child: Container(
+//                  height: 70,
+//                ),
+//              ),
               GroupContentWidget(
-                title: "Community",
-                child: Container(
-                  height: 70,
-                ),
-              ),
-              GroupContentWidget(
-                title: "News and tips",
+                title: "Bài viết mới",
                 tapMore: () {
                   viewModel.onTapMoreNewAndTips();
                 },
@@ -102,7 +103,6 @@ class _HomePageState extends State<HomePage>
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                   ),
-                  padding: EdgeInsets.only(left: 0, right: 0, bottom: 0),
                   itemCount: viewModel.listNewFeed.length,
                   itemBuilder: (context, index) =>
 //                  Container(color: Colors.red,height: 500,)
@@ -127,24 +127,74 @@ class _HomePageState extends State<HomePage>
 
     return TS24BottomScrollWithBackgroundWidget(
       shadow: false,
-      background: Container(
-        height: 200,
-        child: Swiper(
-          itemHeight: 50,
-          itemBuilder: (BuildContext context, int index) {
-            return new Image.asset(
-              "assets/images/vegetable_natural.jpg",
-              fit: BoxFit.fitWidth,
-            );
-          },
-          itemCount: 3,
-//                          pagination: new SwiperPagination(),
-          control: new SwiperControl(color: Colors.transparent),
-//                          viewportFraction: 0.4,
-//                          scale: 0.2,
-        ),
-      ),
-      onFreshCallback: ()async{
+      hideAppBar: true,
+      background: Builder(builder: (context) {
+        return Container(
+            height: 200,
+            child: SafeArea(
+              top: true,
+              child: Stack(
+                children: <Widget>[
+                  if (viewModel.listNewFeed.length > 0)
+                    Swiper(
+                      onIndexChanged: (index) {
+                        viewModel.onChangeSlideIndex(index);
+                        print(index);
+                      },
+                      onTap: (index){
+                        viewModel.onTapBlogPost(viewModel.listNewFeed[index]);
+                      },
+                      itemHeight: 50,
+                      itemBuilder: (BuildContext context, int index) {
+                        return viewModel.listNewFeed[index].avatarUrl != null
+                            ? Image.network(
+                                viewModel.listNewFeed[index].avatarUrl,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                "assets/images/default.jpg",
+                                fit: BoxFit.cover,
+                              );
+                      },
+                      itemCount: viewModel.listNewFeed.length,
+//                    list: viewModel.listNewFeed
+//                        .map((item) => item.avatarUrl != null
+//                            ? Image.network(
+//                                item.avatarUrl,
+//                                fit: BoxFit.cover,
+//                              )
+//                            : Image.asset(
+//                                "assets/images/default.jpg",
+//                                fit: BoxFit.cover,
+//                              ))
+//                        .toList(),
+                      control: new SwiperControl(color: Colors.transparent),
+                    ),
+                  if (viewModel.listNewFeed.length > 0)
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: Container(
+//                  width: 50,
+                        padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+//                  height: 20,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Text(
+                          (viewModel.slideCurrentIndex + 1).toString() +
+                              "/" +
+                              viewModel.listNewFeed.length.toString(),
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      ),
+                    )
+                ],
+              ),
+            ));
+      }),
+      onFreshCallback: () async {
         viewModel.onLoad();
       },
       child: __content(),
@@ -161,8 +211,40 @@ class _HomePageState extends State<HomePage>
         stream: viewModel.stream,
         builder: (context, snapshot) {
           return TS24Scaffold(
-            appBar: _appBar(),
+//            appBar: _appBar(),
             body: _body(),
+//            floatingActionButton: new FloatButtonWidget(
+//              tooltip: "add",
+//              onPressed: () {},
+//              listFAB: [
+//                FloatingActionButton(
+//                  backgroundColor: ThemePrimary.primaryColor,
+//                  heroTag: 10,
+//                  onPressed: () {
+//                    viewModel.onTapCreateTicket();
+//                  },
+//                  tooltip: 'add',
+//                  child: Icon(Icons.add),
+//                ),
+//                FloatingActionButton(
+//                  backgroundColor: ThemePrimary.primaryColor,
+//                  heroTag: 11,
+//                  onPressed: null,
+//                  tooltip: 'call',
+//                  child: Icon(Icons.call),
+//                ),
+//                FloatingActionButton(
+//                  backgroundColor: ThemePrimary.primaryColor,
+//                  heroTag: 12,
+//                  onPressed: () {
+////                    viewModel.onTapChat();
+//                  },
+//                  tooltip: 'message',
+//                  child: Icon(Icons.message),
+//                )
+//              ],
+//              icon: Icons.menu,
+//            ),
           );
         },
       ),

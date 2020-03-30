@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ItemTicketsWidget extends StatelessWidget {
@@ -22,14 +23,28 @@ class ItemTicketsWidget extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(45.0),
             child: avatarUrl != null
-                ? Image.network(
-                    avatarUrl,
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width * 0.33,
-                    height: MediaQuery.of(context).size.width * 0.33,
+                ? CachedNetworkImage(
+                    imageUrl: avatarUrl,
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      height: MediaQuery.of(context).size.width * 0.33,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,),
+                      ),
+                    ),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   )
+//            Image.network(
+//                    avatarUrl,
+//                    fit: BoxFit.cover,
+//                    width: MediaQuery.of(context).size.width * 0.33,
+//                    height: MediaQuery.of(context).size.width * 0.33,
+//                  )
                 : Image.asset(
-                    "assets/images/vegetable_natural.jpg",
+                    "assets/images/default.png",
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width * 0.33,
                     height: MediaQuery.of(context).size.width * 0.33,
@@ -58,8 +73,12 @@ class ItemTicketsWidget extends StatelessWidget {
                     style: TextStyle(fontSize: 17),
                     overflow: TextOverflow.ellipsis,
                   ),
-                if(content != null)
-                Text(content,style: TextStyle(color: Colors.grey),overflow: TextOverflow.ellipsis,)
+                if (content != null)
+                  Text(
+                    content,
+                    style: TextStyle(color: Colors.grey),
+                    overflow: TextOverflow.ellipsis,
+                  )
               ],
             ),
           ),

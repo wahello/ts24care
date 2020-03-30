@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/helper/utils.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
+import 'package:ts24care/src/app/widgets/ts24_add_attachment_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
@@ -32,7 +35,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
           },
         ),
         title: Text(
-          "New Ticket",
+          "Tạo phiếu yêu cầu mới",
           style: TextStyle(color: Colors.grey[800]),
         ),
         actions: <Widget>[
@@ -41,13 +44,85 @@ class _TicketNewPageState extends State<TicketNewPage> {
               Icons.send,
               color: Colors.grey[800],
             ),
-            onPressed: () {},
+            onPressed: () {
+              viewModel.onSend();
+            },
           )
         ],
       );
     }
 
     Widget _body() {
+      Widget __buildMenuStatusIcon(
+          {void onSelected(CustomPopupMenu customPopupMenu)}) {
+        return PopupMenuButton<CustomPopupMenu>(
+          child: Row(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                    color: viewModel.customPopupMenu.color,
+                    border: Border.all(
+                        color: viewModel.customPopupMenu.color, width: 1.0)),
+                width: 15,
+                height: 15,
+                alignment: Alignment.center,
+                child: Text(
+                  getCharStatusState(viewModel.statusState),
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(viewModel.customPopupMenu.title.toString())
+            ],
+          ),
+//          elevation:  30.2,
+          //initialValue: viewModel.selectedLanguage,
+          onSelected: onSelected,
+          //offset: Offset(50, viewModel.selectedLanguage.id == 0 ? 50 : 100),
+          itemBuilder: (BuildContext context) {
+            return CustomPopupMenu.listTicketStatus.map((CustomPopupMenu item) {
+              return PopupMenuItem<CustomPopupMenu>(
+                height: 50,
+                value: item,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+//                    Icon(item.iconData,color: ThemePrimary.primaryColor,),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: item.color,
+                          border: Border.all(color: item.color, width: 1.0)),
+                      width: 15,
+                      height: 15,
+                      alignment: Alignment.center,
+                      child: Text(
+                        getCharStatusState(item.state),
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      item.title.toString(),
+                      style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                    )
+                  ],
+                ),
+              );
+            }).toList();
+          },
+        );
+      }
+
       Widget __background() {
         return Container(
           color: Colors.white,
@@ -60,52 +135,72 @@ class _TicketNewPageState extends State<TicketNewPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      "Subject",
+//                    Text(
+//                      "Subject",
+//                      style: TextStyle(
+//                          color: Colors.grey,
+//                          fontSize: 26,
+//                          fontWeight: FontWeight.w600),
+//                      textAlign: TextAlign.start,
+//                    ),
+                    TextFormField(
+                      controller: viewModel.subjectTextEditingController,
                       style: TextStyle(
                           color: Colors.grey,
                           fontSize: 26,
                           fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.start,
-                    ),
-                    Container(
-                      height: 85,
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width: 55,
-                            height: 55,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey[350],
-                            ),
-                            child: Icon(
-                              Icons.person_add,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Expanded(
-                            child: ListTile(
-                              title: Text(
-                                "No parameter",
-                                style: TextStyle(
-                                    color: Colors.grey[800],
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(
-                                "Today",
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 16),
-                              ),
-                            ),
-                          )
-                        ],
+//                      focusNode: viewModel.nameFocus,
+                      decoration: InputDecoration(
+//                        border: InputBorder.none,
+//                        labelText: translation.text("USER_PROFILE.FULL_NAME"),
+//                        labelStyle: __styleTextLabel,
+                        hintText: "Tiêu đề",
+//                        errorText: viewModel.errorName,
                       ),
-                    )
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (v) {
+//f
+                      },
+                    ),
+//                    Container(
+//                      height: 85,
+//                      width: MediaQuery.of(context).size.width,
+//                      child: Row(
+//                        children: <Widget>[
+//                          Container(
+//                            width: 55,
+//                            height: 55,
+//                            alignment: Alignment.center,
+//                            decoration: BoxDecoration(
+//                              shape: BoxShape.circle,
+//                              color: Colors.grey[350],
+//                            ),
+//                            child: Icon(
+//                              Icons.person_add,
+//                              size: 30,
+//                              color: Colors.white,
+//                            ),
+//                          ),
+//                          Expanded(
+//                            child: ListTile(
+//                              title: Text(
+//                                "No requester",
+//                                style: TextStyle(
+//                                    color: Colors.grey[800],
+//                                    fontSize: 18,
+//                                    fontWeight: FontWeight.bold),
+//                              ),
+//                              subtitle: Text(
+//                                "Today",
+//                                style:
+//                                    TextStyle(color: Colors.grey, fontSize: 16),
+//                              ),
+//                            ),
+//                          )
+//                        ],
+//                      ),
+//                    )
                   ],
                 ),
               ),
@@ -115,97 +210,87 @@ class _TicketNewPageState extends State<TicketNewPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Properties",
+                      "Các thuộc tính",
                       style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                     ),
-                    Text(
-                      "See all",
-                      style: TextStyle(color: ThemePrimary.primaryColor, fontSize: 18),
-                    )
+//                    Text(
+//                      "See all",
+//                      style: TextStyle(
+//                          color: ThemePrimary.primaryColor, fontSize: 18),
+//                    )
                   ],
                 ),
               ),
               ListTile(
                 title: Text(
-                  "Status",
+                  "Trạng thái",
                   style: TextStyle(fontSize: 18, color: Colors.grey[800]),
                 ),
-                subtitle: Row(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.orange[300],
-                          border:
-                              Border.all(color: Colors.deepOrange, width: 1.0)),
-                      width: 15,
-                      height: 15,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "N",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      "New",
-                      style: TextStyle(color: Colors.grey),
-                    )
-                  ],
-                ),
+                subtitle: __buildMenuStatusIcon(onSelected: (customPopupMenu) {
+                  viewModel.customPopupMenu = customPopupMenu;
+                  viewModel.onSelectedTicketStatus(customPopupMenu.state);
+                }),
               ),
-              ListTile(
-                  title: Text(
-                    "Assignee",
-                    style: TextStyle(fontSize: 18, color: Colors.grey[800]),
-                  ),
-                  subtitle: Text(
-                    "Unassigned",
-                    style: TextStyle(color: Colors.grey),
-                  )),
-              ListTile(
-                  title: Text(
-                    "Priority",
-                    style: TextStyle(fontSize: 18, color: Colors.grey[800]),
-                  ),
-                  subtitle: Text(
-                    "_",
-                    style: TextStyle(color: Colors.grey),
-                  )),
+//              ListTile(
+//                  title: Text(
+//                    "Assignee",
+//                    style: TextStyle(fontSize: 18, color: Colors.grey[800]),
+//                  ),
+//                  subtitle: Text(
+//                    "Unassigned",
+//                    style: TextStyle(color: Colors.grey),
+//                  )),
+//              ListTile(
+//                  title: Text(
+//                    "Priority",
+//                    style: TextStyle(fontSize: 18, color: Colors.grey[800]),
+//                  ),
+//                  subtitle: Text(
+//                    "_",
+//                    style: TextStyle(color: Colors.grey),
+//                  )),
             ],
           ),
         );
       }
 
       Widget __inputText() {
-        Widget ___buildMenuIcon({IconData iconData,void onSelected(CustomPopupMenu customPopupMenu)}) {
+        Widget ___buildMenuIcon(
+            {IconData iconData,
+            void onSelected(CustomPopupMenu customPopupMenu)}) {
           return PopupMenuButton<CustomPopupMenu>(
-            child: IconButton(icon: Icon(Icons.attach_file,color: ThemePrimary.primaryColor,),
+            child: IconButton(
+              icon: Icon(
+                Icons.attach_file,
+                color: ThemePrimary.primaryColor,
+              ),
             ),
 //          elevation:  30.2,
             //initialValue: viewModel.selectedLanguage,
             onSelected: onSelected,
             //offset: Offset(50, viewModel.selectedLanguage.id == 0 ? 50 : 100),
             itemBuilder: (BuildContext context) {
-              return CustomPopupMenu.listMenuAttachment.map((CustomPopupMenu item) {
+              return CustomPopupMenu.listMenuAttachment
+                  .map((CustomPopupMenu item) {
                 return PopupMenuItem<CustomPopupMenu>(
                   height: 50,
                   value: item,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Icon(item.iconData,color: ThemePrimary.primaryColor,),
+                      Icon(
+                        item.iconData,
+                        color: ThemePrimary.primaryColor,
+                      ),
                       SizedBox(
                         width: 10,
                       ),
                       Text(
                         item.title.toString(),
-                        style: TextStyle(fontSize: 14,color: Colors.grey[700]),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                       )
                     ],
                   ),
@@ -214,6 +299,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
             },
           );
         }
+
         return Positioned(
           left: 0,
           right: 0,
@@ -238,7 +324,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
                         Row(
                           children: <Widget>[
                             Text(
-                              "Public replay",
+                              "Trả lời công khai",
                               style: TextStyle(
                                   color: ThemePrimary.primaryColor,
                                   fontSize: 16,
@@ -273,8 +359,9 @@ class _TicketNewPageState extends State<TicketNewPage> {
                     ),
                   ),
                   TextField(
+                    controller: viewModel.descriptionEditingController,
                     decoration: InputDecoration(
-                      hintText: "Enter a description",
+                      hintText: "Nhập nội dung tại đây...",
                       hintStyle: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
@@ -284,17 +371,24 @@ class _TicketNewPageState extends State<TicketNewPage> {
                     keyboardType: TextInputType.multiline,
                     maxLines: 3,
                   ),
+                  if(viewModel.listAttachmentModel.length>0)
+                  TS24AddAttachmentWidget(
+                    listIdAttachment: viewModel.listAttachmentModel,
+                    onCallback: (_){
+                      viewModel.updateState();
+                    },
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Row(
                         children: <Widget>[
                           ___buildMenuIcon(
-                            iconData: Icons.attach_file,
-                            onSelected: (customPopupMenu){
-                              viewModel.onSelected(customPopupMenu.state);
-                            }
-                          ),
+                              iconData: Icons.attach_file,
+                              onSelected: (customPopupMenu) {
+                                viewModel.onSelectedAttachment(
+                                    customPopupMenu.state);
+                              }),
                           SizedBox(
                             width: 10,
                           ),

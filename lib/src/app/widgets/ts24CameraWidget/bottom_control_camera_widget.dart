@@ -1,14 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24CameraWidget/ts24_camera_widget_viewmodel.dart';
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 
+typedef DirectoryCallback = void Function(String derectory);
 class BottomControlCameraWidget extends StatefulWidget {
-  final TS24CameraWidgetViewModel viewModel;
+//  final TS24CameraWidgetViewModel viewModel;
+  final Function() onShoot;
 
-  BottomControlCameraWidget({this.viewModel});
+  BottomControlCameraWidget({this.onShoot});
 
   @override
   _BottomControlCameraWidgetState createState() =>
@@ -16,22 +19,24 @@ class BottomControlCameraWidget extends StatefulWidget {
 }
 
 class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
+  TS24CameraWidgetViewModel viewModel;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.viewModel.indexSwipe == 0) widget.viewModel.isRecorder = false;
+//    if (widget.viewModel.indexSwipe == 0) widget.viewModel.isRecorder = false;
   }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    if (widget.viewModel.indexSwipe == 0) widget.viewModel.isRecorder = false;
+//    if (widget.viewModel.indexSwipe == 0) widget.viewModel.isRecorder = false;
   }
 
   @override
   Widget build(BuildContext context) {
+    viewModel = ViewModelProvider.of(context);
     Widget _buttonShoot() {
       return Container(
         height: 70,
@@ -43,12 +48,13 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
             border: Border.all(color: Colors.white, width: 3)),
         child: TS24Button(
           onTap: () {
-            if (widget.viewModel.isCamera) {
-              widget.viewModel.toogleFlatRunCamera();
+            if (viewModel.isCamera) {
+              viewModel.toogleFlatRunCamera();
             }
-            if (widget.viewModel.isTakePicture &&
-                widget.viewModel.isCamera == false) {
-              widget.viewModel.onTakePictureButtonPressed(mounted);
+            if (viewModel.isTakePicture &&
+                viewModel.isCamera == false) {
+//              viewModel.onTakePictureButtonPressed(mounted);
+                widget.onShoot();
             }
           },
           alignment: Alignment.center,
@@ -59,27 +65,27 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
             color: Colors.transparent,
           ),
           child: AnimatedContainer(
-            width: widget.viewModel.isCamera &&
-                    !widget.viewModel.isTakePicture &&
-                    widget.viewModel.isRecorderStarting
+            width: viewModel.isCamera &&
+                    !viewModel.isTakePicture &&
+                    viewModel.isRecorderStarting
                 ? 35
                 : 60,
-            height: widget.viewModel.isCamera &&
-                    !widget.viewModel.isTakePicture &&
-                    widget.viewModel.isRecorderStarting
+            height: viewModel.isCamera &&
+                    !viewModel.isTakePicture &&
+                    viewModel.isRecorderStarting
                 ? 35
                 : 60,
             duration: Duration(milliseconds: 200),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(
-                  widget.viewModel.isCamera &&
-                          !widget.viewModel.isTakePicture &&
-                          widget.viewModel.isRecorderStarting
+                  viewModel.isCamera &&
+                          !viewModel.isTakePicture &&
+                          viewModel.isRecorderStarting
                       ? 5
                       : 50)),
-              color: widget.viewModel.isCamera &&
-                      !widget.viewModel.isTakePicture &&
-                      widget.viewModel.isRecorderStarting
+              color: viewModel.isCamera &&
+                      !viewModel.isTakePicture &&
+                      viewModel.isRecorderStarting
                   ? Colors.red
                   : Colors.white,
             ),
@@ -91,7 +97,7 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
     Widget _buttonSwitchCamera() {
       return FlatButton(
         onPressed: () {
-          widget.viewModel.onSwitchCamera(mounted);
+          viewModel.onSwitchCamera(mounted);
         },
         child: Container(
           height: 30,
@@ -115,9 +121,9 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
               shape: BoxShape.rectangle,
               color: Colors.white,
               image: DecorationImage(
-                  image: widget.viewModel.imagePath == null
-                      ? AssetImage("assets/images/vegetable_natural.jpg")
-                      : AssetImage(widget.viewModel.imagePath),
+                  image: viewModel.imagePath == null
+                      ? AssetImage("assets/images/default.png")
+                      : AssetImage(viewModel.imagePath),
                   fit: BoxFit.cover),
               borderRadius: BorderRadius.circular(5)),
         ),
@@ -131,20 +137,20 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              widget.viewModel.updateTitleCameraAndPicture('picture');
+              viewModel.updateTitleCameraAndPicture('picture');
             },
             child: AnimatedContainer(
                 duration: Duration(milliseconds: 500),
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                    color: widget.viewModel.isTakePicture
+                    color: viewModel.isTakePicture
                         ? Colors.black38
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(8)),
                 child: Text(
                   'Picture',
                   style: TextStyle(
-                      color: widget.viewModel.isTakePicture
+                      color: viewModel.isTakePicture
                           ? ThemePrimary.primaryColor
                           : Colors.white),
                 )),
@@ -154,20 +160,20 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
           ),
           GestureDetector(
             onTap: () {
-              widget.viewModel.updateTitleCameraAndPicture('camera');
+              viewModel.updateTitleCameraAndPicture('camera');
             },
             child: AnimatedContainer(
                 duration: Duration(milliseconds: 500),
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                    color: widget.viewModel.isCamera
+                    color: viewModel.isCamera
                         ? Colors.black38
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(8)),
                 child: Text(
                   'Camera',
                   style: TextStyle(
-                      color: widget.viewModel.isCamera
+                      color: viewModel.isCamera
                           ? ThemePrimary.primaryColor
                           : Colors.white),
                 )),
@@ -178,12 +184,12 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * .22,
+      height: MediaQuery.of(context).size.height * .18,
       color: Colors.black12,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _bottomTitleCameraType(),
+//          _bottomTitleCameraType(),
           SizedBox(
             height: 15,
           ),

@@ -112,7 +112,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   topRight: Radius.circular(30), topLeft: Radius.circular(30)),
             ),
             child: __content(),
-          ));
+          ),
+      );
     }
 
     return ViewModelProvider(

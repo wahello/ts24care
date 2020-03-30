@@ -60,11 +60,12 @@ class _BlogPostPageState extends State<BlogPostPage> {
 //              margin: EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 10),
 //              child: Text(widget.itemNewFeedModel.title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
 //            ),
-              Container(
-                alignment: Alignment.centerRight,
-                child: Text(widget.itemNewFeedModel.postDate,
-                    style: TextStyle(fontStyle: FontStyle.italic)),
-              ),
+              if (widget.itemNewFeedModel.content != null)
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: Text(widget.itemNewFeedModel.postDate,
+                      style: TextStyle(fontStyle: FontStyle.italic)),
+                ),
               Container(
                 margin: EdgeInsets.only(left: 20, right: 20),
                 child: Text(
@@ -72,10 +73,11 @@ class _BlogPostPageState extends State<BlogPostPage> {
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
-              HtmlWidget(
-                addDomainHtml(widget.itemNewFeedModel.content),
-                webViewJs: true,
-              )
+              if (widget.itemNewFeedModel.content != null)
+                HtmlWidget(
+                  addDomainHtml(widget.itemNewFeedModel.content),
+                  webViewJs: true,
+                )
             ],
           ),
         ),

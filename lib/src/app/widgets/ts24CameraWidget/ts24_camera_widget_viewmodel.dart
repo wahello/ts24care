@@ -112,7 +112,7 @@ class TS24CameraWidgetViewModel extends ViewModelBase {
 
   }
 
-  void onTakePictureButtonPressed(bool mounted) {
+  void onTakePictureButtonPressed(bool mounted,) {
     print('picture');
     takePicture().then((String filePath) {
       if (mounted) {
@@ -122,6 +122,7 @@ class TS24CameraWidgetViewModel extends ViewModelBase {
         this.updateState();
         if (filePath != null) {
           print('Picture saved to $filePath');
+          Navigator.pop(context,filePath);
         }
       }
     });

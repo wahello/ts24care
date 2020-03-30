@@ -13,19 +13,19 @@ class TS24BottomScrollWithBackgroundWidgetViewModel extends ViewModelBase {
   ScrollController controller = ScrollController();
   double currentOffset = 0;
   TS24BottomScrollWithBackgroundWidgetViewModel();
-  getHeightImageBackground(double input) {
-    if (currentOffset > input) {
-      heightImageBackgroundCurrent = heightImageBackgroundMax -
-          (heightViewBackground - (input - heightAppbar)).abs();
-      currentOffset = input;
-    }
-    else {
-      heightImageBackgroundCurrent = heightImageBackgroundMax -
-          (heightViewBackground - (input - heightAppbar)).abs();
-      currentOffset = input;
-    }
-    this.updateState();
-  }
+//  getHeightImageBackground(double input) {
+//    if (currentOffset > input) {
+//      heightImageBackgroundCurrent = heightImageBackgroundMax -
+//          (heightViewBackground - (input)).abs();
+//      currentOffset = input;
+//    }
+//    else {
+//      heightImageBackgroundCurrent = heightImageBackgroundMax -
+//          (heightViewBackground - (input)).abs();
+//      currentOffset = input;
+//    }
+//    this.updateState();
+//  }
   @override
   void dispose() {
     streamController111.close();

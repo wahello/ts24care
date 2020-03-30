@@ -4,6 +4,7 @@ import 'package:ts24care/src/app/pages/help/faq/help_faq_page.dart';
 import 'package:ts24care/src/app/pages/help/faqDetail/faq_detail_page.dart';
 import 'package:ts24care/src/app/pages/help/faqDetail/faqArticleDetail/faq_article_detail_web_view_page.dart';
 import 'package:ts24care/src/app/pages/help/helpChat/helpChat_page.dart';
+import 'package:ts24care/src/app/pages/home/blogPost/home_blog_post_page.dart';
 import 'package:ts24care/src/app/pages/help/help_page.dart';
 import 'package:ts24care/src/app/pages/help/productWarrantyDetail/product_warranty_detail_page.dart';
 import 'package:ts24care/src/app/pages/home/newsAndTips/home_news_and_tips_page.dart';
@@ -15,6 +16,7 @@ import 'package:ts24care/src/app/pages/setting/settingsNotifications/settings_my
 import 'package:ts24care/src/app/pages/setting/userDetail/setting_user_detail_page.dart';
 import 'package:ts24care/src/app/pages/setting/web_view_page.dart';
 import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
+import 'package:ts24care/src/app/pages/ticket/detail/ticket_detail_page.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
 import 'package:ts24care/src/app/pages/tutorial/tutorial_page.dart';
 import 'pages/setting/settingsFeedback/settings_feedback_page.dart';
@@ -24,7 +26,7 @@ class Routes {
 
   static navigateDefaultPage() async {
     // Routes.defaultPage = TutorialPage();
-//    Routes.defaultPage = LoginPage();
+//    Routes.defaultPage = TabsPage();
     Customer customer = new Customer();
     bool result = await customer.checkCustomerExist();
     if (result) {
@@ -40,7 +42,7 @@ class Routes {
     TutorialPage.routeName: (context) => TutorialPage(),
     TabsPage.routeName: (context) =>
         TabsPage(ModalRoute.of(context).settings.arguments),
-    NewsAndTipsPage.routeName: (context) => NewsAndTipsPage(),
+    NewsAndTipsPage.routeName: (context) => NewsAndTipsPage(listNewFeed: ModalRoute.of(context).settings.arguments,),
     FAQPage.routeName: (context) => FAQPage(),
     FaqDetailPage.routeName: (context) => FaqDetailPage(
           listParams: ModalRoute.of(context).settings.arguments,
@@ -53,6 +55,9 @@ class Routes {
     CreateNewPasswordPage.routeName: (context) => CreateNewPasswordPage(),
 
     // 10/03/2020
+    UserDetailPage.routeName: (context) => UserDetailPage(ModalRoute.of(context).settings.arguments),
+    SettingsNotificationsPage.routeName: (context) =>
+        SettingsNotificationsPage(),
     UserDetailPage.routeName: (context) =>
         UserDetailPage(ModalRoute.of(context).settings.arguments),
     SettingsNotificationsPage.routeName: (context) =>
@@ -60,6 +65,12 @@ class Routes {
     SettingsFeedbackPage.routeName: (context) => SettingsFeedbackPage(),
     WebViewPage.routeName: (context) =>
         WebViewPage(arg: ModalRoute.of(context).settings.arguments),
+    BlogPostPage.routeName: (context) => BlogPostPage(
+          itemNewFeedModel: ModalRoute.of(context).settings.arguments,
+        ),
+    TicketDetailPage.routeName: (context) => TicketDetailPage(
+      args: ModalRoute.of(context).settings.arguments,
+    ),
     //    20/3/2020
     // show web html when click on article(FAQ page)
     FaqArticleDetailPage.routeName: (context) => FaqArticleDetailPage(

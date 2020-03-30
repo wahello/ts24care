@@ -102,7 +102,9 @@ class _TS24CameraWidgetState extends State<TS24CameraWidget>
           left: 0,
           right: 0,
           bottom: 0,
-          child: BottomControlCameraWidget(viewModel: viewModel));
+          child: BottomControlCameraWidget(onShoot: (){
+            viewModel.onTakePictureButtonPressed(mounted);
+          },));
     }
 
     Widget _topControllerWidget(viewModel) {
@@ -121,7 +123,7 @@ class _TS24CameraWidgetState extends State<TS24CameraWidget>
                 GestureDetector(
                   child: _cameraPreviewWidget(),
                   onHorizontalDragEnd: (_) {
-                    viewModel.updateTitleCameraAndPicture('swipe');
+//                    viewModel.updateTitleCameraAndPicture('swipe');
                   },
                 ),
                 _topControllerWidget(viewModel),

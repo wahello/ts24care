@@ -52,7 +52,6 @@ class _FaqArticleDetailPageState extends State<FaqArticleDetailPage> {
   @override
   Widget build(BuildContext context) {
     viewModel.context = context;
-//    List<dynamic> htmlData = ModalRoute.of(context).settings.arguments;
     return ViewModelProvider(
         viewmodel: viewModel,
         child: StreamBuilder(

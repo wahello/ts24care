@@ -6,9 +6,11 @@ import 'package:ts24care/src/app/models/blog-post.dart';
 import 'package:ts24care/src/app/models/item_newfeed_model.dart';
 import 'package:ts24care/src/app/pages/home/blogPost/home_blog_post_page.dart';
 import 'package:ts24care/src/app/pages/home/newsAndTips/home_news_and_tips_page.dart';
+import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
 
 class HomePageViewModel extends ViewModelBase {
   List<ItemNewFeedModel> listNewFeed = List();
+  int slideCurrentIndex = 1;
   HomePageViewModel() {
     onLoad();
   }
@@ -18,6 +20,7 @@ class HomePageViewModel extends ViewModelBase {
   }
 
   onLoad() async {
+    listNewFeed.clear();
     List<BlogPost> listBlogPost = await api.getListBlogs(offset: 0, limit: 10);
     if (listBlogPost.length > 0)
       listBlogPost.forEach((item) {
@@ -45,9 +48,16 @@ class HomePageViewModel extends ViewModelBase {
     this.updateState();
   }
 
+  onChangeSlideIndex(int index){
+    this.slideCurrentIndex = index;
+    this.updateState();
+  }
 
   onTapBlogPost(ItemNewFeedModel itemNewFeedModel) {
     Navigator.pushNamed(context, BlogPostPage.routeName,
         arguments: itemNewFeedModel);
+  }
+  onTapCreateTicket() {
+    Navigator.pushNamed(context, TicketNewPage.routeName);
   }
 }

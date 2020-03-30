@@ -77,9 +77,9 @@ class IrAttachment {
     accessToken = json['access_token'];
     active = json['active'];
     checksum = json['checksum'];
-    companyId = json['company_id'];
+    companyId = json['company_id'] is bool ? [] : json['company_id'];
     createDate = json['create_date'];
-    createUid = json['create_uid'];
+    createUid = json['create_uid'] is bool ? [] : json['create_uid'];
     datas = json['datas'];
     datasFname = json['datas_fname'];
     dbDatas = json['db_datas'];
@@ -104,10 +104,10 @@ class IrAttachment {
     thumbnail = json['thumbnail'];
     type = json['type'];
     url = json['url'];
-    websiteId = json['website_id'];
+    websiteId = json['website_id'] is bool ? [] : json['website_id'];
     websiteUrl = json['website_url'];
     writeDate = json['write_date'];
-    writeUid = json['write_uid'];
+    writeUid = json['write_uid'] is bool ? [] : json['write_uid'];
   }
 
   Map<String, dynamic> toJson() {

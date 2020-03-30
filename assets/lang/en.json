@@ -47,7 +47,8 @@
     "ADD_BUTTON": "Add",
     "ID_IDENTIFY": "Service Name",
     "CREATE_DATE": "Create date",
-    "EXPIRE_DATE": "Expire date"
+    "EXPIRE_DATE": "Expire date",
+    "TODAY": "Today"
   },
   "FAQ_DETAIL_PAGE": {
     "TITLE": "FAQ",
@@ -59,7 +60,11 @@
   "WANRRANTY_DETAIL_PAGE": {
     "DATE_REMAINING": "Date remaining",
     "SERIAL": "Serial number",
-    "PHONE": "Phone"
+    "PHONE": "Phone",
+    "LICENSE": "License",
+    "NO_DATA": "No information",
+    "DATE_EXPIRED": "Expired",
+    "DATE_STRING": "day"
   },
   "WAITING_MESSAGE": {
     "PERMISSION_CONNECT": "Checking access permission...",

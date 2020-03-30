@@ -36,7 +36,6 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     viewModel.getListFAQByCategoryId(
         widget.listParams[0]); // as that [categoryId, color, iconPath, name]
@@ -45,8 +44,6 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context);
-//    final List<dynamic> categoryId = ModalRoute.of(context).settings.arguments;
-//    viewModel.getListFAQByCategoryId(categoryId[0]);
     viewModel.context = context;
 
     Widget _appBar() {
@@ -67,15 +64,6 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
             Navigator.of(context).pop();
           },
         ),
-//        actions: <Widget>[
-//          IconButton(
-//            onPressed: () {},
-//            icon: Icon(
-//              Icons.search,
-//              color: Colors.black87,
-//            ),
-//          )
-//        ],
       );
     }
 
@@ -172,7 +160,7 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: viewModel.listArticle.length == 0
                 ? <Widget>[Container(
-              width: MediaQuery.of(context).size.width,
+              width: media.size.width,
               child: Center(child: Text(translation.text('FAQ_DETAIL_PAGE.NO_DATA'))),
             )]
                 : viewModel.listArticle.map((item) {
@@ -181,33 +169,13 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
       }
 
 //      fix height not full screen
-
-//      return TS24BottomScrollWithBackgroundWidget(
-//          shadow: true,
-//          title: translation.text('FAQ_DETAIL_PAGE.GUIDANCE_TITLE'),
-//          background: __background(),
-//          child: ConstrainedBox(
-//            constraints: new BoxConstraints(
-//                minHeight: MediaQuery.of(context).size.height*0.85
-//            ),
-//            child: Container(
-//              padding: EdgeInsets.all(20),
-//              decoration: BoxDecoration(
-//                color: Colors.white,
-//                borderRadius: BorderRadius.only(
-//                    topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-//              ),
-//              child: __content(),
-//            ),
-//          ));
-
       return TS24BottomScrollWithBackgroundWidget(
           shadow: false,
           title: translation.text('FAQ_DETAIL_PAGE.GUIDANCE_TITLE'),
           background: __background(),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height * .85),
+                minHeight: media.size.height * .85),
             child: Container(
               height: viewModel.listArticle.length < 6 ? 580.0 : null,
               padding: EdgeInsets.all(20),
@@ -267,7 +235,6 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
                 ? _body()
                 : LoadingIndicator.spinner(context: context, loading: true),
           );
-
 //            TS24SearchBarWidget(
 //            leading: IconButton(
 //              icon: Icon(

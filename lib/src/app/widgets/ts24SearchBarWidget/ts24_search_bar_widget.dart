@@ -5,6 +5,7 @@ import 'package:ts24care/packages/loader_search_bar/src/SearchBar.dart';
 import 'package:ts24care/packages/loader_search_bar/src/SearchBarAttrs.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/widgets/float_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24SearchBarWidget/ts24_search_bar_widget_viewmodel.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 
@@ -14,6 +15,8 @@ class TS24SearchBarWidget extends StatefulWidget {
   final Widget leading;
   final Widget title;
   final Widget bottom;
+  final List<Widget> actions;
+  final List<FloatingActionButton> listFloatingActionButton;
   final Widget resultWidget;
   final Widget contentWidget;
   final Color backgroundColor;
@@ -24,21 +27,23 @@ class TS24SearchBarWidget extends StatefulWidget {
   final OnQueryCallBack onQuerySubmittedCallBack;
   final SearchBarStateCallBack searchBarStateCallBack;
 
-  const TS24SearchBarWidget({
-    Key key,
-    this.leading,
-    this.title,
-    this.backgroundColor,
-    this.onQueryChangedCallBack,
-    this.onQuerySubmittedCallBack,
-    this.searchBarStateCallBack,
-    this.bottom,
-    this.primaryColor,
-    this.countResult,
-    this.resultWidget,
-    this.contentWidget,
-    this.onTapFloatButton,
-  }) : super(key: key);
+  const TS24SearchBarWidget(
+      {Key key,
+      this.leading,
+      this.title,
+      this.backgroundColor,
+      this.onQueryChangedCallBack,
+      this.onQuerySubmittedCallBack,
+      this.searchBarStateCallBack,
+      this.bottom,
+      this.primaryColor,
+      this.countResult,
+      this.resultWidget,
+      this.contentWidget,
+      this.onTapFloatButton,
+      this.actions,
+      this.listFloatingActionButton})
+      : super(key: key);
 
   @override
   _TS24SearchBarWidgetState createState() => _TS24SearchBarWidgetState();
@@ -82,6 +87,7 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
             backgroundColor: widget.backgroundColor,
             leading: widget.leading,
             title: widget.title,
+            actions: widget.actions,
             bottom: widget.bottom != null
                 ? PreferredSize(
                     child: widget.bottom,
@@ -184,13 +190,19 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
           return TS24Scaffold(
             appBar: _appBar(),
             body: _body(),
-            floatingActionButton: widget.onTapFloatButton != null
+            floatingActionButton: widget.listFloatingActionButton != null
                 ? viewModel.searchBarState == SearchBarState.cancel
-                    ? FloatingActionButton(
-                        onPressed: widget.onTapFloatButton,
-                        child: Icon(Icons.add),
-                        backgroundColor: widget.primaryColor,
+                    ? FloatButtonWidget(
+                        tooltip: "add",
+                        onPressed: () {},
+                        listFAB: widget.listFloatingActionButton,
+                        icon: Icons.menu,
                       )
+//            FloatingActionButton(
+//                        onPressed: widget.onTapFloatButton,
+//                        child: Icon(Icons.add),
+//                        backgroundColor: widget.primaryColor,
+//                      )
                     : null
                 : null,
           );

@@ -17,6 +17,7 @@ class HelpPageViewModel extends ViewModelBase {
   List<ProductWarranty> listProductWarranty = List();
   List<KnowsystemArticle> listArticle = List();
   List<KnowsystemSection> listCategory = List();
+  bool isIndexCategoryChanged = false;
 
   HelpPageViewModel() {
 //    listApplication.addAll(ItemApplicationModel.listApplicationActive);
@@ -55,7 +56,9 @@ class HelpPageViewModel extends ViewModelBase {
     }
 
     listApplication = dataListApplication;
-    onFirstCategoryIndexUnChanged(listApplication);
+    if (!isIndexCategoryChanged) {
+      onFirstCategoryIndexUnChanged(listApplication);
+    }
     this.updateState();
   }
 
@@ -80,6 +83,8 @@ class HelpPageViewModel extends ViewModelBase {
 
 //  fetch listProductWarranty when category product changed
   Future<void> onCategoryIndexChanged(int idCategoryProduct) async {
+    isIndexCategoryChanged = true;
+    this.updateState();
     try {
       listProductWarranty =
           await api.getProductWarrantyByCategoryId(idCategoryProduct);
@@ -103,7 +108,8 @@ class HelpPageViewModel extends ViewModelBase {
   Future<void> getListFAQByCategoryId(int idCategoryArticle) async {
     listArticle = await api.getListFAQByCategoryId(
         categoryId: idCategoryArticle, offset: 0, limit: 50);
-    if (listArticle.length >= 5) {
+    print(listArticle);
+    if (listArticle.length > 4) {
       listArticle = listArticle.sublist(0, 5);
       this.updateState();
     }

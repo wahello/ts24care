@@ -4,11 +4,9 @@ import 'package:ts24care/src/app/models/knowsystem-article.dart';
 import 'package:ts24care/src/app/pages/help/faq/help_faq_page_viewmodel.dart';
 import 'package:ts24care/src/app/pages/help/faqDetail/faqArticleDetail/faq_article_detail_web_view_page.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
-import 'package:ts24care/src/app/widgets/group_content_widget.dart';
 import 'package:ts24care/src/app/widgets/item_help_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24SearchBarWidget/ts24_search_bar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
-import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 class FAQPage extends StatefulWidget {
   static const String routeName = "/FAQpage";
@@ -152,8 +150,11 @@ class _FAQPageState extends State<FAQPage> {
             onQuerySubmittedCallBack: viewModel.onQuerySubmitted,
             countResult: viewModel.listResultSearch.length,
             resultWidget: _renderResultSearch(viewModel.listResultSearch),
-            contentWidget: viewModel.listCategory.length == 0 ? Offstage() :_body()
-               ,
+            contentWidget:
+//            viewModel.listCategory.length > 0
+//                ?
+              _body()
+//                : LoadingIndicator.spinner(context: context, loading: true),
           );
 //            TS24Scaffold(
 //            backgroundColor: ThemePrimary.backgroundColor,

@@ -7,7 +7,7 @@ class BlogPostPageViewModel extends ViewModelBase{
   ItemNewFeedModel itemNewFeedModel;
   onGetContentById(ItemNewFeedModel item){
     api.getBlogById(item.id).then((blogPost){
-      if (blogPost.content != null) {
+      if (blogPost != null) {
         item.content = blogPost.content;
       }
       this.updateState();

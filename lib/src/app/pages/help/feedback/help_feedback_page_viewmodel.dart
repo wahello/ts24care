@@ -10,7 +10,7 @@ class FeedbackPageViewModel extends ViewModelBase {
   Future<void> getListFAQByCategoryId(int id) async {
     print('CATEGORY ID: $id');
     listArticle =
-        await api.getListFAQByCategoryId(categoryId: id, offset: 0, limit: 3);
+    await api.getListFAQByCategoryId(categoryId: id, offset: 0, limit: 3);
     print(listArticle);
     this.updateState();
   }

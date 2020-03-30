@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/models/item_newfeed_model.dart';
 
@@ -23,14 +24,28 @@ class _ItemNewFeedHorizontalWidgetState
         ClipRRect(
           borderRadius: BorderRadius.circular(25.0),
           child: widget.url != null
-              ? Image.network(
-                  widget.url,
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width * 0.43,
-                  height: MediaQuery.of(context).size.width * 0.43,
+              ? CachedNetworkImage(
+                  imageUrl: widget.url,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: MediaQuery.of(context).size.width * 0.43,
+                    height: MediaQuery.of(context).size.width * 0.43,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Image.asset(
+                    "assets/images/default.jpg",
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width * 0.43,
+                    height: MediaQuery.of(context).size.width * 0.43,
+                  ),
                 )
               : Image.asset(
-                  "assets/images/vegetable_natural.jpg",
+                  "assets/images/default.jpg",
                   fit: BoxFit.cover,
                   width: MediaQuery.of(context).size.width * 0.43,
                   height: MediaQuery.of(context).size.width * 0.43,
@@ -93,7 +108,7 @@ class _ItemNewFeedVerticalWidgetState extends State<ItemNewFeedVerticalWidget> {
                     height: MediaQuery.of(context).size.width * 0.33,
                   )
                 : Image.asset(
-                    "assets/images/vegetable_natural.jpg",
+                    "assets/images/default.jpg",
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width * 0.33,
                     height: MediaQuery.of(context).size.width * 0.33,
@@ -122,28 +137,28 @@ class _ItemNewFeedVerticalWidgetState extends State<ItemNewFeedVerticalWidget> {
                     style: TextStyle(fontSize: 14, color: Colors.grey[500]),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Icon(
-                        Icons.star,
-                        color: Colors.grey[500],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.favorite_border,
-                            color: Colors.grey[500],
-                          ),
-                          Text(
-                            "100",
-                            style: TextStyle(
-                                fontSize: 14, color: Colors.grey[500]),
-                          )
-                        ],
-                      )
-                    ],
-                  )
+//                  Row(
+//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                    children: <Widget>[
+//                      Icon(
+//                        Icons.star,
+//                        color: Colors.grey[500],
+//                      ),
+//                      Row(
+//                        children: <Widget>[
+//                          Icon(
+//                            Icons.favorite_border,
+//                            color: Colors.grey[500],
+//                          ),
+//                          Text(
+//                            "100",
+//                            style: TextStyle(
+//                                fontSize: 14, color: Colors.grey[500]),
+//                          )
+//                        ],
+//                      )
+//                    ],
+//                  )
                 ],
               ),
             ),

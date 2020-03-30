@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
@@ -46,7 +47,7 @@ class _TutorialPageState extends State<TutorialPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "Smarter Notifications",
+                                viewModel.title[index],
                                 style: TextStyle(
                                     fontSize: 22,
                                     color: ThemePrimary.primaryColor,
@@ -57,7 +58,7 @@ class _TutorialPageState extends State<TutorialPage> {
                                 height: 15,
                               ),
                               Text(
-                                "Get ticket updates only when and where you want to receive them.",
+                                viewModel.subTitle[index],
                                 style:
                                 TextStyle(fontSize: 20, color: Colors.grey),
                                 textAlign: TextAlign.center,
@@ -71,16 +72,26 @@ class _TutorialPageState extends State<TutorialPage> {
                         child: Container(
 //                          color: Colors.blue,
                           alignment: Alignment.center,
-                          child: Image.asset(
-                            "assets/images/vegetable_natural.jpg",
-                            fit: BoxFit.fitWidth,
+                          child: CachedNetworkImage(
+                            imageUrl: viewModel.urlImageSlide[index],
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: MediaQuery.of(context).size.width *0.8,
+                              height: MediaQuery.of(context).size.width *0.8,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,),
+                              ),
+                            ),
+                            placeholder: (context, url) => CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
                           ),
                         ),
                       )
                     ],
                   );
                 },
-                itemCount: 3,
+                itemCount: viewModel.urlImageSlide.length,
                 pagination: new SwiperPagination(),
                 control: new SwiperControl(color: Colors.transparent,disableColor: Colors.transparent),
                 viewportFraction: 1,
@@ -101,7 +112,7 @@ class _TutorialPageState extends State<TutorialPage> {
                     color: ThemePrimary.primaryColor),
                 child: Center(
                   child: Text(
-                    "Get Started",
+                    "Bắt đầu",
                     style: TextStyle(color: Colors.white, fontSize: 18,fontWeight: FontWeight.bold),
                   ),
                 ),
