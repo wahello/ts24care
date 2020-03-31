@@ -44,7 +44,7 @@ dependencies:
   validators: ^2.0.0+1
   intl: ^0.16.0
   flutter_spinkit: ^4.1.1+1
-  flushbar: ^1.8.2
+  flushbar: ^1.9.1
   flutter_swiper: ^1.1.6
   cached_network_image: ^2.0.0
   percent_indicator: ^2.1.1+1
