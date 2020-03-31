@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/models/blog-post.dart';
 import 'package:ts24care/src/app/models/customer.dart';
+import 'package:ts24care/src/app/models/helpdesk-category.dart';
 import 'package:ts24care/src/app/models/helpdesk-stage.dart';
 import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:ts24care/src/app/models/ir-attachment.dart';
@@ -284,6 +285,33 @@ class Api1 extends ApiMaster {
         }
       }
 
+      return listResult;
+    }).catchError((error) {
+      return listResult;
+    });
+  }
+
+  ///Lấy danh sách category của ticket
+  ///
+  Future<List<HelpDeskCategory>> getListCategoryOfTicket() async {
+    await this.authorization();
+    body = new Map();
+    body["fields"] = ["name", "id"];
+
+    var params = convertSerialize(body);
+    List<HelpDeskCategory> listResult = new List();
+    return http
+        .get('${this.api}/search_read/helpdesk.category?$params',
+            headers: this.headers)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        this.updateCookie(response);
+        List list = json.decode(response.body);
+        print(list);
+        if (list.length > 0)
+          listResult =
+              list.map((item) => HelpDeskCategory.fromJson(item)).toList();
+      }
       return listResult;
     }).catchError((error) {
       return listResult;
