@@ -8,6 +8,7 @@ import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/widgets/float_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24SearchBarWidget/ts24_search_bar_widget_viewmodel.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 import '../ts24_button_widget.dart';
 
@@ -154,6 +155,7 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
     Widget _content({String title, IconData iconData, Widget widget}) {
       return Column(
         children: <Widget>[
+          LoadingIndicator.progress(context: context,loading: viewModel.searching),
           _headerContent(title, iconData),
           Expanded(child: widget),
         ],

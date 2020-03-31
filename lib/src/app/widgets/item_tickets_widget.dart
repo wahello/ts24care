@@ -30,21 +30,21 @@ class ItemTicketsWidget extends StatelessWidget {
                       height: MediaQuery.of(context).size.width * 0.33,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,),
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    errorWidget: (context, url, error) => Image.asset(
+                      "assets/images/default.jpg",
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      height: MediaQuery.of(context).size.width * 0.33,
+                    ),
                   )
-//            Image.network(
-//                    avatarUrl,
-//                    fit: BoxFit.cover,
-//                    width: MediaQuery.of(context).size.width * 0.33,
-//                    height: MediaQuery.of(context).size.width * 0.33,
-//                  )
                 : Image.asset(
-                    "assets/images/default.png",
+                    "assets/images/default.jpg",
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width * 0.33,
                     height: MediaQuery.of(context).size.width * 0.33,

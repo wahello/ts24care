@@ -193,9 +193,13 @@ class LoadingIndicator {
         alignment: position,
         // child: SpinKitWave(
         //     color: Theme.of(context).primaryColor, type: SpinKitWaveType.start),
-        child: LinearProgressIndicator(
-          valueColor:
-              AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+        child: SizedBox(
+          height: 0.5,
+          child: LinearProgressIndicator(
+            valueColor:
+                AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+
+          ),
         ),
       );
 

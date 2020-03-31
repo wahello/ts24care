@@ -4,13 +4,14 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/models/ir-attachment.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
-import 'package:ts24care/src/app/widgets/ts24LoadAttachmentWidget.dart';
+import 'package:ts24care/src/app/widgets/ts24_load_attachment_widget.dart';
 
 class ItemCommentWidget extends StatefulWidget {
   final String avatarUrl;
   final String name;
   final String dateTime;
   final String content;
+  final bool expand;
   final List<int> listAttachId;
   const ItemCommentWidget(
       {Key key,
@@ -18,6 +19,7 @@ class ItemCommentWidget extends StatefulWidget {
       this.name,
       this.dateTime,
       this.content,
+      this.expand = false,
       this.listAttachId})
       : super(key: key);
   @override
@@ -25,6 +27,7 @@ class ItemCommentWidget extends StatefulWidget {
 }
 
 class _ItemCommentWidgetState extends State<ItemCommentWidget> {
+//  bool isBuildUi = false;
   bool isExpand = true;
   bool isFirst = true;
   bool isShow = false;
@@ -35,21 +38,38 @@ class _ItemCommentWidgetState extends State<ItemCommentWidget> {
     final RenderBox renderBox = _key.currentContext.findRenderObject();
     _size = renderBox.size;
     isFirst = false;
-    isExpand = false;
+    isExpand = widget.expand;
     isShow = true;
+  }
+
+  Future<void> getAttachment() async {
+//    int count = 0;
+    for (int i = 0; i < widget.listAttachId.length; i++) {
+      var result = await api.getAttachmentById(1);
+      if (result != null) listAttachment.add(result);
+//      count++;
+//      if (count == widget.listAttachId.length) {
+//        setState(() {
+//          isBuildUi = true;
+//        });
+//      }
+    }
   }
 
   @override
   void initState() {
-    widget.listAttachId.forEach((id){
-      api.getAttachmentById(id).then((item){
-        if(item != null)
-          print(item.name);
-          listAttachment.add(item);
-        setState(() {
-        });
-      });
-    });
+    getAttachment();
+//    int count = 0;
+//    for (int i = 0; i < widget.listAttachId.length; i++) {
+//      api.getAttachmentById(widget.listAttachId[i]).then((item) {
+//        if (item != null) {
+//          print(item.name);
+//          listAttachment.add(item);
+//          setState(() {});
+//        }
+////        count++;
+//      });
+//    }
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
           _getSize();
         }));
@@ -59,21 +79,15 @@ class _ItemCommentWidgetState extends State<ItemCommentWidget> {
   @override
   Widget build(BuildContext context) {
     Widget _listAttachment() {
-      return listAttachment.length > 0
-          ? TS24LoadAttachmentWidget(
-              listIrAttachment: listAttachment,
-            )
-          : Container();
+      return TS24LoadAttachmentWidget(
+        listIrAttachment: listAttachment,
+      );
     }
+
     Widget _content(String content) {
-      return Column(
-        children: <Widget>[
-          HtmlWidget(
-            content,
-            webView: true,
-          ),
-          _listAttachment()
-        ],
+      return HtmlWidget(
+        content,
+        webView: true,
       );
     }
 
@@ -104,7 +118,9 @@ class _ItemCommentWidgetState extends State<ItemCommentWidget> {
                 },
                 duration: Duration(milliseconds: 500),
                 curve: Curves.fastOutSlowIn,
-                height: isExpand ? _size.height + 85 : 85,
+                height: isExpand
+                    ? _size.height + (listAttachment.length > 0 ? 100 : 0) + 85
+                    : 85,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -140,10 +156,19 @@ class _ItemCommentWidgetState extends State<ItemCommentWidget> {
                                       placeholder: (context, url) =>
                                           CircularProgressIndicator(),
                                       errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
+                                          Image.asset(
+                                        "assets/images/default.jpg",
+                                        fit: BoxFit.cover,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.35,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.35,
+                                      ),
                                     )
                                   : Image.asset(
-                                      "assets/images/default.png",
+                                      "assets/images/default.jpg",
                                       fit: BoxFit.cover,
                                       width: MediaQuery.of(context).size.width *
                                           0.35,
@@ -196,7 +221,16 @@ class _ItemCommentWidgetState extends State<ItemCommentWidget> {
                             ? isFirst
                                 ? _content(widget.content)
                                 : isShow
-                                    ? _content(widget.content)
+                                    ? Column(
+                                        children: <Widget>[
+                                          _content(widget.content),
+                                          if (listAttachment.length > 0)
+                                            Container(
+                                              height: 100,
+                                              child: _listAttachment(),
+                                            )
+                                        ],
+                                      )
                                     : Container(
 //                    color: Colors.green,
 //                                height: _size.height,

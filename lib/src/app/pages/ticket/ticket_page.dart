@@ -9,6 +9,7 @@ import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/item_tickets_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24SearchBarWidget/ts24_search_bar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 class TicketsPage extends StatefulWidget {
   static const String routeName = "/ticketsPage";
@@ -42,11 +43,11 @@ class _TicketsPageState extends State<TicketsPage>
 //                height: 90,
               child: ItemTicketsWidget(
                 title: itemTickets.subject,
-                avatarUrl:
-
-                   itemTickets.userId.length > 0?api.getImageByIdPartner(itemTickets.userId[0].toString()):null,
+                avatarUrl: itemTickets.userId.length > 0
+                    ? api.getImageByIdPartner(itemTickets.userId[0].toString())
+                    : null,
 //                content: itemTickets.content,
-                name: itemTickets.contactName.toString(),
+                name: itemTickets.name,
                 time: formatTime(itemTickets.dateLastStageUpdate),
               ),
             );
@@ -62,8 +63,10 @@ class _TicketsPageState extends State<TicketsPage>
             ? _listTicket(viewModel.listTicket)
             : SingleChildScrollView(
                 child: Container(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height*0.8,
                 color: ThemePrimary.backgroundColor,
+                  alignment: Alignment.topCenter,
+                  child: LoadingIndicator.spinner(context: context,loading: viewModel.loading),
               )),
       );
     }
@@ -140,20 +143,6 @@ class _TicketsPageState extends State<TicketsPage>
         stream: viewModel.stream,
         builder: (context, snapshot) {
           return TS24SearchBarWidget(
-            leading: InkWell(
-              onTap: () {},
-//              child: Container(
-//                alignment: Alignment.center,
-//                padding: EdgeInsets.only(left: 15),
-//                child: Text(
-//                  "Edit",
-//                  style: TextStyle(
-//                      color: Colors.grey,
-//                      fontSize: 16,
-//                      fontWeight: FontWeight.w500),
-//                ),
-//              ),
-            ),
             title: Row(
               children: <Widget>[
                 Text(
@@ -193,21 +182,21 @@ class _TicketsPageState extends State<TicketsPage>
 //                              fontWeight: FontWeight.w600),
 //                        ),
                         _buildMenuStatusIcon(onSelected: viewModel.onSelected),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.arrow_downward,
-                              color: ThemePrimary.primaryColor,
-                            ),
-                            Text(
-                              "Mặc định",
-                              style:
-                                  TextStyle(color: ThemePrimary.primaryColor),
-                            )
-                          ],
-                        )
+//                        Row(
+//                          mainAxisAlignment: MainAxisAlignment.center,
+//                          crossAxisAlignment: CrossAxisAlignment.center,
+//                          children: <Widget>[
+//                            Icon(
+//                              Icons.arrow_downward,
+//                              color: ThemePrimary.primaryColor,
+//                            ),
+//                            Text(
+//                              "Mặc định",
+//                              style:
+//                                  TextStyle(color: ThemePrimary.primaryColor),
+//                            )
+//                          ],
+//                        )
                       ],
                     ),
                   )

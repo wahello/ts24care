@@ -27,10 +27,13 @@ class TicketPageViewModel extends ViewModelBase {
   }
 
   onLoad(int status) async {
+    loading = true;
+    this.updateState();
     var _listTicket =
         await api.getListTicketByStatus(status: status, offset: 0, limit: 10);
 //    if (_listTicket.length > 0) {
     listTicket = _listTicket;
+    loading = false;
     this.updateState();
 //    }
   }

@@ -13,7 +13,8 @@ import 'package:ts24care/src/app/pages/ticket/detail/ticket_detail_page_viewmode
 import 'package:ts24care/src/app/provider/api.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/item_comment_widget.dart';
-import 'package:ts24care/src/app/widgets/ts24LoadAttachmentWidget.dart';
+import 'package:ts24care/src/app/widgets/list_message_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_load_attachment_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_add_attachment_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
@@ -132,6 +133,48 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
           );
         }
 
+        Widget ___loadingAttachmentWidget() {
+          var ____list = List();
+          if (viewModel.helpdeskTicket.attachmentIds != null &&
+              viewModel.helpdeskTicket.attachmentIds.length > 0)
+            ____list = viewModel.helpdeskTicket.attachmentIds
+                .map((item) => IrAttachment.fromJson(item))
+                .toList();
+          return Container(
+//            color: Colors.red,
+            width: MediaQuery.of(context).size.width,
+            height: 100,
+            margin: EdgeInsets.all(15),
+            alignment: Alignment.center,
+            child: ListView.builder(
+                itemCount: ____list.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Container(
+//                      color: Colors.green,
+                      width: 100,
+                      height: 60,
+                      margin: EdgeInsets.fromLTRB(0, 10, 10, 30),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            border: Border.all(color: Colors.blueGrey)),
+                        height: 40,
+                        width: 90,
+                        padding: EdgeInsets.fromLTRB(35, 15, 35, 15),
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.blueGrey),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          );
+        }
+
         Widget ___listAttachment() {
           return viewModel.listAttachContent.length > 0
               ? TS24LoadAttachmentWidget(
@@ -228,7 +271,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                                                 0.25,
                                           )
                                         : Image.asset(
-                                            "assets/images/default.png",
+                                            "assets/images/default.jpg",
                                             fit: BoxFit.cover,
                                             width: MediaQuery.of(context)
                                                     .size
@@ -372,49 +415,52 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                     height: 0.5,
                     color: ThemePrimary.backgroundColor,
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "Trả lời công khai",
-                              style: TextStyle(
-                                  color: ThemePrimary.primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                color: ThemePrimary.primaryColor,
-                              ),
-                              onPressed: () {},
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.add,
-                              color: ThemePrimary.primaryColor,
-                              size: 16,
-                            ),
-                            Text(
-                              "CC",
-                              style: TextStyle(
-                                  color: ThemePrimary.primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                  SizedBox(
+                    height: 20,
                   ),
+//                  Container(
+//                    width: MediaQuery.of(context).size.width,
+//                    child: Row(
+//                      crossAxisAlignment: CrossAxisAlignment.center,
+//                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                      children: <Widget>[
+//                        Row(
+//                          children: <Widget>[
+//                            Text(
+//                              "Trả lời công khai",
+//                              style: TextStyle(
+//                                  color: ThemePrimary.primaryColor,
+//                                  fontSize: 16,
+//                                  fontWeight: FontWeight.bold),
+//                            ),
+//                            IconButton(
+//                              icon: Icon(
+//                                Icons.arrow_drop_down,
+//                                color: ThemePrimary.primaryColor,
+//                              ),
+//                              onPressed: () {},
+//                            )
+//                          ],
+//                        ),
+//                        Row(
+//                          children: <Widget>[
+//                            Icon(
+//                              Icons.add,
+//                              color: ThemePrimary.primaryColor,
+//                              size: 16,
+//                            ),
+//                            Text(
+//                              "CC",
+//                              style: TextStyle(
+//                                  color: ThemePrimary.primaryColor,
+//                                  fontSize: 16,
+//                                  fontWeight: FontWeight.bold),
+//                            )
+//                          ],
+//                        )
+//                      ],
+//                    ),
+//                  ),
                   TextField(
                     controller: viewModel.descriptionEditingController,
                     decoration: InputDecoration(
@@ -484,10 +530,10 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
 //        viewModel.listModel.forEach((message) {
 //          listMailMessage.;
 //        });
-        return !viewModel.loading && viewModel.listModel.length > 0
+        return !viewModel.loading && viewModel.listMailMessage.length > 0
             ? Column(
                 children: <Widget>[
-                  ...viewModel.listModel.reversed.map((message) {
+                  ...viewModel.listMailMessage.reversed.map((message) {
                     List<int> _listIdAttachment = List();
                     _listIdAttachment = message.attachmentIds
                         .map((item) => int.parse(item.toString()))
@@ -521,16 +567,25 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
             padding: EdgeInsets.only(bottom: 100),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  __info(),
-                  _listMessage(),
-                  Container(
-                    height: 150,
-                    color: ThemePrimary.backgroundColor,
-                  )
-                ],
+            child: RefreshIndicator(
+              onRefresh: ()async{
+                viewModel.onLoad(widget.args.id);
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    __info(),
+//                  _listMessage(),
+                    if (!viewModel.loading &&
+                        viewModel.listMailMessage.length > 0)
+                      ListMessageWidget(
+                          listMailMessage: viewModel.listMailMessage),
+                    Container(
+                      height: 150,
+                      color: ThemePrimary.backgroundColor,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

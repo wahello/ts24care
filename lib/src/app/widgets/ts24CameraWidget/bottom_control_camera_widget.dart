@@ -122,7 +122,7 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
               color: Colors.white,
               image: DecorationImage(
                   image: viewModel.imagePath == null
-                      ? AssetImage("assets/images/default.png")
+                      ? AssetImage("assets/images/default.jpg")
                       : AssetImage(viewModel.imagePath),
                   fit: BoxFit.cover),
               borderRadius: BorderRadius.circular(5)),

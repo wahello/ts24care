@@ -21,8 +21,9 @@ class TicketDetailViewModel extends ViewModelBase {
   MenuStatusState statusState;
   CustomPopupMenu customPopupMenu;
   HelpdeskTicket helpdeskTicket;
-  List<MailMessage> listModel = List();
+  List<MailMessage> listMailMessage = List();
   List<IrAttachment> listAttachContent = List();
+  bool isLoadingListAttachContent = false;
   TextEditingController descriptionEditingController = TextEditingController();
   List<ItemAddAttachmentModel> listAddAttachmentModel = List();
   TicketDetailViewModel() {
@@ -48,19 +49,28 @@ class TicketDetailViewModel extends ViewModelBase {
     var ticket = await api.getTicketById(id);
     helpdeskTicket = ticket;
     customPopupMenu = CustomPopupMenu.getTicket(helpdeskTicket.stageId[0]);
+//    isLoadingListAttachContent = true;
+//    this.updateState();
     listAttachContent = helpdeskTicket.attachmentIds
         .map((item) => IrAttachment.fromJson(item))
         .toList();
-    print(listModel);
-//    listModel = helpdeskTicket.messageIds
-//        .map((message) => MailMessageModel(
-//            id: message['id'],
-//            authorId: message['author_id'][0],
-//            authorName: message['author_id'][1].toString(),
-//            body: message['body'],
-//            writeDate: message['write_date'],
-//            createDate: message['create_date'])).toList();
-    listModel = helpdeskTicket.messageIds
+    this.updateState();
+//    if (_listAttachment.length > 0) {
+//      listAttachContent.clear();
+//      int count = 0;
+//      for (int i = 0; i < _listAttachment.length; i++) {
+//            api.getAttachmentById(_listAttachment[i].id).then((irAttachment){
+//              count ++;
+//                if (irAttachment != null) listAttachContent.add(irAttachment);
+//                if(count == _listAttachment.length) {
+//                  isLoadingListAttachContent = false;
+//                  this.updateState();
+//                }
+//              });
+//      }
+//    }
+
+    listMailMessage = helpdeskTicket.messageIds
         .map((item) => MailMessage.fromJson(item))
         .toList();
     loading = false;
