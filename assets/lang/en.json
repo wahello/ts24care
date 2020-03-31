@@ -53,7 +53,7 @@
   "FAQ_DETAIL_PAGE": {
     "TITLE": "FAQ",
     "GUIDANCE_TITLE": "Choose article to read more information",
-    "NO_DATA": "No have data yet",
+    "NO_DATA": "Loading...",
     "RECENT": "Recent",
     "RESULT": "Result"
   },

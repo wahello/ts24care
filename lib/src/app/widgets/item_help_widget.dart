@@ -34,8 +34,9 @@ class ItemHelpWidget extends StatelessWidget {
                       arguments: [categoryId, color, iconPath, text]);
                 },
                 child: Container(
-                    width: 70,
-                    height: 70,
+                    width: 75,
+                    height: 75,
+                    padding: EdgeInsets.all(0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle, color: Colors.grey[300]),
@@ -45,7 +46,6 @@ class ItemHelpWidget extends StatelessWidget {
                               CircularProgressIndicator(),
                           imageUrl: iconPath,
                         ),
-//                            Image.network(iconPath),
                     )),
               )
                   : Center(

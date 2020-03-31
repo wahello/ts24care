@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
@@ -34,10 +33,6 @@ class _HelpPageState extends State<HelpPage>
     super.initState();
     viewModel.fetchCategoryTS24Product();
   }
-
-  final _style = TextStyle(
-    fontSize: 16,
-  );
 
   Widget _categoryDetail(
       {int id,
@@ -109,14 +104,25 @@ class _HelpPageState extends State<HelpPage>
             )
           ],
         ),
-        Container(
+         AnimatedContainer(
+          duration: Duration(milliseconds: 700),
           width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white70,
             borderRadius: BorderRadius.circular(20),
           ),
           margin: EdgeInsets.symmetric(horizontal: 5),
-          child: Wrap(
+          child: viewModel.listArticle.length == 0 ? Container(
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20), color: Colors.white70),
+            child: Row(
+              children: <Widget>[
+                Text(translation.text("HELP_PAGE.GROUP_SUBTITLE_1"))
+              ],
+            ),
+          ) : Wrap(
             spacing: 10,
             alignment: WrapAlignment.center,
             children: <Widget>[
@@ -138,7 +144,6 @@ class _HelpPageState extends State<HelpPage>
                                 .split(' ')[1]
                                 .length -
                             3);
-                var dateTimeValid = '$year-$month-$date $time';
                 return Material(
                   color: Colors.white10,
                   child: InkWell(
@@ -155,53 +160,15 @@ class _HelpPageState extends State<HelpPage>
                       child: Chip(
                         backgroundColor: ThemePrimary.backgroundColor,
                         label: Container(
-
-                          width: (MediaQuery.of(context).size.width/4),
-                          child:
-                              Text(
-                                item.name.toString(),
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 13),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-//                              Text(
-//                                  DateTime.now() ==
-//                                          DateTime.parse(dateTimeValid)
-//                                      ? '${translation.text("HELP_PAGE.TODAY")} $time'
-//                                      : dateStringFilter.substring(
-//                                          0, dateStringFilter.length - 3),
-//                                  style: TextStyle(
-//                                      color: Colors.grey, fontSize: 10)),
+                          width: (MediaQuery.of(context).size.width / 4),
+                          child: Text(
+                            item.name.toString(),
+                            style:
+                                TextStyle(color: Colors.black87, fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      )
-
-//                    Container(
-//                        width: double.infinity,
-//                        padding: EdgeInsets.only(left: 15, top: 10),
-//                        margin: EdgeInsets.only(bottom: 5),
-//                        decoration: BoxDecoration(
-//                          borderRadius: BorderRadius.circular(20),
-//                        ),
-//                        child: Column(
-//                          crossAxisAlignment: CrossAxisAlignment.start,
-//                          children: <Widget>[
-//                            Text(
-//                              item.name.toString(),
-//                              style: TextStyle(color: Colors.black87),
-//                              overflow: TextOverflow.ellipsis,
-//                            ),
-//                            Text(
-//                                DateTime.now() == DateTime.parse(dateTimeValid)
-//                                    ? 'Today $time'
-//                                    : dateStringFilter.substring(
-//                                    0, dateStringFilter.length - 3),
-//                                style: TextStyle(color: Colors.grey)),
-//                            SizedBox(
-//                              height: 15,
-//                            ),
-//                          ],
-//                        )),
-                      ),
+                      )),
                 );
               })
             ],
@@ -211,114 +178,6 @@ class _HelpPageState extends State<HelpPage>
     );
   }
 
-//  Widget _renderArticleHaveData() {
-//    return Column(
-//      crossAxisAlignment: CrossAxisAlignment.start,
-//      children: <Widget>[
-//        Row(
-//          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//          children: <Widget>[
-//            Container(
-//              margin: EdgeInsets.only(left: 10, bottom: 10),
-//              child: Text(
-//                'FAQ',
-//                style: TextStyle(
-//                    fontSize: 15,
-//                    color: Colors.grey[600],
-//                    fontWeight: FontWeight.bold),
-//              ),
-//            ),
-//            Container(
-//              margin: EdgeInsets.only(right: 10, bottom: 10),
-//              child: GestureDetector(
-//                  onTap: () {
-//                    viewModel.onTapFAQ();
-//                  },
-//                  child: Text(
-//                    translation.text('HELP_PAGE.VIEW_MORE'),
-//                    style: TextStyle(
-//                        color: ThemePrimary.primaryColor,
-//                        fontSize: 15,
-//                        fontWeight: FontWeight.bold),
-//                  )),
-//            )
-//          ],
-//        ),
-//        Container(
-//          decoration: BoxDecoration(
-//            color: Colors.white70,
-//            borderRadius: BorderRadius.circular(20),
-//          ),
-//          margin: EdgeInsets.symmetric(horizontal: 5),
-//          child: Column(
-//            children: <Widget>[
-//              ...viewModel.listArticle.map((item) {
-//                var dateStringFilter = item.createDate.replaceAll('/', '-');
-//                var year =
-//                    dateStringFilter.split('-')[2].toString().split(' ')[0];
-//                var month = dateStringFilter.split('-')[1];
-//                var date = dateStringFilter.split('-')[0];
-//                var time = dateStringFilter
-//                    .split('-')[2]
-//                    .toString()
-//                    .split(' ')[1]
-//                    .substring(
-//                        0,
-//                        dateStringFilter
-//                                .split('-')[2]
-//                                .toString()
-//                                .split(' ')[1]
-//                                .length -
-//                            3);
-//                var dateTimeValid = '$year-$month-$date $time';
-//                return Material(
-//                  color: Colors.white10,
-//                  child: InkWell(
-//                    borderRadius: BorderRadius.circular(20),
-//                    hoverColor: Colors.white10,
-//                    onTap: () {
-//                      Navigator.pushNamed(
-//                          context, FaqArticleDetailPage.routeName,
-//                          arguments: [
-//                            [item.description],
-//                            item.name
-//                          ]);
-//                    },
-//                    child: Container(
-//                        width: double.infinity,
-//                        padding: EdgeInsets.only(left: 15, top: 10),
-//                        margin: EdgeInsets.only(bottom: 5),
-//                        decoration: BoxDecoration(
-//                          borderRadius: BorderRadius.circular(20),
-//                        ),
-//                        child: Column(
-//                          crossAxisAlignment: CrossAxisAlignment.start,
-//                          children: <Widget>[
-//                            Text(
-//                              item.name.toString(),
-//                              style: TextStyle(color: Colors.black87),
-//                              overflow: TextOverflow.ellipsis,
-//                            ),
-//                            Text(
-//                                DateTime.now() == DateTime.parse(dateTimeValid)
-//                                    ? 'Today $time'
-//                                    : dateStringFilter.substring(
-//                                        0, dateStringFilter.length - 3),
-//                                style: TextStyle(color: Colors.grey)),
-//                            SizedBox(
-//                              height: 15,
-//                            ),
-//                          ],
-//                        )),
-//                  ),
-//                );
-//              })
-//            ],
-//          ),
-//        )
-//      ],
-//    );
-//  }
 
   Widget _renderTitleArticleNotHaveData() {
     return Column(
@@ -374,16 +233,9 @@ class _HelpPageState extends State<HelpPage>
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: <Widget>[
-            viewModel.listArticle.length == 0
-                ? _renderTitleArticleNotHaveData()
-                : _renderArticleHaveData(),
-            //            remove feedback and add category detail customer pay
+            _renderArticleHaveData(),
             GroupContentWidget(
                 title: translation.text('HELP_PAGE.SERVICE_LIST'),
-//              tapMore: () {
-//                viewModel.onTapFAQ();
-//              },
-
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -443,7 +295,6 @@ class _HelpPageState extends State<HelpPage>
 
   Widget _appBar() {
     return AppBar(
-//      leading: Offstage(),
       backgroundColor: ThemePrimary.backgroundColor,
       elevation: 0,
       title: Text(
@@ -452,8 +303,6 @@ class _HelpPageState extends State<HelpPage>
       ),
     );
   }
-
-// phát triển
 
   @override
   Widget build(BuildContext context) {
@@ -475,7 +324,6 @@ class _HelpPageState extends State<HelpPage>
               child: RefreshIndicator(
                 onRefresh: () async {
                   viewModel.fetchCategoryTS24Product();
-//                  viewModel.getListCategory();
                 },
                 child: CustomScrollView(
                   slivers: <Widget>[
@@ -489,13 +337,6 @@ class _HelpPageState extends State<HelpPage>
                       backgroundColor: Colors.transparent,
                       flexibleSpace: FlexibleSpaceBar(
                           centerTitle: true,
-//                        background: TS24SlideWidget(
-////                          listCurrentObject: viewModel.dataListApplication,
-////                          listFullObject: TS24ProductCategory.list,
-////                          onChange: (index) {
-////                            print(index);
-////                          },
-////                        ),
                           background: viewModel.listApplication.length > 0
                               ? TS24SlideWidget(
                                   listCurrentObject: viewModel.listApplication,

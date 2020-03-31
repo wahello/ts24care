@@ -26,8 +26,8 @@ class HelpPageViewModel extends ViewModelBase {
     this.updateState();
   }
 
-//  fetch data api and add icon url from TS24ProductCategory.list
-  // add id from listCategory for fetch article in TS24SlideProduct
+//  fetch data api and add icon, url from TS24ProductCategory.list
+//  add id from listCategory for fetch article list in TS24SlideProduct
   Future<void> fetchCategoryTS24Product() async {
     List<ProductCategory> data = await api.getCategoryTS24Product();
     List<ItemApplicationModel> dataListApplication = [];
@@ -35,13 +35,15 @@ class HelpPageViewModel extends ViewModelBase {
       for (var itemProductMap = 0;
           itemProductMap < TS24ProductCategory.list.length;
           itemProductMap++) {
-        if (data[itemProduct].name.toString() ==
-            TS24ProductCategory.list[itemProductMap].name.toString()) {
+        if (data[itemProduct].name.toString().contains(
+            TS24ProductCategory.list[itemProductMap].name.toString())) {
           for (var itemCategoryArticle = 0;
               itemCategoryArticle < listCategory.length;
               itemCategoryArticle++) {
-            if (data[itemProduct].name.toString() ==
-                listCategory[itemCategoryArticle].name.toString()) {
+            if (data[itemProduct]
+                .name
+                .toString()
+                .contains(listCategory[itemCategoryArticle].name.toString())) {
               dataListApplication.add(ItemApplicationModel(
                   idCategoryServices: data[itemProduct].id,
                   idCategoryArticle: listCategory[itemCategoryArticle].id,
@@ -56,6 +58,8 @@ class HelpPageViewModel extends ViewModelBase {
     }
 
     listApplication = dataListApplication;
+    this.updateState();
+    print(listApplication);
     if (!isIndexCategoryChanged) {
       onFirstCategoryIndexUnChanged(listApplication);
     }
@@ -106,6 +110,8 @@ class HelpPageViewModel extends ViewModelBase {
 
 //  fetch article by category id
   Future<void> getListFAQByCategoryId(int idCategoryArticle) async {
+    listArticle = [];
+    this.updateState();
     listArticle = await api.getListFAQByCategoryId(
         categoryId: idCategoryArticle, offset: 0, limit: 50);
     print(listArticle);

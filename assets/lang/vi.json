@@ -53,12 +53,12 @@
   "FAQ_DETAIL_PAGE": {
     "TITLE": "FAQ",
     "GUIDANCE_TITLE": "Xem bài bài viết để biết thêm thông tin",
-    "NO_DATA": "Chưa có dữ liệu",
+    "NO_DATA": "Đang tải...",
     "RECENT": "Gần đây",
     "RESULT": "Kết quả"
   },
   "WANRRANTY_DETAIL_PAGE": {
-    "DATE_REMAINING": "Ngày còn lại",
+    "DATE_REMAINING": "Ngày hết hạn",
     "SERIAL": "Số serial",
     "PHONE": "Điện thoại",
     "LICENSE": "Giấy phép",

@@ -16,7 +16,7 @@ class FaqDetailPage extends StatefulWidget {
   final String title;
   final bool shadow;
 
-  final List<dynamic> listParams; // as that [categoryId, color, iconPath]
+  final List<dynamic> listParams; // as that [categoryId, color, iconPath, name]
 
   const FaqDetailPage(
       {Key key,
@@ -51,7 +51,7 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
         backgroundColorEnd: ThemePrimary.backgroundColor,
         backgroundColorStart: ThemePrimary.backgroundColor,
         title: Text(
-          '${translation.text('FAQ_DETAIL_PAGE.TITLE')} ${widget.listParams[3]}',
+          '${translation.text('FAQ_DETAIL_PAGE.TITLE')} ${widget.listParams[3]}', // as that [categoryId, color, iconPath, name]
           style: TextStyle(color: Colors.black87),
         ),
         elevation: 0,
@@ -67,11 +67,9 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
       );
     }
 
-//EasyWebView(src: "https://web.ts24.com.vn/en_US/csrt",webAllowFullScreen: true,)
-
     Widget _body() {
       Widget __itemList(String text, int idArticle, String dateCreate) {
-        // filter dateTime server valid flutter year-month-date time
+        // format dateTime server valid flutter year-month-date time
         var dateStringFilter = dateCreate.replaceAll('/', '-');
         var year = dateStringFilter.split('-')[2].toString().split(' ')[0];
         var month = dateStringFilter.split('-')[1];
@@ -90,25 +88,23 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
           color: Colors.transparent,
           child: InkWell(
             onTap: () async {
-              try{
+              try {
                 KnowsystemArticle data =
-                await viewModel.fetchHtmlByArticleId(idArticle);
+                    await viewModel.fetchHtmlByArticleId(idArticle);
                 Navigator.pushNamed(context, FaqArticleDetailPage.routeName,
                     arguments: [
                       [data.description],
                       text
                     ]);
-              }
-              catch(e){
+              } catch (e) {
                 print(e);
               }
-
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  padding: EdgeInsets.only(top: 0, bottom: 0),
                   child: ListTile(
                     title: Text(
                       text,
@@ -123,9 +119,12 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
                     ),
                   ),
                 ),
-                Container(
-                  height: 0.5,
-                  color: Colors.grey[300],
+                Center(
+                  child: Container(
+                    height: 0.5,
+                    width: media.size.width - 50,
+                    color: Colors.grey[400],
+                  ),
                 )
               ],
             ),
@@ -143,12 +142,13 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
               ),
             ),
             Positioned(
-              top: 35,
-              left: 150,
-              right: 150,
+              top: media.orientation == Orientation.landscape? 15 : 35,
+              left: media.orientation == Orientation.landscape? media.size.width / 2 - 30 : 150,
+              right: media.orientation == Orientation.landscape? media.size.width / 2 - 30 : 150,
               child: Image.network(
                 widget.listParams[2],
-                fit: BoxFit.cover, //as that  [categoryId, color, iconPath, name]
+                fit:
+                    BoxFit.cover, //as that  [categoryId, color, iconPath, name]
               ),
             )
           ],
@@ -159,10 +159,14 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
         return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: viewModel.listArticle.length == 0
-                ? <Widget>[Container(
-              width: media.size.width,
-              child: Center(child: Text(translation.text('FAQ_DETAIL_PAGE.NO_DATA'))),
-            )]
+                ? <Widget>[
+                    Container(
+                      width: media.size.width,
+                      child: Center(
+                          child: Text(
+                              translation.text('FAQ_DETAIL_PAGE.NO_DATA'))),
+                    )
+                  ]
                 : viewModel.listArticle.map((item) {
                     return __itemList(item.name, item.id, item.createDate);
                   }).toList());
@@ -171,58 +175,13 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
 //      fix height not full screen
       return TS24BottomScrollWithBackgroundWidget(
           shadow: false,
-          title: translation.text('FAQ_DETAIL_PAGE.GUIDANCE_TITLE'),
           background: __background(),
           child: ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: media.size.height * .85),
-            child: Container(
-              height: viewModel.listArticle.length < 6 ? 580.0 : null,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(30),
-                    topLeft: Radius.circular(30)),
-              ),
-              child: __content(),
-            ),
+            constraints: BoxConstraints(minHeight: media.size.height * .85),
+            child: __content(),
           ));
     }
 
-    Widget _renderResultSearch(List<KnowsystemArticle> listResultItem) {
-      return ListView.builder(
-        itemCount: listResultItem.length,
-        itemBuilder: (context, index) {
-          return Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, FaqArticleDetailPage.routeName,
-                    arguments: [
-                      [listResultItem[index].description],
-                      listResultItem[index].name
-                    ]);
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    child: ListTile(
-                      title: Text(listResultItem[index].name.toString()),
-                      subtitle: Text(
-                        listResultItem[index].createDate.toString(),
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
 
     return ViewModelProvider(
       viewmodel: viewModel,
@@ -235,30 +194,6 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
                 ? _body()
                 : LoadingIndicator.spinner(context: context, loading: true),
           );
-//            TS24SearchBarWidget(
-//            leading: IconButton(
-//              icon: Icon(
-//                Icons.arrow_back,
-//                color: Colors.black87,
-//              ),
-//              onPressed: () {
-//                Navigator.pop(context);
-//              },
-//            ),
-//            title: Text(
-//              translation.text('FAQ_DETAIL_PAGE.TITLE'),
-//              style: TextStyle(color: Colors.black87),
-//            ),
-//            backgroundColor: ThemePrimary.backgroundColor,
-//            primaryColor: ThemePrimary.primaryColor,
-//            searchBarStateCallBack: (_) {},
-//            onQueryChangedCallBack: (_) {},
-//            onQuerySubmittedCallBack: viewModel.onQuerySubmitted,
-//            countResult: viewModel.listResultSearch.length,
-//            resultWidget: _renderResultSearch(viewModel.listResultSearch),
-//            contentWidget:
-//                viewModel.listArticle.length > 0 ? _body() : Offstage(),
-//          );
         },
       ),
     );

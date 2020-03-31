@@ -76,8 +76,8 @@ class _FAQPageState extends State<FAQPage> {
                           viewModel.listCategoryHaveColorsAndImages[index].id,
                       iconPath: viewModel
                           .listCategoryHaveColorsAndImages[index].urlIcon,
-                      text: viewModel
-                          .listCategoryHaveColorsAndImages[index].name,
+                      text:
+                          viewModel.listCategoryHaveColorsAndImages[index].name,
                       color: viewModel
                           .listCategoryHaveColorsAndImages[index].color,
                     ),
@@ -130,37 +130,27 @@ class _FAQPageState extends State<FAQPage> {
         stream: viewModel.stream,
         builder: (context, snapshot) {
           return TS24SearchBarWidget(
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black87,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.black87,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            title: Text(
-              'FAQ',
-              style: TextStyle(color: Colors.black87, fontSize: 16),
-            ),
-            backgroundColor: Colors.white,
-            primaryColor: ThemePrimary.primaryColor,
-            searchBarStateCallBack: (_) {},
-            onQueryChangedCallBack: (_) {},
-            onQuerySubmittedCallBack: viewModel.onQuerySubmitted,
-            countResult: viewModel.listResultSearch.length,
-            resultWidget: _renderResultSearch(viewModel.listResultSearch),
-            contentWidget:
-//            viewModel.listCategory.length > 0
-//                ?
-              _body()
-//                : LoadingIndicator.spinner(context: context, loading: true),
-          );
-//            TS24Scaffold(
-//            backgroundColor: ThemePrimary.backgroundColor,
-//            appBar: _appBar(),
-//            body: _body(),
-//          );
+              title: Text(
+                'FAQ',
+                style: TextStyle(color: Colors.black87, fontSize: 16),
+              ),
+              backgroundColor: Colors.white,
+              primaryColor: ThemePrimary.primaryColor,
+              searchBarStateCallBack: (_) {},
+              onQueryChangedCallBack: (_) {},
+              onQuerySubmittedCallBack: viewModel.onQuerySubmitted,
+              countResult: viewModel.listResultSearch.length,
+              resultWidget: _renderResultSearch(viewModel.listResultSearch),
+              contentWidget: _body());
         },
       ),
     );

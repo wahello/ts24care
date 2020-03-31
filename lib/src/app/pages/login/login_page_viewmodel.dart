@@ -3,7 +3,6 @@ import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/helper/validator-helper.dart';
 import 'package:ts24care/src/app/pages/help/help_page.dart';
-import 'package:ts24care/src/app/pages/home/home_page.dart';
 import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
 import 'package:ts24care/src/app/provider/api_master.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
