@@ -87,6 +87,7 @@ class HelpPageViewModel extends ViewModelBase {
 
 //  fetch listProductWarranty when category product changed
   Future<void> onCategoryIndexChanged(int idCategoryProduct) async {
+    listProductWarranty = [];
     isIndexCategoryChanged = true;
     this.updateState();
     try {

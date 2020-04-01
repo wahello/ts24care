@@ -182,33 +182,35 @@ class _TS24LoadAttachmentWidgetState extends State<TS24LoadAttachmentWidget> {
                             width: 100,
                             height: 60,
                           ),
-                          onTap: () async {
-                            String dir = await createFileFromString(
-                                item.datas, item.name);
-                            if (dir != null) {
-                              if (isImage(extension))
-                                showGeneralDialog(
-                                    transitionBuilder:
-                                        (context, a1, a2, widget) {
-                                      return ViewImageWidget(
-                                        pathImageFile: dir,
-                                      );
-                                    },
-                                    transitionDuration:
-                                        Duration(milliseconds: 10),
-                                    barrierDismissible: true,
-                                    barrierLabel: '',
-                                    context: context,
-                                    pageBuilder:
-                                        (context, animation1, animation2) {
-                                      return Container();
-                                    });
-                              else
-                                OpenFile.open(dir);
-                              print("luu thanh cong + $dir");
-                            } else {
-                              print("luu that bai");
-                            }
+                          onTap: () {
+                            createFileFromString(
+                                item.datas, item.name).then((dir){
+                              if (dir != null) {
+                                if (isImage(extension))
+                                  showGeneralDialog(
+                                      transitionBuilder:
+                                          (context, a1, a2, widget) {
+                                        return ViewImageWidget(
+                                          pathImageFile: dir,
+                                        );
+                                      },
+                                      transitionDuration:
+                                      Duration(milliseconds: 10),
+                                      barrierDismissible: true,
+                                      barrierLabel: '',
+                                      context: context,
+                                      pageBuilder:
+                                          (context, animation1, animation2) {
+                                        return Container();
+                                      });
+                                else {
+                                  OpenFile.open(dir);
+                                  print("luu thanh cong + $dir");
+                                }
+                              } else {
+                                print("luu that bai");
+                              }
+                            });
                           },
                         ),
                         Positioned(

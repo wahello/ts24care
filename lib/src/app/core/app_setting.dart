@@ -7,13 +7,21 @@ import 'package:ts24care/src/app/provider/api.dart';
 final LocalStorage localStorage = new LocalStorage("localStorage");
 
 // String domainApi = "https://www.bus2school.vn";
-String domainApi = "http://14.187.122.118:8069";
+// String domainApi = "http://14.187.122.118:8069";
 
-const String client_id = '9QGhjXbApupARfpGGsskXUTQjoRD35';
-const String client_secret = '0wGQ7JkaLT68YMUQJFyUDKLsZutwbC';
+// const String client_id = '9QGhjXbApupARfpGGsskXUTQjoRD35';
+// const String client_secret = '0wGQ7JkaLT68YMUQJFyUDKLsZutwbC';
 
-const String password_client_id = 'aeCf27wNJwtTrpO8v59OZNDcjPESyf';
-const String password_client_secret = 'SlcSGww1jUZPBEYFRPIMLHzDPcyv6z';
+// const String password_client_id = 'aeCf27wNJwtTrpO8v59OZNDcjPESyf';
+// const String password_client_secret = 'SlcSGww1jUZPBEYFRPIMLHzDPcyv6z';
+
+String domainApi = "https://web.ts24.com.vn";
+
+const String client_id = 'DwRtKASexsN40ucqk9LXcGcBcXzeEq';
+const String client_secret = 'AOmu1kyDoPtvx2xveu36YoYtzqeD8z';
+
+const String password_client_id = '3Ki6VT43wAjHZRI05A9SNC7JZdkR03';
+const String password_client_secret = '5boqANLglN9TVxNEaPYwy2Hk3kNOOd';
 
 const String admin_id = "bus2school";
 const String admin_password = "B@S#2019";

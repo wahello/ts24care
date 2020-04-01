@@ -63,8 +63,13 @@ class TicketPageViewModel extends ViewModelBase {
 
   onTapCreateTicket() {
     Navigator.pushNamed(context, TicketNewPage.routeName).then((result) {
-      if (result != null && result) {
-        onLoad(0);
+      try {
+        if (result == true) {
+          this.customPopupMenu = this.listStatusTicket[1];
+          onLoad(1);
+        }
+      } catch (e) {
+        print(e);
       }
     });
   }

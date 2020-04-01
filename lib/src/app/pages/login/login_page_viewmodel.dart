@@ -14,6 +14,7 @@ class LoginPageViewModel extends ViewModelBase {
 
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
+  bool isSecurePass = true;
 
   TextEditingController _emailController = TextEditingController();
 
@@ -127,6 +128,12 @@ class LoginPageViewModel extends ViewModelBase {
       }
     }
   }
+
+  void onShowPasswordClicked() {
+    isSecurePass = !isSecurePass;
+    this.updateState();
+  }
+
 
   void onForgetPasswordClicked() {
     Navigator.pushReplacementNamed(context, ForgetPasswordPage.routeName);

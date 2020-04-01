@@ -20,8 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    viewModel.emailSetter = 'demo@ts24corp.com';
-    viewModel.passSetter = '123456';
+    viewModel.emailSetter = 'luan.vm@ts24corp.com';
+    viewModel.passSetter = 'ssbblss';
   }
 
   @override
@@ -214,8 +214,8 @@ class _LoginPageState extends State<LoginPage> {
                       fontSize: 13,
                     )),
                 onFieldSubmitted: (_) {
-                  viewModel.fieldFocusChange(context,
-                      viewModel.emailFocusNode, viewModel.passwordFocusNode);
+                  viewModel.fieldFocusChange(context, viewModel.emailFocusNode,
+                      viewModel.passwordFocusNode);
                 },
               ),
               SizedBox(
@@ -232,11 +232,10 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     focusNode: viewModel.passwordFocusNode,
                     controller: viewModel.passController,
-                    obscureText: true,
+                    obscureText: viewModel.isSecurePass,
                     decoration: InputDecoration(
                         errorText: viewModel.errorPass,
-                        hintText:
-                            translation.text("LOGIN_PAGE.PASSWORD_HINT"),
+                        hintText: translation.text("LOGIN_PAGE.PASSWORD_HINT"),
                         hintStyle: TextStyle(
                           fontSize: 13,
                         )),
@@ -248,10 +247,12 @@ class _LoginPageState extends State<LoginPage> {
                     right: 0,
                     child: GestureDetector(
                         onTap: () {
-                          viewModel.onForgetPasswordClicked();
+                          viewModel.onShowPasswordClicked();
                         },
                         child: Text(
-                          translation.text("LOGIN_PAGE.PASSWORD_FORGET"),
+                          viewModel.isSecurePass
+                              ? translation.text("LOGIN_PAGE.PASSWORD_SHOW")
+                              : translation.text("LOGIN_PAGE.PASSWORD_HIDE"),
                           style: TextStyle(
                               color: ThemePrimary.primaryColor,
                               fontWeight: FontWeight.bold,
@@ -355,7 +356,6 @@ class _LoginPageState extends State<LoginPage> {
 //                ? _createAccountButtonPortrait(
 //                    context: context, height: height)
 //                : Offstage()
-
           ],
         ),
       );

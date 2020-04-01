@@ -20,7 +20,6 @@ import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 class TicketNewPageViewModel extends ViewModelBase {
   Customer customer = Customer();
-  MenuStatusState statusState;
   CustomPopupMenu customPopupMenu;
   List<ItemAddAttachmentModel> listAttachmentModel = List();
   List<HelpDeskCategory> listHelpDeskCategory = List();
@@ -31,7 +30,6 @@ class TicketNewPageViewModel extends ViewModelBase {
   String errorSubject;
   TicketNewPageViewModel() {
     customPopupMenu = CustomPopupMenu.listTicketStatus[0];
-    statusState = MenuStatusState.NEW;
     subjectTextEditingController.addListener(() => {isValidSubject()});
     listHelpDeskCategory
         .add(HelpDeskCategory(id: -1, name: "Không chọn dịch vụ"));
@@ -197,17 +195,18 @@ class TicketNewPageViewModel extends ViewModelBase {
     }
   }
 
-  onSelectedTicketStatus(MenuStatusState status) {
-    switch (status) {
-      case MenuStatusState.SOLVED:
-      case MenuStatusState.IN_PROGRESS:
-      case MenuStatusState.CANCEL:
-      case MenuStatusState.NEW:
-      case MenuStatusState.CANCEL:
-      case MenuStatusState.ALL:
-        statusState = status;
-        break;
-    }
+  onSelectedTicketStatus(CustomPopupMenu customPopupMenu) {
+    this.customPopupMenu = customPopupMenu;
+//    switch (status) {
+//      case MenuStatusState.SOLVED:
+//      case MenuStatusState.IN_PROGRESS:
+//      case MenuStatusState.CANCEL:
+//      case MenuStatusState.NEW:
+//      case MenuStatusState.CANCEL:
+//      case MenuStatusState.ALL:
+//        statusState = status;
+//        break;
+//    }
     this.updateState();
   }
 
@@ -219,28 +218,16 @@ class TicketNewPageViewModel extends ViewModelBase {
   onSend() async {
     if (isValidSubject()) {
       String _description = parse(descriptionEditingController.text).outerHtml;
-      HelpdeskTicket _helpDeskTicket;
-      if (helpDeskCategory.id == -1) {
-        _helpDeskTicket = HelpdeskTicket(
-            contactName: customer.name,
-            description: _description,
-            email: customer.email.toString(),
-            subject: subjectTextEditingController.text,
-            partnerId: customer.id,
-            stageId: statusState.index + 1,
-            createUid: customer.id,
-            writeUid: customer.id);
-      } else
-        _helpDeskTicket = HelpdeskTicket(
-            contactName: customer.name,
-            description: _description,
-            email: customer.email.toString(),
-            subject: subjectTextEditingController.text,
-            partnerId: customer.id,
-            stageId: statusState.index + 1,
-            createUid: customer.id,
-            writeUid: customer.id,
-            categoryId: helpDeskCategory.id);
+      HelpdeskTicket _helpDeskTicket = HelpdeskTicket(
+          contactName: customer.name,
+          description: _description,
+          email: customer.email.toString(),
+          subject: subjectTextEditingController.text,
+          partnerId: customer.id,
+          stageId: customPopupMenu.id,
+          createUid: customer.id,
+          writeUid: customer.id,
+          categoryId: helpDeskCategory.id != -1 ? helpDeskCategory.id : null);
       List<int> _listAttachment =
           listAttachmentModel.map((model) => model.id).toList();
       var result = await api.insertTickets(

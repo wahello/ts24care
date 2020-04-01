@@ -67,7 +67,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
                 height: 15,
                 alignment: Alignment.center,
                 child: Text(
-                  getCharStatusState(viewModel.statusState),
+                  getCharStatusState(viewModel.customPopupMenu.state),
                   style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -310,10 +310,33 @@ class _TicketNewPageState extends State<TicketNewPage> {
                   "Trạng thái",
                   style: TextStyle(fontSize: 18, color: Colors.grey[800]),
                 ),
-                subtitle: __buildMenuStatusIcon(onSelected: (customPopupMenu) {
-                  viewModel.customPopupMenu = customPopupMenu;
-                  viewModel.onSelectedTicketStatus(customPopupMenu.state);
-                }),
+                subtitle: Row(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                          color: viewModel.customPopupMenu.color,
+                          border: Border.all(
+                              color: viewModel.customPopupMenu.color, width: 1.0)),
+                      width: 15,
+                      height: 15,
+                      alignment: Alignment.center,
+                      child: Text(
+                        getCharStatusState(viewModel.customPopupMenu.state),
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(viewModel.customPopupMenu.title.toString()),
+                  ],
+                )
+//                __buildMenuStatusIcon(onSelected: (customPopupMenu) {
+//                  viewModel.onSelectedTicketStatus(customPopupMenu);
+//                }),
               ),
               if (viewModel.helpDeskCategory != null)
                 ListTile(

@@ -49,7 +49,8 @@ class Api1 extends ApiMaster {
   ///   "partnerId": 2
   /// }
   Future<dynamic> getCustomerInfoAfterLogin() async {
-    Future<ResPartner> _getPartner(dynamic uid) {
+    Future<ResPartner> _getPartner(dynamic uid) async {
+      await this.authorization();
       body = new Map();
       body["fields"] = [
         "company_id",
@@ -129,13 +130,13 @@ class Api1 extends ApiMaster {
       if (response.statusCode == 200) {
         this.updateCookie(response);
         var userInfo = json.decode(response.body);
+        this.grandType = GrandType.client_credentials;
+        this.clientId = client_id;
+        this.clienSecret = client_secret;
         var partner = await _getPartner(userInfo["uid"]);
         Customer customer = Customer();
         customer.fromResPartner(partner);
         customer.saveLocal();
-        this.grandType = GrandType.client_credentials;
-        this.clientId = client_id;
-        this.clienSecret = client_secret;
         return userInfo;
       } else
         return null;
