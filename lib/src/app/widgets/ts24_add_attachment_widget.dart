@@ -7,10 +7,12 @@ typedef AttachmentCallBack = void Function(List<ItemAddAttachmentModel> list);
 class TS24AddAttachmentWidget extends StatefulWidget {
   final List<ItemAddAttachmentModel> listIdAttachment;
   final AttachmentCallBack onCallback;
-  const TS24AddAttachmentWidget({Key key, this.listIdAttachment, this.onCallback})
+  const TS24AddAttachmentWidget(
+      {Key key, this.listIdAttachment, this.onCallback})
       : super(key: key);
   @override
-  _TS24AddAttachmentWidgetState createState() => _TS24AddAttachmentWidgetState();
+  _TS24AddAttachmentWidgetState createState() =>
+      _TS24AddAttachmentWidgetState();
 }
 
 class _TS24AddAttachmentWidgetState extends State<TS24AddAttachmentWidget> {

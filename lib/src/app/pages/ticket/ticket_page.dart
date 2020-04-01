@@ -115,7 +115,7 @@ class _TicketsPageState extends State<TicketsPage>
                     alignment: Alignment.center,
                     child: Text(
 //                      viewModel.getCharStatusState(item.state),
-                      item.title.substring(0, 1),
+                      getCharStatusState(item.state),
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,

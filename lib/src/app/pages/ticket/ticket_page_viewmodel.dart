@@ -52,7 +52,7 @@ class TicketPageViewModel extends ViewModelBase {
         listStatusTicket.add(CustomPopupMenu(
             id: status.id,
             color: listColor[count++],
-            title: status.name,
+            title: CustomPopupMenu.getStatusNameFromId(status.id),
             state: CustomPopupMenu.getStatus(status.id)));
       });
     CustomPopupMenu.listTicketStatus =

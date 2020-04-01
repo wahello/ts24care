@@ -24,12 +24,19 @@ class _ListMessageWidgetState extends State<ListMessageWidget> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
-          _getSize();
-        }));
+    if (widget.listMailMessage.length >3)
+      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+            _getSize();
+          }));
     super.initState();
   }
-
+  Widget _line(){
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 0.5,
+      color: Colors.grey[400],
+    );
+  }
   @override
   Widget build(BuildContext context) {
     Widget _listShortMailMessage() {
@@ -93,11 +100,7 @@ class _ListMessageWidgetState extends State<ListMessageWidget> {
                         expand: true,
                       ),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 0.5,
-                      color: Colors.grey[400],
-                    ),
+                    _line(),
                     (isExpand)
                         ? Container(
                             child: Column(
@@ -160,9 +163,9 @@ class _ListMessageWidgetState extends State<ListMessageWidget> {
                     left: 70,
                     top: _size.height + 70,
                     child: InkWell(
-                      onTap: (){
+                      onTap: () {
                         setState(() {
-                          isExpand =! isExpand;
+                          isExpand = !isExpand;
                         });
                       },
                       child: Container(

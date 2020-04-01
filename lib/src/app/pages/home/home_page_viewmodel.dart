@@ -21,6 +21,7 @@ class HomePageViewModel extends ViewModelBase {
 
   onLoad() async {
     listNewFeed.clear();
+    loading = true;
     List<BlogPost> listBlogPost = await api.getListBlogs(offset: 0, limit: 10);
     if (listBlogPost.length > 0)
       listBlogPost.forEach((item) {
@@ -45,6 +46,7 @@ class HomePageViewModel extends ViewModelBase {
               : item.writeDate, //item.writeDate
         ));
       });
+    loading = false;
     this.updateState();
   }
 

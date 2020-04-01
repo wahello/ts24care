@@ -7,7 +7,7 @@ import 'package:ts24care/src/app/provider/api.dart';
 final LocalStorage localStorage = new LocalStorage("localStorage");
 
 // String domainApi = "https://www.bus2school.vn";
-String domainApi = "http://192.168.1.7:8069";
+String domainApi = "http://14.187.122.118:8069";
 
 const String client_id = '9QGhjXbApupARfpGGsskXUTQjoRD35';
 const String client_secret = '0wGQ7JkaLT68YMUQJFyUDKLsZutwbC';

@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 enum MenuAttachmentState {
-  CAMERA,
   IMAGE,
   FILE,
 }
-enum MenuStatusState { IN_PROGRESS, CANCEL, SOLVED, NEW, ALL }
+enum MenuStatusState { NEW, IN_PROGRESS, SOLVED, CANCEL, ALL }
 
 class CustomPopupMenu {
   int id;
@@ -28,11 +27,6 @@ class CustomPopupMenu {
     CustomPopupMenu(id: 2, title: 'Thêm', iconData: Icons.add)
   ];
   static List<CustomPopupMenu> listMenuAttachment = [
-    CustomPopupMenu(
-        id: 0,
-        title: 'Camera',
-        iconData: Icons.photo_camera,
-        state: MenuAttachmentState.CAMERA),
     CustomPopupMenu(
         id: 1,
         title: 'Image',
@@ -93,5 +87,27 @@ class CustomPopupMenu {
         listTicketStatus.firstWhere((item) => item.id == id);
     if (customPopupMenu != null) return customPopupMenu;
     return listTicketStatus[0];
+  }
+
+  static getStatusNameFromId(int id) {
+    String state = "Mới";
+    switch (id) {
+      case 0:
+        state = "Tất cả";
+        break;
+      case 1:
+        state = "Mới";
+        break;
+      case 2:
+        state = "Đang xử lý";
+        break;
+      case 3:
+        state = "Đã giải quyết";
+        break;
+      case 4:
+        state = "Hủy bỏ";
+        break;
+    }
+    return state;
   }
 }

@@ -8,6 +8,7 @@ import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
 import 'package:ts24care/src/app/models/customer.dart';
+import 'package:ts24care/src/app/models/helpdesk-category.dart';
 import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:ts24care/src/app/models/ir-attachment.dart';
 import 'package:ts24care/src/app/models/item_attachment_model.dart';
@@ -24,11 +25,16 @@ class TicketDetailViewModel extends ViewModelBase {
   List<MailMessage> listMailMessage = List();
   List<IrAttachment> listAttachContent = List();
   bool isLoadingListAttachContent = false;
+  List<HelpDeskCategory> listHelpDeskCategory = List();
+  HelpDeskCategory helpDeskCategory;
   TextEditingController descriptionEditingController = TextEditingController();
   List<ItemAddAttachmentModel> listAddAttachmentModel = List();
   TicketDetailViewModel() {
     loading = true;
     statusState = MenuStatusState.NEW;
+    descriptionEditingController.addListener(() {
+      this.updateState();
+    });
   }
   onSelected(MenuStatusState status) {
     switch (status) {
@@ -40,6 +46,23 @@ class TicketDetailViewModel extends ViewModelBase {
       case MenuStatusState.ALL:
         statusState = status;
         break;
+    }
+    this.updateState();
+  }
+
+  onLoadHelpDeskCategory(int id) async {
+    var _listHelpDeskCategory = await api.getListCategoryOfTicket();
+    if (_listHelpDeskCategory.length > 0) {
+      listHelpDeskCategory = _listHelpDeskCategory;
+      getHelpDeskCategory(id);
+    }
+  }
+
+  getHelpDeskCategory(int id) {
+    var list = listHelpDeskCategory.where((category) => category.id == id);
+    if (list.length > 0) {
+      List<HelpDeskCategory> listHelpDeskCategory = list;
+      helpDeskCategory = listHelpDeskCategory[0];
     }
     this.updateState();
   }
@@ -102,32 +125,6 @@ class TicketDetailViewModel extends ViewModelBase {
 
   onSelectedAttachment(MenuAttachmentState attachmentState) {
     switch (attachmentState) {
-      case MenuAttachmentState.CAMERA:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => TS24CameraWidget()),
-        ).then((directory) {
-          if (directory != null) {
-            readFileByte(directory).then((image) {
-              if (image != null) {
-                String _fileName = getFileNameFromPath(directory);
-                String _extension = getExtensionFromPath(directory);
-                onAddAttachmentToSever(image, _fileName).then((id) {
-                  listAddAttachmentModel.add(ItemAddAttachmentModel(
-                      id: id,
-                      localDirectory: directory,
-                      fileName: _fileName,
-                      extension: _extension,
-                      data: image));
-                  print(id);
-                  this.updateState();
-                });
-              }
-            });
-            print(directory);
-          }
-        });
-        break;
       case MenuAttachmentState.IMAGE:
         onPickerImage();
         break;
@@ -135,6 +132,33 @@ class TicketDetailViewModel extends ViewModelBase {
         onPickerFile();
         break;
     }
+  }
+
+  onSelectedCamera() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TS24CameraWidget()),
+    ).then((directory) {
+      if (directory != null) {
+        readFileByte(directory).then((image) {
+          if (image != null) {
+            String _fileName = getFileNameFromPath(directory);
+            String _extension = getExtensionFromPath(directory);
+            onAddAttachmentToSever(image, _fileName).then((id) {
+              listAddAttachmentModel.add(ItemAddAttachmentModel(
+                  id: id,
+                  localDirectory: directory,
+                  fileName: _fileName,
+                  extension: _extension,
+                  data: image));
+              print(id);
+              this.updateState();
+            });
+          }
+        });
+        print(directory);
+      }
+    });
   }
 
   onPickerImage() async {

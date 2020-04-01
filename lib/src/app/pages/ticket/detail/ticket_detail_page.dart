@@ -34,6 +34,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
   void initState() {
     viewModel.helpdeskTicket = widget.args;
     viewModel.onLoad(widget.args.id);
+    viewModel.onLoadHelpDeskCategory(widget.args.id);
     super.initState();
   }
 
@@ -133,47 +134,47 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
           );
         }
 
-        Widget ___loadingAttachmentWidget() {
-          var ____list = List();
-          if (viewModel.helpdeskTicket.attachmentIds != null &&
-              viewModel.helpdeskTicket.attachmentIds.length > 0)
-            ____list = viewModel.helpdeskTicket.attachmentIds
-                .map((item) => IrAttachment.fromJson(item))
-                .toList();
-          return Container(
-//            color: Colors.red,
-            width: MediaQuery.of(context).size.width,
-            height: 100,
-            margin: EdgeInsets.all(15),
-            alignment: Alignment.center,
-            child: ListView.builder(
-                itemCount: ____list.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Container(
-//                      color: Colors.green,
-                      width: 100,
-                      height: 60,
-                      margin: EdgeInsets.fromLTRB(0, 10, 10, 30),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            border: Border.all(color: Colors.blueGrey)),
-                        height: 40,
-                        width: 90,
-                        padding: EdgeInsets.fromLTRB(35, 15, 35, 15),
-                        child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.blueGrey),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-          );
-        }
+//        Widget ___loadingAttachmentWidget() {
+//          var ____list = List();
+//          if (viewModel.helpdeskTicket.attachmentIds != null &&
+//              viewModel.helpdeskTicket.attachmentIds.length > 0)
+//            ____list = viewModel.helpdeskTicket.attachmentIds
+//                .map((item) => IrAttachment.fromJson(item))
+//                .toList();
+//          return Container(
+////            color: Colors.red,
+//            width: MediaQuery.of(context).size.width,
+//            height: 100,
+//            margin: EdgeInsets.all(15),
+//            alignment: Alignment.center,
+//            child: ListView.builder(
+//                itemCount: ____list.length,
+//                scrollDirection: Axis.horizontal,
+//                itemBuilder: (context, index) {
+//                  return Padding(
+//                    padding: EdgeInsets.only(right: 10),
+//                    child: Container(
+////                      color: Colors.green,
+//                      width: 100,
+//                      height: 60,
+//                      margin: EdgeInsets.fromLTRB(0, 10, 10, 30),
+//                      child: Container(
+//                        decoration: BoxDecoration(
+//                            borderRadius: BorderRadius.all(Radius.circular(10)),
+//                            border: Border.all(color: Colors.blueGrey)),
+//                        height: 40,
+//                        width: 90,
+//                        padding: EdgeInsets.fromLTRB(35, 15, 35, 15),
+//                        child: CircularProgressIndicator(
+//                          valueColor:
+//                              AlwaysStoppedAnimation<Color>(Colors.blueGrey),
+//                        ),
+//                      ),
+//                    ),
+//                  );
+//                }),
+//          );
+//        }
 
         Widget ___listAttachment() {
           return viewModel.listAttachContent.length > 0
@@ -199,6 +200,14 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                 ),
               ],
             ),
+          );
+        }
+
+        Widget ___line() {
+          return Container(
+            width: MediaQuery.of(context).size.width,
+            height: 0.5,
+            color: Colors.grey[400],
           );
         }
 
@@ -301,11 +310,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
               SizedBox(
                 height: 5,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 0.5,
-                color: Colors.grey[400],
-              ),
+              ___line(),
               SizedBox(
                 height: 5,
               ),
@@ -331,11 +336,26 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
               SizedBox(
                 height: 5,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 0.5,
-                color: Colors.grey[400],
+              if (viewModel.helpDeskCategory != null)
+              ___line(),
+              if (viewModel.helpDeskCategory != null)
+                Container(
+                  padding: EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Dịch vụ: ",
+                        style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                      ),
+                      Text(viewModel.helpDeskCategory.name)
+                    ],
+                  ),
+                ),
+              SizedBox(
+                height: 5,
               ),
+              ___line(),
               SizedBox(
                 height: 5,
               ),
@@ -347,11 +367,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
               SizedBox(
                 height: 5,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 0.5,
-                color: Colors.grey[400],
-              ),
+              ___line(),
             ],
           ),
         );
@@ -406,18 +422,20 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
           bottom: 0,
           child: SafeArea(
             bottom: true,
-            child: Container(
-              color: Colors.white,
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: 0.5,
-                    color: ThemePrimary.backgroundColor,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 1,
+                  color: Colors.grey[300],
+                ),
+                Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 20,
+                      ),
 //                  Container(
 //                    width: MediaQuery.of(context).size.width,
 //                    child: Row(
@@ -461,64 +479,77 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
 //                      ],
 //                    ),
 //                  ),
-                  TextField(
-                    controller: viewModel.descriptionEditingController,
-                    decoration: InputDecoration(
-                      hintText: "Nhập tin nhắn tại đây...",
-                      hintStyle: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
+                      TextField(
+                        controller: viewModel.descriptionEditingController,
+                        decoration: InputDecoration(
+                          hintText: "Nhập tin nhắn tại đây...",
+                          hintStyle: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 3,
                       ),
-                      border: InputBorder.none,
-                    ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 3,
-                  ),
-                  if (viewModel.listAddAttachmentModel.length > 0)
-                    TS24AddAttachmentWidget(
-                      listIdAttachment: viewModel.listAddAttachmentModel,
-                      onCallback: (_) {
-                        viewModel.updateState();
-                      },
-                    ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
+                      if (viewModel.listAddAttachmentModel.length > 0)
+                        TS24AddAttachmentWidget(
+                          listIdAttachment: viewModel.listAddAttachmentModel,
+                          onCallback: (_) {
+                            viewModel.updateState();
+                          },
+                        ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          ___buildMenuIcon(
-                              iconData: Icons.attach_file,
-                              onSelected: (customPopupMenu) {
-                                viewModel.onSelectedAttachment(
-                                    customPopupMenu.state);
-                              }),
-                          SizedBox(
-                            width: 10,
+                          Row(
+                            children: <Widget>[
+                              ___buildMenuIcon(
+                                  iconData: Icons.attach_file,
+                                  onSelected: (customPopupMenu) {
+                                    viewModel.onSelectedAttachment(
+                                        customPopupMenu.state);
+                                  }),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  viewModel.onSelectedCamera();
+                                },
+                                icon: Icon(
+                                  Icons.camera_alt,
+                                  color: ThemePrimary.primaryColor,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+//                          IconButton(
+//                            icon: Icon(Icons.tag_faces),
+//                          ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                            ],
                           ),
                           IconButton(
-                            icon: Icon(Icons.camera_alt),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.tag_faces),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
+                            onPressed: () {
+                              if (viewModel.descriptionEditingController.text
+                                  .isNotEmpty) viewModel.onSend();
+                            },
+                            icon: Icon(Icons.send,
+                                color: (viewModel.descriptionEditingController
+                                        .text.isNotEmpty)
+                                    ? ThemePrimary.primaryColor
+                                    : Colors.black),
+                          )
                         ],
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          viewModel.onSend();
-                        },
-                        icon: Icon(Icons.send),
                       )
                     ],
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
           ),
         );
@@ -568,7 +599,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: RefreshIndicator(
-              onRefresh: ()async{
+              onRefresh: () async {
                 viewModel.onLoad(widget.args.id);
               },
               child: SingleChildScrollView(

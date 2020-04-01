@@ -5,12 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
 import 'package:ts24care/src/app/helper/validator-helper.dart';
 import 'package:ts24care/src/app/models/customer.dart';
+import 'package:ts24care/src/app/models/helpdesk-category.dart';
 import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:ts24care/src/app/models/ir-attachment.dart';
 import 'package:ts24care/src/app/models/item_attachment_model.dart';
@@ -23,6 +23,8 @@ class TicketNewPageViewModel extends ViewModelBase {
   MenuStatusState statusState;
   CustomPopupMenu customPopupMenu;
   List<ItemAddAttachmentModel> listAttachmentModel = List();
+  List<HelpDeskCategory> listHelpDeskCategory = List();
+  HelpDeskCategory helpDeskCategory;
   TextEditingController subjectTextEditingController = TextEditingController();
   TextEditingController descriptionEditingController = TextEditingController();
   List<String> listImage = List();
@@ -31,6 +33,18 @@ class TicketNewPageViewModel extends ViewModelBase {
     customPopupMenu = CustomPopupMenu.listTicketStatus[0];
     statusState = MenuStatusState.NEW;
     subjectTextEditingController.addListener(() => {isValidSubject()});
+    listHelpDeskCategory
+        .add(HelpDeskCategory(id: -1, name: "Không chọn dịch vụ"));
+    onLoad();
+  }
+  onLoad() async {
+    listHelpDeskCategory.removeRange(1, listHelpDeskCategory.length);
+    var _listHelpDeskCategory = await api.getListCategoryOfTicket();
+    if (_listHelpDeskCategory != null) {
+      listHelpDeskCategory.addAll(_listHelpDeskCategory);
+      helpDeskCategory = listHelpDeskCategory[0];
+      this.updateState();
+    }
   }
 
   onTapBack() {
@@ -74,32 +88,6 @@ class TicketNewPageViewModel extends ViewModelBase {
 
   onSelectedAttachment(MenuAttachmentState attachmentState) {
     switch (attachmentState) {
-      case MenuAttachmentState.CAMERA:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => TS24CameraWidget()),
-        ).then((directory) {
-          if (directory != null) {
-            readFileByte(directory).then((image) {
-              if (image != null) {
-                String _fileName = getFileNameFromPath(directory);
-                String _extension = getExtensionFromPath(directory);
-                onAddAttachmentToSever(image, _fileName).then((id) {
-                  listAttachmentModel.add(ItemAddAttachmentModel(
-                      id: id,
-                      localDirectory: directory,
-                      fileName: _fileName,
-                      extension: _extension,
-                      data: image));
-                  print(id);
-                  this.updateState();
-                });
-              }
-            });
-            print(directory);
-          }
-        });
-        break;
       case MenuAttachmentState.IMAGE:
         onPickerImage();
         break;
@@ -107,6 +95,33 @@ class TicketNewPageViewModel extends ViewModelBase {
         onPickerFile();
         break;
     }
+  }
+
+  onSelectedCamera() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TS24CameraWidget()),
+    ).then((directory) {
+      if (directory != null) {
+        readFileByte(directory).then((image) {
+          if (image != null) {
+            String _fileName = getFileNameFromPath(directory);
+            String _extension = getExtensionFromPath(directory);
+            onAddAttachmentToSever(image, _fileName).then((id) {
+              listAttachmentModel.add(ItemAddAttachmentModel(
+                  id: id,
+                  localDirectory: directory,
+                  fileName: _fileName,
+                  extension: _extension,
+                  data: image));
+              print(id);
+              this.updateState();
+            });
+          }
+        });
+        print(directory);
+      }
+    });
   }
 
   onPickerImage() async {
@@ -196,18 +211,36 @@ class TicketNewPageViewModel extends ViewModelBase {
     this.updateState();
   }
 
+  onSelectedHelpDeskCategory(HelpDeskCategory helpDeskCategory) {
+    this.helpDeskCategory = helpDeskCategory;
+    this.updateState();
+  }
+
   onSend() async {
     if (isValidSubject()) {
       String _description = parse(descriptionEditingController.text).outerHtml;
-      HelpdeskTicket _helpDeskTicket = HelpdeskTicket(
-          contactName: customer.name,
-          description: _description,
-          email: customer.email.toString(),
-          subject: subjectTextEditingController.text,
-          partnerId: customer.id,
-          stageId: statusState.index + 1,
-          createUid: customer.id,
-          writeUid: customer.id);
+      HelpdeskTicket _helpDeskTicket;
+      if (helpDeskCategory.id == -1) {
+        _helpDeskTicket = HelpdeskTicket(
+            contactName: customer.name,
+            description: _description,
+            email: customer.email.toString(),
+            subject: subjectTextEditingController.text,
+            partnerId: customer.id,
+            stageId: statusState.index + 1,
+            createUid: customer.id,
+            writeUid: customer.id);
+      } else
+        _helpDeskTicket = HelpdeskTicket(
+            contactName: customer.name,
+            description: _description,
+            email: customer.email.toString(),
+            subject: subjectTextEditingController.text,
+            partnerId: customer.id,
+            stageId: statusState.index + 1,
+            createUid: customer.id,
+            writeUid: customer.id,
+            categoryId: helpDeskCategory.id);
       List<int> _listAttachment =
           listAttachmentModel.map((model) => model.id).toList();
       var result = await api.insertTickets(

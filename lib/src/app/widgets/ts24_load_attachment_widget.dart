@@ -68,12 +68,15 @@ class _TS24LoadAttachmentWidgetState extends State<TS24LoadAttachmentWidget> {
       api.getAttachmentById(widget.listIrAttachment[i].id).then((irAttachment) {
 //              count ++;
         if (irAttachment != null)
-          setState(() {
-            widget.listIrAttachment[i] = irAttachment;
-          });
+          try {
+            setState(() {
+              widget.listIrAttachment[i] = irAttachment;
+            });
 //                if(count == widget.listIrAttachment.length) {
 //                  isLoadingListAttachContent = false;
-
+          } catch (e) {
+            print(e);
+          }
 //                }
       });
     }
@@ -145,8 +148,7 @@ class _TS24LoadAttachmentWidgetState extends State<TS24LoadAttachmentWidget> {
                                     ),
                                   )
                                 : Container()
-                            :
-                            Container(
+                            : Container(
                                 width: 100,
                                 height: 60,
                                 margin: EdgeInsets.fromLTRB(0, 10, 10, 0),

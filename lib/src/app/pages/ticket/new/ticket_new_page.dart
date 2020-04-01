@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
+import 'package:ts24care/src/app/models/helpdesk-category.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
@@ -77,7 +77,11 @@ class _TicketNewPageState extends State<TicketNewPage> {
               SizedBox(
                 width: 5,
               ),
-              Text(viewModel.customPopupMenu.title.toString())
+              Text(viewModel.customPopupMenu.title.toString()),
+              Icon(
+                Icons.arrow_drop_down,
+                color: Colors.grey[600],
+              )
             ],
           ),
 //          elevation:  30.2,
@@ -113,6 +117,83 @@ class _TicketNewPageState extends State<TicketNewPage> {
                     ),
                     Text(
                       item.title.toString(),
+                      style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                    )
+                  ],
+                ),
+              );
+            }).toList();
+          },
+        );
+      }
+
+      Widget __buildMenuCategory(
+          {void onSelected(HelpDeskCategory helpDeskCategory)}) {
+        return PopupMenuButton<HelpDeskCategory>(
+          child: Row(
+            children: <Widget>[
+//              Container(
+//                decoration: BoxDecoration(
+//                    color: viewModel.customPopupMenu.color,
+//                    border: Border.all(
+//                        color: viewModel.customPopupMenu.color, width: 1.0)),
+//                width: 15,
+//                height: 15,
+//                alignment: Alignment.center,
+//                child: Text(
+//                  getCharStatusState(viewModel.statusState),
+//                  style: TextStyle(
+//                      fontSize: 12,
+//                      fontWeight: FontWeight.bold,
+//                      color: Colors.white),
+//                ),
+//              ),
+//              SizedBox(
+//                width: 5,
+//              ),
+              Text(viewModel.helpDeskCategory.name.toString()),
+              SizedBox(
+                width: 5,
+              ),
+              Icon(
+                Icons.arrow_drop_down,
+                color: Colors.grey[600],
+              )
+            ],
+          ),
+//          elevation:  30.2,
+          //initialValue: viewModel.selectedLanguage,
+          onSelected: onSelected,
+          //offset: Offset(50, viewModel.selectedLanguage.id == 0 ? 50 : 100),
+          itemBuilder: (BuildContext context) {
+            return viewModel.listHelpDeskCategory.map((item) {
+              return PopupMenuItem<HelpDeskCategory>(
+                height: 50,
+                value: item,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+//                    Icon(item.iconData,color: ThemePrimary.primaryColor,),
+//                    Container(
+//                      decoration: BoxDecoration(
+//                          color: item.color,
+//                          border: Border.all(color: item.color, width: 1.0)),
+//                      width: 15,
+//                      height: 15,
+//                      alignment: Alignment.center,
+//                      child: Text(
+//                        getCharStatusState(item.state),
+//                        style: TextStyle(
+//                            fontSize: 12,
+//                            fontWeight: FontWeight.bold,
+//                            color: Colors.white),
+//                      ),
+//                    ),
+//                    SizedBox(
+//                      width: 10,
+//                    ),
+                    Text(
+                      item.name.toString(),
                       style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                     )
                   ],
@@ -234,6 +315,17 @@ class _TicketNewPageState extends State<TicketNewPage> {
                   viewModel.onSelectedTicketStatus(customPopupMenu.state);
                 }),
               ),
+              if (viewModel.helpDeskCategory != null)
+                ListTile(
+                  title: Text(
+                    "Dịch vụ",
+                    style: TextStyle(fontSize: 18, color: Colors.grey[800]),
+                  ),
+                  subtitle: __buildMenuCategory(onSelected: (helpDeskCategory) {
+                    viewModel.onSelectedHelpDeskCategory(helpDeskCategory);
+//                  viewModel.onSelectedTicketStatus(customPopupMenu.state);
+                  }),
+                ),
 //              ListTile(
 //                  title: Text(
 //                    "Assignee",
@@ -306,113 +398,126 @@ class _TicketNewPageState extends State<TicketNewPage> {
           bottom: 0,
           child: SafeArea(
             bottom: true,
-            child: Container(
-              color: Colors.white,
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: 0.5,
-                    color: ThemePrimary.backgroundColor,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "Trả lời công khai",
-                              style: TextStyle(
-                                  color: ThemePrimary.primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                color: ThemePrimary.primaryColor,
-                              ),
-                              onPressed: () {},
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.add,
-                              color: ThemePrimary.primaryColor,
-                              size: 16,
-                            ),
-                            Text(
-                              "CC",
-                              style: TextStyle(
-                                  color: ThemePrimary.primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  TextField(
-                    controller: viewModel.descriptionEditingController,
-                    decoration: InputDecoration(
-                      hintText: "Nhập nội dung tại đây...",
-                      hintStyle: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 3,
-                  ),
-                  if(viewModel.listAttachmentModel.length>0)
-                  TS24AddAttachmentWidget(
-                    listIdAttachment: viewModel.listAttachmentModel,
-                    onCallback: (_){
-                      viewModel.updateState();
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 1,
+                  color: Colors.grey[300],
+                ),
+                Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: Column(
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          ___buildMenuIcon(
-                              iconData: Icons.attach_file,
-                              onSelected: (customPopupMenu) {
-                                viewModel.onSelectedAttachment(
-                                    customPopupMenu.state);
-                              }),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.camera_alt),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.tag_faces),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                        ],
+//                  Container(
+//                    width: MediaQuery.of(context).size.width,
+//                    child: Row(
+//                      crossAxisAlignment: CrossAxisAlignment.center,
+//                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                      children: <Widget>[
+//                        Row(
+//                          children: <Widget>[
+//                            Text(
+//                              "Trả lời công khai",
+//                              style: TextStyle(
+//                                  color: ThemePrimary.primaryColor,
+//                                  fontSize: 16,
+//                                  fontWeight: FontWeight.bold),
+//                            ),
+//                            IconButton(
+//                              icon: Icon(
+//                                Icons.arrow_drop_down,
+//                                color: ThemePrimary.primaryColor,
+//                              ),
+//                              onPressed: () {},
+//                            )
+//                          ],
+//                        ),
+//                        Row(
+//                          children: <Widget>[
+//                            Icon(
+//                              Icons.add,
+//                              color: ThemePrimary.primaryColor,
+//                              size: 16,
+//                            ),
+//                            Text(
+//                              "CC",
+//                              style: TextStyle(
+//                                  color: ThemePrimary.primaryColor,
+//                                  fontSize: 16,
+//                                  fontWeight: FontWeight.bold),
+//                            )
+//                          ],
+//                        )
+//                      ],
+//                    ),
+//                  ),
+                      SizedBox(
+                        height: 20,
                       ),
-                      IconButton(
-                        icon: Icon(Icons.thumb_up),
+                      TextField(
+                        controller: viewModel.descriptionEditingController,
+                        decoration: InputDecoration(
+                          hintText: "Nhập nội dung tại đây...",
+                          hintStyle: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 3,
+                      ),
+                      if (viewModel.listAttachmentModel.length > 0)
+                        TS24AddAttachmentWidget(
+                          listIdAttachment: viewModel.listAttachmentModel,
+                          onCallback: (_) {
+                            viewModel.updateState();
+                          },
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              ___buildMenuIcon(
+                                  iconData: Icons.attach_file,
+                                  onSelected: (customPopupMenu) {
+                                    viewModel.onSelectedAttachment(
+                                        customPopupMenu.state);
+                                  }),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  viewModel.onSelectedCamera();
+                                },
+                                icon: Icon(
+                                  Icons.camera_alt,
+                                  color: ThemePrimary.primaryColor,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+//                          IconButton(
+//                            icon: Icon(Icons.tag_faces),
+//                          ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                            ],
+                          ),
+//                      IconButton(
+//                        icon: Icon(Icons.thumb_up),
+//                      )
+                        ],
                       )
                     ],
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
           ),
         );

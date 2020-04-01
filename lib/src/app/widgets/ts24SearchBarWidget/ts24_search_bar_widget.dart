@@ -155,7 +155,8 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
     Widget _content({String title, IconData iconData, Widget widget}) {
       return Column(
         children: <Widget>[
-          LoadingIndicator.progress(context: context,loading: viewModel.searching),
+          LoadingIndicator.progress(
+              context: context, loading: viewModel.searching),
           _headerContent(title, iconData),
           Expanded(child: widget),
         ],

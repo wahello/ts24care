@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ts24care/packages/loader_search_bar/src/SearchBarController.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
@@ -13,6 +15,7 @@ class TS24SearchBarWidgetViewModel extends ViewModelBase {
   List<String> listHistoryFiltered = List();
   bool searching = false;
   String query = '';
+  Timer _timer;
 //  List<ItemTicketsModel> listTicketFiltered = List();
   TS24SearchBarWidgetViewModel();
   onListen(SearchBarStateCallBack searchBarStateCallBack) {
@@ -55,14 +58,26 @@ class TS24SearchBarWidgetViewModel extends ViewModelBase {
 
   onQueryChanged(String query) {
     print("ON_CHANGED");
-    if(query!=''&&query!=null) {
-      searching = true;
+    if (query != '' && query != null) {
+      if (this.query != query) {
+        searching = true;
+        if (_timer != null && _timer.isActive) {
+          _timer.cancel();
+          print("Cancel:" + query);
+        }
+      }
       this.query = query;
+    } else {
+      if (query == "" && _timer != null && _timer.isActive) {
+        _timer.cancel();
+        searching = false;
+      }
+      searchBarState = SearchBarState.active;
     }
     listHistoryFiltered = _filterTicketHistory(query, listHistorySearch);
-    Future.delayed(Duration(seconds: 2)).then((_){
-      if(this.query!=''&&this.query==query){
-        if (!listHistorySearch.contains(query)) listHistorySearch.remove(query);
+    _timer = new Timer(const Duration(seconds: 2), () {
+      if (this.query != '' && this.query == query) {
+        if (listHistorySearch.contains(query)) listHistorySearch.remove(query);
         listHistorySearch.insert(0, query);
         searchBarState = SearchBarState.submit;
         searching = false;
@@ -76,7 +91,7 @@ class TS24SearchBarWidgetViewModel extends ViewModelBase {
     print("ON_SUBMIT");
 //    listTicketFiltered =
 //        _filterItemTicket(query, ItemTicketsModel.listItemTickets);
-    if (!listHistorySearch.contains(query)) listHistorySearch.remove(query);
+    if (listHistorySearch.contains(query)) listHistorySearch.remove(query);
     listHistorySearch.insert(0, query);
     searchBarState = SearchBarState.submit;
     searching = false;
@@ -94,5 +109,11 @@ class TS24SearchBarWidgetViewModel extends ViewModelBase {
     return (text != '' && listTicketHistory.length > 0)
         ? listTicketHistory.where((item) => compareText(item, text)).toList()
         : listTicketHistory;
+  }
+
+  @override
+  void dispose() {
+    if (_timer.isActive) _timer.cancel();
+    super.dispose();
   }
 }
