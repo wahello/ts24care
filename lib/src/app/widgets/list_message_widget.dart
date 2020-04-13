@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/models/mail-message.dart';
 import 'package:ts24care/src/app/widgets/item_comment_widget.dart';
-import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 
 class ListMessageWidget extends StatefulWidget {
   final List<MailMessage> listMailMessage;
@@ -24,19 +23,21 @@ class _ListMessageWidgetState extends State<ListMessageWidget> {
 
   @override
   void initState() {
-    if (widget.listMailMessage.length >3)
+    if (widget.listMailMessage.length >= 3)
       WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
             _getSize();
           }));
     super.initState();
   }
-  Widget _line(){
+
+  Widget _line() {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 0.5,
       color: Colors.grey[400],
     );
   }
+
   @override
   Widget build(BuildContext context) {
     Widget _listShortMailMessage() {
@@ -76,28 +77,18 @@ class _ListMessageWidgetState extends State<ListMessageWidget> {
                     Container(
                       key: _key,
                       child: ItemCommentWidget(
-                        name: widget
-                            .listMailMessage[widget.listMailMessage.length - 1]
-                            .authorId[1]
-                            .toString(),
-                        avatarUrl: api.getImageByIdPartner(widget
-                            .listMailMessage[widget.listMailMessage.length - 1]
-                            .authorId[0]
-                            .toString()),
-                        dateTime: widget
-                            .listMailMessage[widget.listMailMessage.length - 1]
-                            .writeDate
-                            .toString(),
-                        content: widget
-                            .listMailMessage[widget.listMailMessage.length - 1]
-                            .body
-                            .toString(),
-                        listAttachId: widget
-                            .listMailMessage[widget.listMailMessage.length - 1]
-                            .attachmentIds
+                        name:
+                            widget.listMailMessage.last.authorId[1].toString(),
+                        avatarUrl: api.getImageByIdPartner(
+                            widget.listMailMessage.last.authorId[0].toString()),
+                        dateTime:
+                            widget.listMailMessage.last.writeDate.toString(),
+                        content: widget.listMailMessage.last.body.toString(),
+                        listAttachId: widget.listMailMessage.last.attachmentIds
                             .map((item) => int.parse(item.toString()))
                             .toList(),
                         expand: true,
+                        disableTap: !isExpand,
                       ),
                     ),
                     _line(),
@@ -107,7 +98,7 @@ class _ListMessageWidgetState extends State<ListMessageWidget> {
                               children: <Widget>[
                                 ...widget.listMailMessage
                                     .sublist(
-                                        1, widget.listMailMessage.length - 2)
+                                        1, widget.listMailMessage.length - 1)
                                     .reversed
                                     .map((message) {
                                   List<int> _listIdAttachment = List();
@@ -123,6 +114,7 @@ class _ListMessageWidgetState extends State<ListMessageWidget> {
                                         dateTime: message.writeDate.toString(),
                                         content: message.body.toString(),
                                         listAttachId: _listIdAttachment,
+                                        expand: true,
                                       ),
                                       Container(
                                         width:
@@ -141,15 +133,17 @@ class _ListMessageWidgetState extends State<ListMessageWidget> {
                             width: MediaQuery.of(context).size.width,
                           ),
                     ItemCommentWidget(
-                      name: widget.listMailMessage[0].authorId[1].toString(),
+                      name: widget.listMailMessage.first.authorId[1].toString(),
                       avatarUrl: api.getImageByIdPartner(
-                          widget.listMailMessage[0].authorId[0].toString()),
-                      dateTime: widget.listMailMessage[0].writeDate.toString(),
-                      content: widget.listMailMessage[0].body.toString(),
-                      listAttachId: widget.listMailMessage[0].attachmentIds
+                          widget.listMailMessage.first.authorId[0].toString()),
+                      dateTime:
+                          widget.listMailMessage.first.writeDate.toString(),
+                      content: widget.listMailMessage.first.body.toString(),
+                      listAttachId: widget.listMailMessage.first.attachmentIds
                           .map((item) => int.parse(item.toString()))
                           .toList(),
                       expand: true,
+                      disableTap: !isExpand,
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,

@@ -15,13 +15,13 @@ class HomePageViewModel extends ViewModelBase {
     onLoad();
   }
   onTapMoreNewAndTips() {
-    Navigator.pushNamed(context, NewsAndTipsPage.routeName,
-        arguments: listNewFeed);
+    Navigator.pushNamed(context, NewsAndTipsPage.routeName);
   }
 
   onLoad() async {
     listNewFeed.clear();
     loading = true;
+    this.updateState();
     List<BlogPost> listBlogPost = await api.getListBlogs(offset: 0, limit: 10);
     if (listBlogPost.length > 0)
       listBlogPost.forEach((item) {

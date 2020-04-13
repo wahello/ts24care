@@ -9,6 +9,7 @@ class TS24BottomScrollWithBackgroundWidget extends StatefulWidget {
   final String title;
   final bool shadow;
   final bool hideAppBar;
+  final ScrollControllerCallback controllerCallback;
   final OnFreshCallback onFreshCallback;
 
   const TS24BottomScrollWithBackgroundWidget(
@@ -17,6 +18,7 @@ class TS24BottomScrollWithBackgroundWidget extends StatefulWidget {
       this.title,
       this.shadow = true,
       this.child,
+      this.controllerCallback,
       this.hideAppBar = false,
       this.onFreshCallback})
       : super(key: key);
@@ -40,7 +42,7 @@ class _TS24BottomScrollWithBackgroundWidgetState
     viewModel.currentOffset = widget.hideAppBar
         ? _position.dy + viewModel.heightAppbar
         : _position.dy;
-    viewModel.streamController111.sink.add(viewModel.currentOffset);
+    viewModel.streamControllerBottomScrollWidget.sink.add(viewModel.currentOffset);
   }
 
   @override
@@ -48,7 +50,7 @@ class _TS24BottomScrollWithBackgroundWidgetState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       viewModel.heightViewBackground =
           _position.dy; // - viewModel.heightAppbar;
-      viewModel.streamController111.sink.add(viewModel.heightViewBackground);
+      viewModel.streamControllerBottomScrollWidget.sink.add(viewModel.heightViewBackground);
     }
 //    => setState(() {
 //          final RenderBox renderBox = _key.currentContext.findRenderObject();
@@ -71,7 +73,7 @@ class _TS24BottomScrollWithBackgroundWidgetState
           height: MediaQuery.of(context).size.height,
           color: Colors.transparent,
           child: StreamBuilder<double>(
-              stream: viewModel.streamController111.stream,
+              stream: viewModel.streamControllerBottomScrollWidget.stream,
               builder: (context, snapshot) {
                 // fix red screen when snapshot not have data yet
                 if (snapshot.data == null) return Offstage();
@@ -169,8 +171,8 @@ class _TS24BottomScrollWithBackgroundWidgetState
               Future.delayed((Duration(milliseconds: 1))).then((_) {
                 if (scrollController.offset < 1) {
                   _getSizeAndPosition();
-                  print(scrollController.offset);
                 }
+                widget.controllerCallback(viewModel.controller);
               });
               return widget.onFreshCallback != null
                   ? RefreshIndicator(

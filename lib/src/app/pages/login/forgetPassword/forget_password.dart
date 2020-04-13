@@ -52,10 +52,10 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              text,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+//            Text(
+//              text,
+//              style: TextStyle(fontWeight: FontWeight.bold),
+//            ),
             TextFormField(
               focusNode: viewModel.emailNode,
               controller: viewModel.emailController,
@@ -94,8 +94,9 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
     Widget _appBar() {
       return AppBar(
+        //leading: Container(),
         leading: GestureDetector(
-          onTap: () => Navigator.pushNamed(context, LoginPage.routeName),
+          onTap: () => Navigator.of(context).pop(),
           child: Icon(
             Icons.arrow_back_ios,
             color: Colors.grey,
@@ -133,9 +134,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
               Container(
                 child: Column(
                   children: <Widget>[
-                    _textFieldEmail(
-                      text: translation.text("FORGET_PASSWORD_PAGE.EMAIL"),
-                    ),
+                    _textFieldEmail(),
                   ],
                 ),
               ),
@@ -150,28 +149,28 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                           title: translation
                               .text("FORGET_PASSWORD_PAGE.SUBMIT_BUTTON"),
                         ),
-                        Container(
-                            padding: EdgeInsets.only(top: 5),
-                            child: FlatButton(
-                              onPressed: () {},
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    translation.text(
-                                        "FORGET_PASSWORD_PAGE.NO_ACCOUNT"),
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  Text(
-                                    translation.text(
-                                        "FORGET_PASSWORD_PAGE.CREATE_ACCOUNT"),
-                                    style: TextStyle(
-                                        color: ThemePrimary.primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.underline),
-                                  ),
-                                ],
-                              ),
-                            ))
+//                        Container(
+//                            padding: EdgeInsets.only(top: 5),
+//                            child: FlatButton(
+//                              onPressed: () {},
+//                              child: Column(
+//                                children: <Widget>[
+//                                  Text(
+//                                    translation.text(
+//                                        "FORGET_PASSWORD_PAGE.NO_ACCOUNT"),
+//                                    style: TextStyle(color: Colors.grey),
+//                                  ),
+//                                  Text(
+//                                    translation.text(
+//                                        "FORGET_PASSWORD_PAGE.CREATE_ACCOUNT"),
+//                                    style: TextStyle(
+//                                        color: ThemePrimary.primaryColor,
+//                                        fontWeight: FontWeight.bold,
+//                                        decoration: TextDecoration.underline),
+//                                  ),
+//                                ],
+//                              ),
+//                            ))
                       ],
                     ),
                   ),

@@ -37,8 +37,11 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
   @override
   void initState() {
     super.initState();
-    viewModel.getListFAQByCategoryId(
-        widget.listParams[0]); // as that [categoryId, color, iconPath, name]
+//    viewModel.getListFAQByCategoryId(
+//        widget.listParams[0]); // as that [categoryId, color, iconPath, name]
+
+//    viewModel.idCategoryForFetchArticle = widget.listParams[0];
+    viewModel.updateIdCategoryForFetchArticle(widget.listParams[0]);
   }
 
   @override
@@ -87,18 +90,20 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
         return Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () async {
-              try {
-                KnowsystemArticle data =
-                    await viewModel.fetchHtmlByArticleId(idArticle);
-                Navigator.pushNamed(context, FaqArticleDetailPage.routeName,
-                    arguments: [
-                      [data.description],
-                      text
-                    ]);
-              } catch (e) {
-                print(e);
-              }
+            onTap: () {
+              Navigator.pushNamed(context, FaqArticleDetailPage.routeName,
+                  arguments: [idArticle, text]);
+//              try {
+//                KnowsystemArticle data =
+//                    await viewModel.fetchHtmlByArticleId(idArticle);
+//                Navigator.pushNamed(context, FaqArticleDetailPage.routeName,
+//                    arguments: [
+//                      [data.description],
+//                      text
+//                    ]);
+//              } catch (e) {
+//                print(e);
+//              }
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,46 +147,117 @@ class _FaqDetailPageState extends State<FaqDetailPage> {
               ),
             ),
             Positioned(
-              top: media.orientation == Orientation.landscape? 15 : 35,
-              left: media.orientation == Orientation.landscape? media.size.width / 2 - 30 : 150,
-              right: media.orientation == Orientation.landscape? media.size.width / 2 - 30 : 150,
+              top: media.orientation == Orientation.landscape ? 15 : 35,
+              left: media.orientation == Orientation.landscape
+                  ? media.size.width / 2 - 30
+                  : 150,
+              right: media.orientation == Orientation.landscape
+                  ? media.size.width / 2 - 30
+                  : 150,
               child: Image.network(
                 widget.listParams[2],
                 fit:
                     BoxFit.cover, //as that  [categoryId, color, iconPath, name]
               ),
+            ),
+            viewModel.listArticle.length == 0
+                ? Container(
+              width: media.size.width,
+              child: Center(
+                  child: Text(viewModel.isLoading && viewModel.isNoData
+                      ? translation.text('FAQ_DETAIL_PAGE.LOADING')
+                      : translation.text('FAQ_DETAIL_PAGE.NO_DATA'), style: TextStyle(color: Colors.white),)),
+            )
+                : DraggableScrollableSheet(
+              initialChildSize: .7,
+              builder: (context, scrollController) {
+                scrollController.addListener((){
+                  viewModel.onScrollHappened(scrollController);
+                });
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15)
+                    )
+                  ),
+                  child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: viewModel.listArticle.length,
+                    itemBuilder: (context, index) {
+                      List<KnowsystemArticle> list = viewModel.listArticle;
+                      return __itemList(list[index].name, list[index].id,
+                          list[index].createDate);
+                    },
+                  ),
+                );
+              },
             )
           ],
         );
       }
 
       Widget __content() {
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: viewModel.listArticle.length == 0
-                ? <Widget>[
-                    Container(
-                      width: media.size.width,
-                      child: Center(
-                          child: Text(
-                              translation.text('FAQ_DETAIL_PAGE.NO_DATA'))),
-                    )
-                  ]
-                : viewModel.listArticle.map((item) {
-                    return __itemList(item.name, item.id, item.createDate);
-                  }).toList());
+        return viewModel.listArticle.length == 0
+            ? Container(
+                width: media.size.width,
+                child: Center(
+                    child: Text(viewModel.isLoading
+                        ? translation.text('FAQ_DETAIL_PAGE.LOADING')
+                        : translation.text('FAQ_DETAIL_PAGE.NO_DATA'))),
+              )
+            : DraggableScrollableSheet(
+                builder: (context, _) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: ListView.builder(
+                      controller: viewModel.controller,
+                      itemCount: viewModel.listArticle.length,
+                      itemBuilder: (context, index) {
+                        List<KnowsystemArticle> list = viewModel.listArticle;
+                        return __itemList(list[index].name, list[index].id,
+                            list[index].createDate);
+                      },
+                    ),
+                  );
+                },
+              );
       }
 
-//      fix height not full screen
-      return TS24BottomScrollWithBackgroundWidget(
-          shadow: false,
-          background: __background(),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: media.size.height * .85),
-            child: __content(),
-          ));
-    }
+//      Widget __content() {
+//        return Column(
+//            crossAxisAlignment: CrossAxisAlignment.start,
+//            children: viewModel.listArticle.length == 0
+//                ? <Widget>[
+//                    Container(
+//                      width: media.size.width,
+//                      child: Center(
+//                          child: Text(viewModel.isLoading
+//                              ? translation.text('FAQ_DETAIL_PAGE.LOADING')
+//                              : translation.text('FAQ_DETAIL_PAGE.NO_DATA'))),
+//                    )
+//                  ]
+//                : viewModel.listArticle.map((item) {
+//                    return __itemList(item.name, item.id, item.createDate);
+//                  }).toList());
+//      }
 
+//      fix height not full screen
+
+      return __background();
+
+//      return TS24BottomScrollWithBackgroundWidget(
+//          shadow: false,
+//          controllerCallback: viewModel.onFunction,
+//          background: __background(),
+//          child: ConstrainedBox(
+//            constraints: BoxConstraints(minHeight: media.size.height * .85),
+//            child: __content(),
+//          ));
+    }
 
     return ViewModelProvider(
       viewmodel: viewModel,

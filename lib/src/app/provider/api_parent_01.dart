@@ -14,6 +14,9 @@ import 'package:ts24care/src/app/models/mail-message.dart';
 import 'package:ts24care/src/app/models/product-category.dart';
 import 'package:ts24care/src/app/models/product-warranty.dart';
 import 'package:ts24care/src/app/models/res-partner.dart';
+import 'package:ts24care/src/app/models/res-users.dart';
+import 'package:ts24care/src/app/models/ticketStatistic.dart';
+import 'package:ts24care/src/app/models/ts24proAccount.dart';
 import 'api_master.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,6 +33,11 @@ class Api1 extends ApiMaster {
   ///Trả về true or false.
   Future<StatusCodeGetToken> checkLogin(
       {String username, String password}) async {
+    TS24PROAccount ts24proAccount =
+        await this.checkLoginTS24Pro(username: username, password: password);
+    if (ts24proAccount != null) {
+      this.username = ts24proAccount.uid;
+    }
     StatusCodeGetToken result = StatusCodeGetToken.FALSE;
     this.grandType = GrandType.password;
     this.clientId = password_client_id;
@@ -38,6 +46,39 @@ class Api1 extends ApiMaster {
     this.password = password;
     result = await this.authorization(refresh: true);
     return result;
+  }
+
+  ///Kiểm tra user tồn tại trong hệ thống
+  ///@params String email
+  Future<ResPartner> checkUserExist(String email) async {
+    this.grandType = GrandType.client_credentials;
+    this.clientId = client_id;
+    this.clienSecret = client_secret;
+    await this.authorization();
+    body = new Map();
+    body["domain"] = [
+      ['email', '=', email],
+    ];
+    body["fields"] = ["login"];
+    var params = convertSerialize(body);
+    List<ResPartner> listResult = new List();
+    ResPartner resPartner;
+    return http
+        .get('${this.api}/search_read/res.partner?$params',
+            headers: this.headers)
+        .then((http.Response response) async {
+      this.updateCookie(response);
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult = list.map((item) => ResPartner.fromJson(item)).toList();
+          resPartner = listResult[0];
+        }
+      }
+      return resPartner;
+    }).catchError((error) {
+      return resPartner;
+    });
   }
 
   //Lấy thông tin khách hàng
@@ -145,6 +186,90 @@ class Api1 extends ApiMaster {
     });
   }
 
+  ///Kiểm tra user tồn tại trong hệ thống
+  ///@params String email
+  Future<dynamic> getCustomerInfoAfterLoginSocial(int id) async {
+    this.grandType = GrandType.client_credentials;
+    this.clientId = client_id;
+    this.clienSecret = client_secret;
+    await this.authorization(refresh: true);
+    body = new Map();
+    body["fields"] = [
+      "company_id",
+      "company_name",
+      "company_type",
+      "contact_address",
+      "contract_ids",
+      "contracts_count",
+      "country_id",
+      "create_date",
+      "create_uid",
+      "credit",
+      "credit_limit",
+      "currency_id",
+      "customer",
+      "date",
+      "debit",
+      "debit_limit",
+      "display_name",
+      "email",
+      "email_formatted",
+      "employee",
+      "id",
+      "im_status",
+      "is_company",
+      "is_published",
+      "is_seo_optimized",
+      "journal_item_count",
+      "lang",
+      "mobile",
+      "name",
+      "parent_id",
+      "parent_name",
+      "partner_gid",
+      "partner_share",
+      "phone",
+      "state_id",
+      "street",
+      "street2",
+      "supplier",
+      "team_id",
+      "title",
+      "total_invoiced",
+      "trust",
+      "type",
+      "user_id",
+      "user_ids",
+      "vat"
+    ];
+    body["domain"] = [
+      ['id', '=', id]
+    ];
+    var params = convertSerialize(body);
+    List<ResPartner> listResult = new List();
+    ResPartner resPartner;
+    return http
+        .get('${this.api}/search_read/res.partner?$params',
+            headers: this.headers)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        print(list);
+        if (list.length > 0) {
+          listResult = list.map((item) => ResPartner.fromJson(item)).toList();
+          resPartner = listResult[0];
+
+          Customer customer = Customer();
+          customer.fromResPartner(resPartner);
+          customer.saveLocal();
+        }
+      }
+      return resPartner;
+    }).catchError((error) {
+      return resPartner;
+    });
+  }
+
   ///Lấy danh sách blog
   Future<List<BlogPost>> getListBlogs({int offset, int limit}) async {
     await this.authorization();
@@ -225,15 +350,12 @@ class Api1 extends ApiMaster {
     });
   }
 
-  ///Lấy danh sách ticket theo status
-  ///@param int status
-  ///0: Lấy tất cả
-  ///1: New
-  ///2: In Progress
-  ///3: Solved
-  ///4: Canceled
   Future<List<HelpdeskTicket>> getListTicketByStatus(
-      {int status = 0, int offset, int limit}) async {
+      {int status = 0,
+      int offset,
+      int limit,
+      int categoryId = 0,
+      int date = 0}) async {
     await this.authorization();
     List<HelpdeskTicket> listResult = new List();
     Customer customer = Customer();
@@ -242,6 +364,8 @@ class Api1 extends ApiMaster {
     body["stage"] = status.toString();
     body["offset"] = offset.toString();
     body["limit"] = limit.toString();
+    body["category_id"] = categoryId.toString();
+    body["date"] = date.toString();
     body["gmt"] = DateTime.now().timeZoneOffset.inHours.toString();
     return http
         .post('${this.api}/${this.nameCustomApi}/listTicket_Status',
@@ -279,6 +403,7 @@ class Api1 extends ApiMaster {
             headers: this.headers, body: body)
         .then((http.Response response) {
       if (response.statusCode == 200) {
+        this.updateCookie(response);
         List list = json.decode(response.body);
         if (list.length > 0) {
           listResult =
@@ -660,6 +785,34 @@ class Api1 extends ApiMaster {
     });
   }
 
+  ///Tạo user portal
+  ///@param Respartner
+  ///trả về null hoặc id user mới tạo
+  Future<dynamic> insertUserPortal(ResPartner resPartner) async {
+    try {
+      await this.authorization(refresh: true);
+      var result;
+      body = new Map();
+      body["values"] = json.encode(resPartner.toJson());
+      return http
+          .post('${this.api}/${this.nameCustomApi}/createUserPortal_new',
+              headers: this.headers, body: body)
+          .then((http.Response response) {
+        if (response.statusCode == 200) {
+          var list = json.decode(response.body);
+          if (list is List) result = list[0];
+          //print(list);
+        } else {
+          result = null;
+        }
+        return result;
+      });
+    } catch (ex) {
+      print("insertUserPortal: $ex");
+      return null;
+    }
+  }
+
   ///Update thông tin khách hàng
   ///
   ///Success - Trả về true
@@ -710,5 +863,98 @@ class Api1 extends ApiMaster {
       }
       return result;
     });
+  }
+
+  ///Hàm reset password
+  ///@param String email
+  ///trả về true false
+  Future<bool> resetPassword(String email) async {
+    try {
+      await this.authorization(refresh: true);
+      var result = false;
+      body = new Map();
+      ResPartner resPartner = ResPartner();
+      resPartner.email = email;
+      body["values"] = json.encode(resPartner.toJson());
+      return http
+          .post('${this.api}/${this.nameCustomApi}/resetPassword',
+              headers: this.headers, body: body)
+          .then((http.Response response) {
+        if (response.statusCode == 200) {
+          result = json.decode(response.body);
+          //print(list);
+        }
+        return result;
+      });
+    } catch (ex) {
+      print("insertUserPortal: $ex");
+      return false;
+    }
+  }
+
+  ///Hàm thống kê các tikets theo tháng
+  ///@param month
+  ///Trả về object chứa thống kê
+  /// các ticket đã tạo,
+  /// thời gian trả lời trung bình,
+  /// các ticket đã hoàn thành
+  Future<TicketStatistic> statisticTicket(int month) async {
+    try {
+      await this.authorization();
+      Customer customer = Customer();
+      TicketStatistic result;
+      body = new Map();
+      body["month"] = month.toString();
+      body["partner_id"] = customer.id.toString();
+      return http
+          .post('${this.api}/${this.nameCustomApi}/tongHopHelpdeskTicket',
+              headers: this.headers, body: body)
+          .then((http.Response response) {
+        if (response.statusCode == 200) {
+          var obj = json.decode(response.body);
+          result = TicketStatistic.fromJson(obj);
+          //print(list);
+        }
+        return result;
+      });
+    } catch (ex) {
+      print("insertUserPortal: $ex");
+      return null;
+    }
+  }
+
+  ///Hàm thống kê các tikets theo category tháng
+  ///@param month
+  ///Trả về object chứa thống kê các category
+  /// các ticket đã tạo,
+  /// thời gian trả lời trung bình,
+  /// các ticket đã hoàn thành
+  Future<List<TicketStatistic>> statisticTicketByCategory(int month) async {
+    List<TicketStatistic> result = List();
+    try {
+      await this.authorization();
+      Customer customer = Customer();
+      body = new Map();
+      body["month"] = month.toString();
+      body["partner_id"] = customer.id.toString();
+      return http
+          .post(
+              '${this.api}/${this.nameCustomApi}/thongKeHelpdeskTicketByCategory',
+              headers: this.headers,
+              body: body)
+          .then((http.Response response) {
+        if (response.statusCode == 200) {
+          var list = json.decode(response.body);
+          if (list is List) if (list.length > 0)
+            result =
+                list.map((item) => TicketStatistic.fromJson(item)).toList();
+          //print(list);
+        }
+        return result;
+      });
+    } catch (ex) {
+      print("insertUserPortal: $ex");
+      return result;
+    }
   }
 }

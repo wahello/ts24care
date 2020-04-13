@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ts24care/src/app/app_localizations.dart';
 
 enum MenuAttachmentState {
   IMAGE,
@@ -21,61 +22,67 @@ class CustomPopupMenu {
       this.iconData,
       this.state,
       this.color});
-
+  static List<String> status = [
+    translation.text("TICKET_PAGE.STATUS.ALL"),
+    translation.text("TICKET_PAGE.STATUS_NEW"),
+    translation.text("TICKET_PAGE.STATUS_IN_PROGRESS"),
+    translation.text("TICKET_PAGE.STATUS_SOLVED"),
+    translation.text("TICKET_PAGE.STATUS_CANCELED"),
+  ];
   static List<CustomPopupMenu> listMenu = <CustomPopupMenu>[
-    CustomPopupMenu(id: 1, title: 'Xóa', iconData: Icons.delete),
-    CustomPopupMenu(id: 2, title: 'Thêm', iconData: Icons.add)
+    CustomPopupMenu(id: 1, title: translation.text("TICKET_PAGE.ADD"), iconData: Icons.delete),
+    CustomPopupMenu(id: 2, title: translation.text("TICKET_PAGE.DELETE"), iconData: Icons.add)
   ];
   static List<CustomPopupMenu> listMenuAttachment = [
     CustomPopupMenu(
         id: 1,
-        title: 'Image',
+        title: translation.text("TICKET_PAGE.IMAGE"),
         iconData: Icons.photo,
         state: MenuAttachmentState.IMAGE),
     CustomPopupMenu(
         id: 2,
-        title: 'File',
+        title: translation.text("TICKET_PAGE.FILE"),
         iconData: Icons.insert_drive_file,
         state: MenuAttachmentState.FILE),
   ];
   static List<CustomPopupMenu> listTicketStatus = [
     CustomPopupMenu(
         id: 1,
-        title: 'New',
+        title: status[1],
         state: MenuStatusState.NEW,
         color: Colors.orange[400]),
     CustomPopupMenu(
         id: 2,
-        title: 'In progress',
+        title: status[2],
         state: MenuStatusState.IN_PROGRESS,
         color: Colors.blue),
     CustomPopupMenu(
         id: 3,
-        title: 'Solved',
+        title: status[3],
         state: MenuStatusState.SOLVED,
         color: Colors.grey[400]),
     CustomPopupMenu(
         id: 4,
-        title: 'Cancel',
+        title: status[4],
         state: MenuStatusState.CANCEL,
         color: Colors.red),
   ];
-  static MenuStatusState getStatus(int id) {
+  static MenuStatusState getStatus(String name) {
     MenuStatusState state = MenuStatusState.NEW;
-    switch (id) {
-      case 0:
+    switch (name.toLowerCase()) {
+      case 'all':
         state = MenuStatusState.ALL;
         break;
-      case 1:
+      case 'new':
         state = MenuStatusState.NEW;
         break;
-      case 2:
+      case 'inprogress':
         state = MenuStatusState.IN_PROGRESS;
         break;
-      case 3:
+      case 'solved':
         state = MenuStatusState.SOLVED;
         break;
-      case 4:
+      case 'canceled':
         state = MenuStatusState.CANCEL;
         break;
     }
@@ -89,25 +96,50 @@ class CustomPopupMenu {
     return listTicketStatus[0];
   }
 
-  static getStatusNameFromId(int id) {
-    String state = "Mới";
-    switch (id) {
-      case 0:
-        state = "Tất cả";
+  static getStatusName(String name) {
+    String state = status[1];
+    switch (name.toLowerCase()) {
+      case 'all':
+        state = status[0];
         break;
-      case 1:
-        state = "Mới";
+      case 'new':
+        state = status[1];
         break;
-      case 2:
-        state = "Đang xử lý";
+      case 'inprogress':
+        state = status[2];
         break;
-      case 3:
-        state = "Đã giải quyết";
+      case 'solved':
+        state = status[3];
         break;
-      case 4:
-        state = "Hủy bỏ";
+      case 'canceled':
+        state = status[4];
         break;
     }
     return state;
+  }
+  static reLoad(){
+    listMenu =  <CustomPopupMenu>[
+      CustomPopupMenu(id: 1, title: translation.text("TICKET_PAGE.ADD"), iconData: Icons.delete),
+      CustomPopupMenu(id: 2, title: translation.text("TICKET_PAGE.DELETE"), iconData: Icons.add)
+    ];
+    listMenuAttachment = [
+      CustomPopupMenu(
+          id: 1,
+          title: translation.text("TICKET_PAGE.IMAGE"),
+          iconData: Icons.photo,
+          state: MenuAttachmentState.IMAGE),
+      CustomPopupMenu(
+          id: 2,
+          title: translation.text("TICKET_PAGE.FILE"),
+          iconData: Icons.insert_drive_file,
+          state: MenuAttachmentState.FILE),
+    ];
+    status = [
+      translation.text("TICKET_PAGE.STATUS.ALL"),
+      translation.text("TICKET_PAGE.STATUS_NEW"),
+      translation.text("TICKET_PAGE.STATUS_IN_PROGRESS"),
+      translation.text("TICKET_PAGE.STATUS_SOLVED"),
+      translation.text("TICKET_PAGE.STATUS_CANCELED"),
+    ];
   }
 }

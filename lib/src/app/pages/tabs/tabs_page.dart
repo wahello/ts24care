@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/menu.dart';
 import 'package:ts24care/src/app/pages/tabs/tabs_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/float_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TabsPage extends StatefulWidget {
   static const String routeName = '/tabs';
@@ -22,15 +23,20 @@ class TabsArgument {
 
 class _TabsPageState extends State<TabsPage> {
   TabsPageViewModel viewModel = TabsPageViewModel();
+  List<Widget> tabs;
   @override
   void initState() {
     super.initState();
     viewModel.navigateChild(widget.args);
   }
-
+  void reloadText(){
+    Menu.reload();
+    tabs = Menu.tabMenu.map((menu) => menu.page).toList();
+  }
   @override
   Widget build(BuildContext context) {
     viewModel.context = context;
+    reloadText();
     return ViewModelProvider(
       viewmodel: viewModel,
       child: StreamBuilder(
@@ -69,9 +75,11 @@ class _TabsPageState extends State<TabsPage> {
                   .toList(),
             ),
             floatingActionButton:
-                viewModel.menu.index == 0 || viewModel.menu.index == 1
+                // remove floating icon in dashboard index 0 (Menu file)
+              viewModel.menu.index == 0 || viewModel.menu.index == 1 || viewModel.menu.index == 2
+//                viewModel.menu.index == 1
                     ? FloatButtonWidget(
-                        tooltip: "add",
+                        tooltip: translation.text("TAB_PAGE.HINT_MENU"),
                         onPressed: () {},
                         listFAB: [
                           FloatingActionButton(
@@ -80,14 +88,16 @@ class _TabsPageState extends State<TabsPage> {
                             onPressed: () {
                               viewModel.onTapCreateTicket();
                             },
-                            tooltip: 'Thêm',
+                            tooltip: translation.text("TAB_PAGE.HINT_ADD"),
                             child: Icon(Icons.create),
                           ),
                           FloatingActionButton(
                             backgroundColor: ThemePrimary.primaryColor,
                             heroTag: 11,
-                            onPressed: null,
-                            tooltip: 'Gọi trung tâm dịch vụ',
+                            onPressed: (){
+                              launch("tel://19006154");
+                            },
+                            tooltip: translation.text("TAB_PAGE.HINT_CARE"),
                             child: Icon(Icons.call),
                           ),
                           FloatingActionButton(
@@ -96,7 +106,7 @@ class _TabsPageState extends State<TabsPage> {
                             onPressed: () {
                               viewModel.onTapChat();
                             },
-                            tooltip: 'Chat trực tuyến',
+                            tooltip: translation.text("TAB_PAGE.HINT_LIVE_CHAT"),
                             child: Icon(Icons.message),
                           )
                         ],

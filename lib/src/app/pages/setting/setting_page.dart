@@ -217,6 +217,12 @@ class _SettingPageState extends State<SettingPage>
 //                viewModel.onTapFeedback();
 //              }),
             __item(
+                title: translation.text("HELP_PAGE.SERVICE_LIST"),
+                iconTrailing: Icons.navigate_next,
+                onTap: () {
+                  viewModel.onTapListService();
+                }),
+            __item(
                 title: translation.text("SETTINGS_PAGE.LICENSES"),
                 iconTrailing: Icons.navigate_next,
                 onTap: () {

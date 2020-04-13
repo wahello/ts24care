@@ -17,6 +17,7 @@ import 'package:ts24care/src/app/models/item_attachment_model.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/widgets/ts24CameraWidget/ts24_camera_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
+import 'package:ts24care/src/app/app_localizations.dart';
 
 class TicketNewPageViewModel extends ViewModelBase {
   Customer customer = Customer();
@@ -27,12 +28,13 @@ class TicketNewPageViewModel extends ViewModelBase {
   TextEditingController subjectTextEditingController = TextEditingController();
   TextEditingController descriptionEditingController = TextEditingController();
   List<String> listImage = List();
+  String errorService;
   String errorSubject;
   TicketNewPageViewModel() {
     customPopupMenu = CustomPopupMenu.listTicketStatus[0];
     subjectTextEditingController.addListener(() => {isValidSubject()});
-    listHelpDeskCategory
-        .add(HelpDeskCategory(id: -1, name: "Không chọn dịch vụ"));
+    listHelpDeskCategory.add(HelpDeskCategory(
+        id: -1, name: translation.text("TICKET_NEW_PAGE.SELECT_SERVICE")));
     onLoad();
   }
   onLoad() async {
@@ -197,26 +199,22 @@ class TicketNewPageViewModel extends ViewModelBase {
 
   onSelectedTicketStatus(CustomPopupMenu customPopupMenu) {
     this.customPopupMenu = customPopupMenu;
-//    switch (status) {
-//      case MenuStatusState.SOLVED:
-//      case MenuStatusState.IN_PROGRESS:
-//      case MenuStatusState.CANCEL:
-//      case MenuStatusState.NEW:
-//      case MenuStatusState.CANCEL:
-//      case MenuStatusState.ALL:
-//        statusState = status;
-//        break;
-//    }
     this.updateState();
   }
 
   onSelectedHelpDeskCategory(HelpDeskCategory helpDeskCategory) {
     this.helpDeskCategory = helpDeskCategory;
+    if (helpDeskCategory.id != -1)
+      errorService = '';
+    else
+      errorService = 'Bạn chưa chọn dịch vụ';
     this.updateState();
   }
 
   onSend() async {
-    if (isValidSubject()) {
+    if (isValidSubject() && errorService == '') {
+      LoadingDialog.showLoadingDialog(
+          context, translation.text("TICKET_NEW_PAGE.CREATING"));
       String _description = parse(descriptionEditingController.text).outerHtml;
       HelpdeskTicket _helpDeskTicket = HelpdeskTicket(
           contactName: customer.name,
@@ -233,17 +231,29 @@ class TicketNewPageViewModel extends ViewModelBase {
       var result = await api.insertTickets(
           ticket: _helpDeskTicket, listAttachmentId: _listAttachment);
       if (result != null) {
-        Navigator.pop(context, true);
-        ToastController.show(
-            context: context,
-            message: "Tạo phiếu yêu cầu thành công.",
-            duration: Duration(seconds: 2));
+        LoadingDialog.hideLoadingDialog(context);
+        LoadingDialog.showLoadingDialog(
+            context, translation.text("TICKET_NEW_PAGE.CREATE_SUCCESS"));
+        Future.delayed(Duration(seconds: 2)).then((_) {
+          LoadingDialog.hideLoadingDialog(context);
+          Navigator.pop(context, true);
+        });
         print("Thanh cong");
       } else {
         LoadingDialog.showMsgDialog(
-            context, "Tạo phiếu yêu cầu thất bại, vui lòng thử lại.");
+            context, translation.text("TICKET_NEW_PAGE.CREATE_FAIL"));
         print("That bai");
       }
+    } else if (errorService != '') {
+      errorService = 'Bạn chưa chọn dịch vụ';
+      this.updateState();
     }
+  }
+
+  @override
+  void dispose() {
+    subjectTextEditingController.dispose();
+    descriptionEditingController.dispose();
+    super.dispose();
   }
 }

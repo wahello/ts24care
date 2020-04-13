@@ -49,22 +49,40 @@ class ItemHelpWidget extends StatelessWidget {
                     )),
               )
                   : Center(
-                child: Icon(
-                  icons,
-                  color: Colors.grey[600],
-                  size: 32,
+                child: Container(
+                  width: 150,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        icons,
+                        color: Color(0xff999999),
+                        size: 32,
+                      ),
+                      Text(
+                        text,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
                 ),
               ))),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ),
-          )
+//          Expanded(
+//            flex: 1,
+//            child: Center(
+//              child: Text(
+//                text,
+//                textAlign: TextAlign.center,
+//                style: TextStyle(color: Colors.grey[600]),
+//              ),
+//            ),
+//          )
         ],
       ),
     );

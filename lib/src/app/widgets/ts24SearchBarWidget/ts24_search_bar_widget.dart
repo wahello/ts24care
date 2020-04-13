@@ -5,7 +5,6 @@ import 'package:ts24care/packages/loader_search_bar/src/SearchBar.dart';
 import 'package:ts24care/packages/loader_search_bar/src/SearchBarAttrs.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
-import 'package:ts24care/src/app/widgets/float_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24SearchBarWidget/ts24_search_bar_widget_viewmodel.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
@@ -21,12 +20,14 @@ class TS24SearchBarWidget extends StatefulWidget {
   final Widget resultWidget;
   final Widget contentWidget;
   final Color backgroundColor;
+  final Drawer drawer;
   final Color primaryColor;
   final int countResult;
   final Function onTapFloatButton;
   final OnQueryCallBack onQueryChangedCallBack;
   final OnQueryCallBack onQuerySubmittedCallBack;
   final SearchBarStateCallBack searchBarStateCallBack;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   const TS24SearchBarWidget(
       {Key key,
@@ -43,7 +44,9 @@ class TS24SearchBarWidget extends StatefulWidget {
       this.contentWidget,
       this.onTapFloatButton,
       this.actions,
-      this.listFloatingActionButton})
+      this.listFloatingActionButton,
+      this.drawer,
+      this.scaffoldKey})
       : super(key: key);
 
   @override
@@ -74,9 +77,9 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
             statusBarColor: widget.backgroundColor,
           ),
           iconified: true,
-          searchHint: 'Tìm kiếm...',
+          searchHint: translation.text("SEARCH_WIDGET.HINT_SEARCH"),
           onQueryChanged: (query) {
-            viewModel.onQueryChanged(query);
+            viewModel.onQueryChanged(query,widget.onQuerySubmittedCallBack);
             widget.onQueryChangedCallBack(query);
           },
           onQuerySubmitted: (query) {
@@ -170,13 +173,13 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
         child: viewModel.searchBarState == SearchBarState.active ||
                 viewModel.searchBarState == SearchBarState.clear
             ? _content(
-                title: translation.text('FAQ_DETAIL_PAGE.RECENT'),
+                title: translation.text('SEARCH_WIDGET.RECENT'),
                 iconData: Icons.sort,
                 widget: _historySearchText(viewModel.listHistoryFiltered))
             : viewModel.searchBarState == SearchBarState.submit
                 ? _content(
                     title: widget.countResult.toString() +
-                        " ${translation.text('FAQ_DETAIL_PAGE.RESULT')}",
+                        " ${translation.text('SEARCH_WIDGET.RESULT')}",
                     iconData: Icons.tune,
                     widget: widget.resultWidget)
                 : viewModel.searchBarState == SearchBarState.cancel
@@ -190,24 +193,26 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
       child: StreamBuilder(
         stream: viewModel.stream,
         builder: (context, snapshot) {
-          return TS24Scaffold(
+          return Scaffold(
+            key: widget.scaffoldKey,
             appBar: _appBar(),
             body: _body(),
-            floatingActionButton: widget.listFloatingActionButton != null
-                ? viewModel.searchBarState == SearchBarState.cancel
-                    ? FloatButtonWidget(
-                        tooltip: "add",
-                        onPressed: () {},
-                        listFAB: widget.listFloatingActionButton,
-                        icon: Icons.menu,
-                      )
-//            FloatingActionButton(
-//                        onPressed: widget.onTapFloatButton,
-//                        child: Icon(Icons.add),
-//                        backgroundColor: widget.primaryColor,
+            endDrawer: widget.drawer,
+//            floatingActionButton: widget.listFloatingActionButton != null
+//                ? viewModel.searchBarState == SearchBarState.cancel
+//                    ? FloatButtonWidget(
+//                        tooltip: "add",
+//                        onPressed: () {},
+//                        listFAB: widget.listFloatingActionButton,
+//                        icon: Icons.menu,
 //                      )
-                    : null
-                : null,
+////            FloatingActionButton(
+////                        onPressed: widget.onTapFloatButton,
+////                        child: Icon(Icons.add),
+////                        backgroundColor: widget.primaryColor,
+////                      )
+//                    : null
+//                : null,
           );
         },
       ),

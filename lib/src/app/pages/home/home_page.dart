@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/pages/home/home_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
-import 'package:ts24care/src/app/widgets/float_button_widget.dart';
 import 'package:ts24care/src/app/widgets/group_content_widget.dart';
 import 'package:ts24care/src/app/widgets/item_newfeed_widget.dart';
+import 'package:ts24care/src/app/widgets/shimmer/shimmer_item_news_and_tips.dart';
 import 'package:ts24care/src/app/widgets/ts24BottomScrollWithBackgroundWidget/ts24_bottom_scroll_with_background_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = "homePage";
@@ -89,36 +91,54 @@ class _HomePageState extends State<HomePage>
 //                  height: 70,
 //                ),
 //              ),
-              GroupContentWidget(
-                title: "Bài viết mới",
-                tapMore: () {
-                  viewModel.onTapMoreNewAndTips();
-                },
-                child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.8,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
-                  itemCount: viewModel.listNewFeed.length,
-                  itemBuilder: (context, index) =>
-//                  Container(color: Colors.red,height: 500,)
-                      TS24Button(
-                    onTap: () {
-                      viewModel.onTapBlogPost(viewModel.listNewFeed[index]);
-                    },
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: ItemNewFeedHorizontalWidget(
-                      title: viewModel.listNewFeed[index].title,
-                      url: viewModel.listNewFeed[index].avatarUrl,
-                    ),
-                  ),
-                ),
-              )
+
+              (viewModel.loading)
+                  ? GroupContentWidget(
+                      title: translation.text("HOME_PAGE.NEW_POSTS"),
+                      child: GridView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.8,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          itemCount: 4,
+                          itemBuilder: (context, index) =>
+                              ShimmerItemNewFeedHorizontalWidget()),
+                    )
+                  : GroupContentWidget(
+                      title: translation.text("HOME_PAGE.NEW_POSTS"),
+                      tapMore: () {
+                        viewModel.onTapMoreNewAndTips();
+                      },
+                      child: GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.8,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                        ),
+                        itemCount: viewModel.listNewFeed.length,
+                        itemBuilder: (context, index) => TS24Button(
+                          onTap: () {
+                            viewModel
+                                .onTapBlogPost(viewModel.listNewFeed[index]);
+                          },
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: ItemNewFeedHorizontalWidget(
+                            title: viewModel.listNewFeed[index].title,
+                            url: viewModel.listNewFeed[index].avatarUrl,
+                          ),
+                        ),
+                      ),
+                    )
             ],
           ),
         ),
@@ -135,28 +155,30 @@ class _HomePageState extends State<HomePage>
               top: true,
               child: Stack(
                 children: <Widget>[
-                  if (viewModel.listNewFeed.length > 0)
-                    Swiper(
-                      onIndexChanged: (index) {
-                        viewModel.onChangeSlideIndex(index);
-                        print(index);
-                      },
-                      onTap: (index){
-                        viewModel.onTapBlogPost(viewModel.listNewFeed[index]);
-                      },
-                      itemHeight: 50,
-                      itemBuilder: (BuildContext context, int index) {
-                        return viewModel.listNewFeed[index].avatarUrl != null
-                            ? Image.network(
-                                viewModel.listNewFeed[index].avatarUrl,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.asset(
-                                "assets/images/default.jpg",
-                                fit: BoxFit.cover,
-                              );
-                      },
-                      itemCount: viewModel.listNewFeed.length,
+                  (viewModel.listNewFeed.length > 0)
+                      ? Swiper(
+                          onIndexChanged: (index) {
+                            viewModel.onChangeSlideIndex(index);
+                            print(index);
+                          },
+                          onTap: (index) {
+                            viewModel
+                                .onTapBlogPost(viewModel.listNewFeed[index]);
+                          },
+                          itemHeight: 50,
+                          itemBuilder: (BuildContext context, int index) {
+                            return viewModel.listNewFeed[index].avatarUrl !=
+                                    null
+                                ? Image.network(
+                                    viewModel.listNewFeed[index].avatarUrl,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.asset(
+                                    "assets/images/default.jpg",
+                                    fit: BoxFit.cover,
+                                  );
+                          },
+                          itemCount: viewModel.listNewFeed.length,
 //                    list: viewModel.listNewFeed
 //                        .map((item) => item.avatarUrl != null
 //                            ? Image.network(
@@ -168,8 +190,10 @@ class _HomePageState extends State<HomePage>
 //                                fit: BoxFit.cover,
 //                              ))
 //                        .toList(),
-                      control: new SwiperControl(color: Colors.transparent),
-                    ),
+                          control: new SwiperControl(color: Colors.transparent),
+                        )
+                      : LoadingIndicator.spinner(
+                          context: context, loading: viewModel.loading),
                   if (viewModel.listNewFeed.length > 0)
                     Positioned(
                       top: 10,
@@ -197,6 +221,7 @@ class _HomePageState extends State<HomePage>
       onFreshCallback: () async {
         viewModel.onLoad();
       },
+      controllerCallback: (_) {},
       child: __content(),
     );
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/knowsystem-article.dart';
 import 'package:ts24care/src/app/pages/help/faq/help_faq_page_viewmodel.dart';
@@ -7,6 +9,7 @@ import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/item_help_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24SearchBarWidget/ts24_search_bar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 class FAQPage extends StatefulWidget {
   static const String routeName = "/FAQpage";
@@ -76,8 +79,8 @@ class _FAQPageState extends State<FAQPage> {
                           viewModel.listCategoryHaveColorsAndImages[index].id,
                       iconPath: viewModel
                           .listCategoryHaveColorsAndImages[index].urlIcon,
-                      text:
-                          viewModel.listCategoryHaveColorsAndImages[index].name,
+                      text: viewModel
+                          .listCategoryHaveColorsAndImages[index].name,
                       color: viewModel
                           .listCategoryHaveColorsAndImages[index].color,
                     ),
@@ -129,6 +132,7 @@ class _FAQPageState extends State<FAQPage> {
       child: StreamBuilder(
         stream: viewModel.stream,
         builder: (context, snapshot) {
+          if (snapshot.data == null) return Offstage();
           return TS24SearchBarWidget(
               leading: IconButton(
                 icon: Icon(
@@ -150,7 +154,13 @@ class _FAQPageState extends State<FAQPage> {
               onQuerySubmittedCallBack: viewModel.onQuerySubmitted,
               countResult: viewModel.listResultSearch.length,
               resultWidget: _renderResultSearch(viewModel.listResultSearch),
-              contentWidget: _body());
+              contentWidget: viewModel.listCategory.length == 0
+                  ? !viewModel.isLoading
+                      ? Center(
+                          child: Text("FAQ_DETAIL_PAGE.NO_DATA"),
+                        )
+                      : LoadingIndicator.spinner()
+                  : _body());
         },
       ),
     );

@@ -1,7 +1,10 @@
+import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/helper/index.dart';
 import 'package:flutter/material.dart';
-import 'package:ts24care/src/app/pages/login/createAccount/create_new_password.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
+
+import '../../../app_localizations.dart';
 
 class ForgetPasswordPageViewModel extends ViewModelBase {
   TextEditingController _emailController = new TextEditingController();
@@ -32,9 +35,20 @@ class ForgetPasswordPageViewModel extends ViewModelBase {
     return true;
   }
 
-  void onSubmitClicked() {
+  Future<void> onSubmitClicked() async {
     isValidEmail();
-//    if(isValidEmail())
-    Navigator.pushReplacementNamed(context, CreateNewPasswordPage.routeName);
+    if (!isValidEmail()) return;
+    LoadingDialog.showLoadingDialog(
+        context, translation.text("COMMON.IN_PROCESS"));
+    bool result = await api.resetPassword(_emailController.text.toString());
+    if (result) {
+      LoadingDialog.hideLoadingDialog(context);
+      LoadingDialog.showMsgDialog(
+          context, 'Đã gửi password mới tới địa chỉ email của bạn');
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      LoadingDialog.showMsgDialog(context, translation.text("COMMON.FAIL"));
+    }
+//    Navigator.pushReplacementNamed(context, CreateNewPasswordPage.routeName);
   }
 }

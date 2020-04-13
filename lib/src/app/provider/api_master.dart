@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:odoo_api/odoo_api.dart';
 import 'package:odoo_api/odoo_api_connector.dart';
 import 'package:odoo_api/odoo_user_response.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
+import 'package:ts24care/src/app/models/res-users.dart';
+import 'package:ts24care/src/app/models/ts24proAccount.dart';
 
 // 1.	Hàm lấy danh sách bản tin phân trang.
 
@@ -176,6 +179,7 @@ enum StatusCodeGetToken {
 class ApiMaster {
   String aliasName = "ApiMaster";
   String api = "$domainApi/api";
+  String apiTS24Pro = "$domainApiTS24pro";
   String nameCustomApi = "ts24care";
   String clientId = client_id;
   String clienSecret = client_secret;
@@ -187,7 +191,15 @@ class ApiMaster {
   Map<String, String> headers = {
     HttpHeaders.contentTypeHeader: "application/x-www-form-urlencoded"
   };
+  Map<String, String> headersTS24Pro = {
+    HttpHeaders.contentTypeHeader: "application/json",
+    HttpHeaders.authorizationHeader: "Basic dXNlcjpwYXNz"
+  };
   Map<String, dynamic> body;
+  Map<String, dynamic> bodyTS24pro() => {
+        "userAgent": "ts24pro",
+        "passAgent": "d1663225d1689433cb6943621635189a",
+      };
   String _accessToken = "";
   get accessToken => _accessToken;
   dynamic expiresIn;
@@ -490,6 +502,31 @@ class ApiMaster {
 
   //Lấy avatar nhân viên
   getImageByIdUser(String id) {
-    return "$domainApi/web/image?model=res.user&field=image&id=$id&$sessionId";
+    return "$domainApi/web/image?model=res.users&field=image&id=$id&$sessionId";
+  }
+
+  /* TS24pro api service */
+
+  Future<TS24PROAccount> checkLoginTS24Pro({String username, String password}) {
+    TS24PROAccount result;
+    body = bodyTS24pro();
+    body["userAccount"] = username;
+    body["passAccount"] = md5.convert(utf8.encode(password)).toString();
+    return http
+        .post(
+            '${this.apiTS24Pro}/loginAuthentication?${convertSerialize(body)}',
+            headers: this.headersTS24Pro)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+        if (body["code"].toString() == "TS111") {
+          result = TS24PROAccount.fromJson(body["objResponse"]);
+        }
+        print(body);
+      }
+      return result;
+    }).catchError((error) {
+      return result;
+    });
   }
 }

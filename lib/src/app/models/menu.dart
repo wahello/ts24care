@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
-import 'package:ts24care/src/app/pages/help/help_page.dart';
-import 'package:ts24care/src/app/pages/home/home_page.dart';
+import 'package:ts24care/src/app/pages/home/dashboard/dashboard_page.dart';
 import 'package:ts24care/src/app/pages/notification/notification_page.dart';
 import 'package:ts24care/src/app/pages/setting/setting_page.dart';
 import 'package:ts24care/src/app/pages/ticket/ticket_page.dart';
@@ -21,73 +21,73 @@ class Menu {
   static List<Menu> tabMenu = <Menu>[
     Menu(
       index: 0,
-      title: translation.text("Trang chủ"),
+      title: translation.text("HOME_PAGE.TITLE"),
       iconData: Icons.home,
-      page: HomePage(),
-      routeChildName: HomePage.routeName,
+      page: Dashboard(),
+      routeChildName: Dashboard.routeName,
     ),
     Menu(
       index: 1,
-      title: translation.text("Phiếu yêu cầu"),
-      iconData: Icons.pages,
+      title: translation.text("TICKET_PAGE.TITLE"),
+      iconData: FontAwesomeIcons.ticketAlt,
       page: TicketsPage(),
       routeChildName: TicketsPage.routeName,
     ),
+//    Menu(
+//      index: 2,
+//      title: translation.text("HELP_PAGE.TITLE"),
+//      iconData: Icons.help,
+//      page: HelpPage(),
+//      routeChildName: HelpPage.routeName,
+//    ),
     Menu(
       index: 2,
-      title: translation.text("Giúp đỡ"),
-      iconData: Icons.help,
-      page: HelpPage(),
-      routeChildName: HelpPage.routeName,
+      title: translation.text("NOTIFICATIONS_PAGE.TITLE"),
+      iconData: Icons.notifications,
+      page: NotificationsPage(),
+      routeChildName: NotificationsPage.routeName,
     ),
-     Menu(
-       index: 3,
-       title: translation.text("Thông báo"),
-       iconData: Icons.notifications,
-       page: NotificationsPage(),
-       routeChildName: NotificationsPage.routeName,
-     ),
     Menu(
-      index: 4,
-      title: translation.text("Cài đặt"),
+      index: 3,
+      title: translation.text("SETTINGS_PAGE.TITLE"),
       iconData: Icons.settings,
       page: SettingPage(),
       routeChildName: SettingPage.routeName,
     ),
   ];
-  static reload(){
+  static reload() {
     tabMenu = <Menu>[
       Menu(
         index: 0,
-        title: translation.text("Trang chủ"),
+        title: translation.text("HOME_PAGE.TITLE"),
         iconData: Icons.home,
-        page: HomePage(),
-        routeChildName: HomePage.routeName,
+        page: Dashboard(),
+        routeChildName: Dashboard.routeName,
       ),
       Menu(
         index: 1,
-        title: translation.text("Phiếu"),
-        iconData: Icons.pages,
+        title: translation.text("TICKET_PAGE.TITLE"),
+        iconData: FontAwesomeIcons.ticketAlt,
         page: TicketsPage(),
         routeChildName: TicketsPage.routeName,
       ),
+      // Menu(
+      //   index: 2,
+      //   title: translation.text("HELP_PAGE.TITLE"),
+      //   iconData: Icons.help,
+      //   page: HelpPage(),
+      //   routeChildName: HelpPage.routeName,
+      // ),
       Menu(
         index: 2,
-        title: translation.text("Giúp đỡ"),
-        iconData: Icons.help,
-        page: HelpPage(),
-        routeChildName: HelpPage.routeName,
-      ),
-      Menu(
-        index: 3,
-        title: translation.text("Thông báo"),
-        iconData: Icons.alarm,
+        title: translation.text("NOTIFICATIONS_PAGE.TITLE"),
+        iconData: Icons.notifications,
         page: NotificationsPage(),
         routeChildName: NotificationsPage.routeName,
       ),
       Menu(
-        index: 4,
-        title: translation.text("Cài đặt"),
+        index: 3,
+        title: translation.text("SETTINGS_PAGE.TITLE"),
         iconData: Icons.settings,
         page: SettingPage(),
         routeChildName: SettingPage.routeName,

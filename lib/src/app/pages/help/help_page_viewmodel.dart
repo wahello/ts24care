@@ -18,6 +18,7 @@ class HelpPageViewModel extends ViewModelBase {
   List<KnowsystemArticle> listArticle = List();
   List<KnowsystemSection> listCategory = List();
   bool isIndexCategoryChanged = false;
+  bool isLoading = true;
 
   HelpPageViewModel() {
 //    listApplication.addAll(ItemApplicationModel.listApplicationActive);
@@ -31,33 +32,33 @@ class HelpPageViewModel extends ViewModelBase {
   Future<void> fetchCategoryTS24Product() async {
     List<ProductCategory> data = await api.getCategoryTS24Product();
     List<ItemApplicationModel> dataListApplication = [];
-    for (var itemProduct = 0; itemProduct < data.length; itemProduct++) {
-      for (var itemProductMap = 0;
-          itemProductMap < TS24ProductCategory.list.length;
-          itemProductMap++) {
-        if (data[itemProduct].name.toString().contains(
-            TS24ProductCategory.list[itemProductMap].name.toString())) {
-          for (var itemCategoryArticle = 0;
-              itemCategoryArticle < listCategory.length;
-              itemCategoryArticle++) {
-            if (data[itemProduct]
-                .name
-                .toString()
-                .contains(listCategory[itemCategoryArticle].name.toString())) {
-              dataListApplication.add(ItemApplicationModel(
-                  idCategoryServices: data[itemProduct].id,
-                  idCategoryArticle: listCategory[itemCategoryArticle].id,
-                  name: data[itemProduct].name.toString(),
-                  imageLogo:
-                      TS24ProductCategory.list[itemProductMap].photo.toString(),
-                  description: data[itemProduct].name));
+    if (data.length > 0)
+      for (var itemProduct = 0; itemProduct < data.length; itemProduct++) {
+        for (var itemProductMap = 0;
+            itemProductMap < TS24ProductCategory.list.length;
+            itemProductMap++) {
+          if (data[itemProduct].name.toString().contains(
+              TS24ProductCategory.list[itemProductMap].name.toString())) {
+            for (var itemCategoryArticle = 0;
+                itemCategoryArticle < listCategory.length;
+                itemCategoryArticle++) {
+              if (data[itemProduct].name.toString().contains(
+                  listCategory[itemCategoryArticle].name.toString())) {
+                dataListApplication.add(ItemApplicationModel(
+                    idCategoryServices: data[itemProduct].id,
+                    idCategoryArticle: listCategory[itemCategoryArticle].id,
+                    name: data[itemProduct].name.toString(),
+                    imageLogo: TS24ProductCategory.list[itemProductMap].photo
+                        .toString(),
+                    description: data[itemProduct].name));
+              }
             }
           }
         }
       }
-    }
 
     listApplication = dataListApplication;
+    isLoading = false;
     this.updateState();
     print(listApplication);
     if (!isIndexCategoryChanged) {

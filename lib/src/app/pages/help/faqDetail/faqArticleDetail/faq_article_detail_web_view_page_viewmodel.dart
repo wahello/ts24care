@@ -10,6 +10,7 @@ class FaqArticleDetailPageViewModel extends ViewModelBase {
   Future<void> fetchArticleHtmlContent(int id) async {
    try{
      htmlData = await api.getFAQDetail(id);
+     this.updateState();
    }
    catch(e){
      print(e);

@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 
 class ThemePrimary {
-  static const primaryColor = Color(0xFF18539F);
-
+  static const primaryColor = Color(0xFF3154aa);
+  // static const appBarColor = Color(0xFFECF3FD);
+  static const appBarColor = Color(0xFFFFFFFF);
   static const gradientColor = Color(0xFFc49b29);
 
   static const colorDriverApp = Color(0xFF007658);
 
-  static const backgroundColor = Color(0xFFF2F2F2);
+  static const backgroundColor = Colors.white; //Color(0xFFF2F2F2);
 
   static const primaryFontFamily = "SamsungOne";
 
   static const appBar_textTheme = TextTheme(
     title: TextStyle(
         fontFamily: primaryFontFamily,
-        color: Colors.white,
+        color: primaryColor,
         fontSize: 18,
         fontWeight: FontWeight.bold),
   );
-  static const appBar_iconTheme = IconThemeData(
-    color: Colors.white,
-  );
+  static const appBar_iconTheme = IconThemeData(color: primaryColor);
 
   static const Color gradientStart = primaryColor;
   static const Color gradientEnd = gradientColor;
@@ -54,8 +53,10 @@ class ThemePrimary {
         actionTextColor: Colors.white,
       ),
       //canvasColor: Colors.white,
-      // appBarTheme: AppBarTheme(
-      //     textTheme: appBar_textTheme, iconTheme: appBar_iconTheme),
+      appBarTheme: AppBarTheme(
+          color: appBarColor,
+          textTheme: appBar_textTheme,
+          iconTheme: appBar_iconTheme),
     );
   }
 

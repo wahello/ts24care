@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/models/helpdesk-category.dart';
 import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/pages/ticket/detail/ticket_detail_page.dart';
@@ -11,7 +15,22 @@ class TicketPageViewModel extends ViewModelBase {
   List<HelpdeskTicket> listTicketFiltered = List();
   List<HelpdeskTicket> listTicket = List();
   List<CustomPopupMenu> listStatusTicket = List();
-  CustomPopupMenu customPopupMenu = CustomPopupMenu.listTicketStatus[0];
+  StreamSubscription streamSubscriptionTicketCreated;
+  bool isAscendingDate = false;
+  List<HelpDeskCategory> listHelpDeskCategory = List();
+  HelpDeskCategory helpDeskCategory;
+  String local;
+  bool showSort = false;
+  ScrollController controller = ScrollController();
+  bool loadingMore = false;
+  bool loadMoreDone = false;
+  int _skip = 10;
+  int status = 0;
+  CustomPopupMenu customPopupMenu = CustomPopupMenu(
+      id: 0,
+      color: Colors.green,
+      title: translation.text("TICKET_PAGE.STATUS_ALL"),
+      state: MenuStatusState.ALL);
   List<Color> listColor = [
     Colors.blue,
     Colors.orange,
@@ -22,20 +41,122 @@ class TicketPageViewModel extends ViewModelBase {
     Colors.yellow
   ];
   TicketPageViewModel() {
+    listHelpDeskCategory.add(HelpDeskCategory(
+        id: -1, name: translation.text("TICKET_NEW_PAGE.SELECT_SERVICE")));
+    helpDeskCategory = listHelpDeskCategory[0];
+    onLoadListCategory();
+    saveLocal();
     onLoadStatusTicket();
-    onLoad(0);
+    onLoad();
+    listenTicketCreated();
+    controller.addListener(() {
+      if (controller.offset == controller.position.maxScrollExtent &&
+          !controller.position.outOfRange) {
+        int id = helpDeskCategory.id != -1 ? helpDeskCategory.id : 0;
+        int date = isAscendingDate ? 1 : 0;
+        onLoadMore(categoryID: id, date: date);
+      }
+    });
+  }
+  onLoadListCategory() async {
+    listHelpDeskCategory.removeRange(1, listHelpDeskCategory.length);
+    var _listHelpDeskCategory = await api.getListCategoryOfTicket();
+    if (_listHelpDeskCategory != null) {
+      listHelpDeskCategory.addAll(_listHelpDeskCategory);
+      helpDeskCategory = listHelpDeskCategory[0];
+      this.updateState();
+    }
   }
 
-  onLoad(int status) async {
+  saveLocal() async {
+    local = await translation.getPreferredLanguage();
+  }
+
+  checkLocalChange() async {
+    String _local = await translation.getPreferredLanguage();
+    if (_local != this.local) {
+//      CustomPopupMenu.reLoad();
+      onLoadStatusTicket();
+      this.local = _local;
+    }
+  }
+
+  Future listenTicketCreated() async {
+    if (streamSubscriptionTicketCreated != null)
+      streamSubscriptionTicketCreated.cancel();
+    var _snap = handleTicketCreated.streamController.stream;
+    streamSubscriptionTicketCreated = _snap.listen((onData) {
+      if (onData != null) {
+        try {
+          if (onData == true) {
+            this.customPopupMenu = this.listStatusTicket[1];
+            onLoad();
+          }
+        } catch (e) {
+          print(e);
+        }
+      }
+    });
+  }
+
+  onLoad({int categoryID, int date}) async {
+    int status = 0;
+    if (customPopupMenu != null) status = customPopupMenu.id;
     loading = true;
     this.updateState();
-    var _listTicket =
-        await api.getListTicketByStatus(status: status, offset: 0, limit: 10);
+    var _listTicket = await api.getListTicketByStatus(
+        status: status,
+        offset: 0,
+        limit: 10,
+        categoryId: categoryID != null ? categoryID : 0,
+        date: date != null ? date : 0);
 //    if (_listTicket.length > 0) {
     listTicket = _listTicket;
     loading = false;
+    loadingMore = false;
+    loadMoreDone = false;
+    _skip = 10;
     this.updateState();
 //    }
+  }
+
+  onLoadMore({int categoryID, int date}) {
+    if (this.status != customPopupMenu.id) {
+      loadingMore = false;
+      loadMoreDone = false;
+      _skip = 10;
+    }
+    if (loadMoreDone) return;
+    if (customPopupMenu != null) status = customPopupMenu.id;
+    loadingMore = true;
+    this.updateState();
+//    int countItemLoad = 0;
+    api
+        .getListTicketByStatus(
+            status: status,
+            limit: 10,
+            offset: _skip,
+            categoryId: categoryID != null ? categoryID : 0,
+            date: date != null ? date : 0)
+        .then((list) {
+      if (list.length > 0) {
+        // list.forEach((historyDriver) {
+        //   countItemLoad += historyDriver.listHistory.length;
+        // });
+        // if (countItemLoad < _take) loadMoreDone = true;
+        listTicket.addAll(list);
+        _skip += 10;
+        loadingMore = false;
+//        _getImageHistory();
+      } else {
+        print("loadmore done");
+        loadingMore = false;
+        loadMoreDone = true;
+        this.updateState();
+      }
+      //  _getImageHistoryPositions();
+      this.updateState();
+    });
   }
 
   onLoadStatusTicket() async {
@@ -43,7 +164,7 @@ class TicketPageViewModel extends ViewModelBase {
     listStatusTicket.add(CustomPopupMenu(
         id: 0,
         color: Colors.green,
-        title: "Tất cả",
+        title: translation.text("TICKET_PAGE.STATUS_ALL"),
         state: MenuStatusState.ALL));
     int count = 0;
     var _listStatus = await api.getStatusTicket();
@@ -52,12 +173,13 @@ class TicketPageViewModel extends ViewModelBase {
         listStatusTicket.add(CustomPopupMenu(
             id: status.id,
             color: listColor[count++],
-            title: CustomPopupMenu.getStatusNameFromId(status.id),
-            state: CustomPopupMenu.getStatus(status.id)));
+            title: CustomPopupMenu.getStatusName(status.name),
+            state: CustomPopupMenu.getStatus(status.name)));
       });
     CustomPopupMenu.listTicketStatus =
         listStatusTicket.sublist(1, listStatusTicket.length);
     customPopupMenu = listStatusTicket[0];
+    print(listStatusTicket[0].title);
     this.updateState();
   }
 
@@ -66,7 +188,7 @@ class TicketPageViewModel extends ViewModelBase {
       try {
         if (result == true) {
           this.customPopupMenu = this.listStatusTicket[1];
-          onLoad(1);
+          onLoad();
         }
       } catch (e) {
         print(e);
@@ -125,28 +247,34 @@ class TicketPageViewModel extends ViewModelBase {
 
   onSelected(CustomPopupMenu popupMenu) {
     this.customPopupMenu = popupMenu;
-    switch (popupMenu.state) {
-      case MenuStatusState.ALL:
-        onLoad(0);
-        break;
-      case MenuStatusState.NEW:
-        onLoad(1);
-        break;
-      case MenuStatusState.IN_PROGRESS:
-        onLoad(2);
-        break;
-      case MenuStatusState.SOLVED:
-        onLoad(3);
-        break;
-      case MenuStatusState.CANCEL:
-        onLoad(4);
-        break;
-    }
+    onLoad();
   }
 
   onTapChat() {
 //    Navigator.pushNamed(
 //        context, FaqDetailPage.routeName,
 //        arguments: [categoryId]);
+  }
+
+  handleShowSort() {
+    showSort = !showSort;
+    this.updateState();
+  }
+
+  changeSortDate() {
+    isAscendingDate = !isAscendingDate;
+    this.updateState();
+  }
+
+  onSelectedHelpDeskCategory(HelpDeskCategory helpDeskCategory) {
+    this.helpDeskCategory = helpDeskCategory;
+    this.updateState();
+  }
+
+  onTapHandleSettingSort() {
+    Navigator.pop(context);
+    int id = helpDeskCategory.id != -1 ? helpDeskCategory.id : 0;
+    int date = isAscendingDate ? 1 : 0;
+    onLoad(categoryID: id, date: date);
   }
 }

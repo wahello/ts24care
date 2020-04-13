@@ -1,16 +1,86 @@
 {
+  "HOME_PAGE": {
+    "TITLE": "Home",
+    "NEW_POSTS": "New posts"
+  },
+  "TAB_PAGE": {
+    "HINT_MENU": "Menu",
+    "HINT_ADD": "Add",
+    "HINT_CARE": "Call center services",
+    "HINT_LIVE_CHAT": "Live chat"
+  },
+  "NEWS_AND_TIPS_PAGE": {
+    "TITLE": "New Posts"
+  },
+  "SEARCH_WIDGET": {
+    "HINT_SEARCH": "Searching...",
+    "RECENT": "Recent",
+    "RESULT": "Result"
+  },
+  "TICKET_PAGE": {
+    "TITLE": "Tickets",
+    "STATUS": "Status",
+    "STATUS_ALL": "All",
+    "STATUS_NEW": "New",
+    "STATUS_IN_PROGRESS": "In progress",
+    "STATUS_SOLVED": "Solved",
+    "STATUS_CANCELED": "Canceled",
+    "ADD": "Add",
+    "DELETE": "Delete",
+    "IMAGE": "Picture",
+    "FILE": "File",
+    "SORT": "Sort",
+    "SORT_TICKETS": "Arrange support tickets",
+    "CATEGORY": "Category",
+    "DATE": "Date",
+    "ASCENDING": "ascending",
+    "DECREASE": "decrease",
+    "APPLY": "Apply",
+    "TICKET_NUMBER": "Ticket number"
+  },
+  "TICKET_DETAIL_PAGE": {
+    "FROM": "From",
+    "STATUS": "Status",
+    "SERVICE": "Services",
+    "HINT_INPUT_TEXT": "Input the message here...",
+    "PROPERTIES": "Properties",
+    "CONTENT": "Contents",
+    "CONVERSATION": "Conversations"
+  },
+  "TICKET_NEW_PAGE": {
+    "TITLE": "Create new ticket",
+    "HINT_TITLE": "Input text...",
+    "PROPERTIES": "Service needs assistance",
+    "STATUS": "Status",
+    "SELECT_SERVICE": "Choose service",
+    "HINT_INPUT_TEXT": "Input the content here...",
+    "CREATING": "Creating a support ticket...",
+    "CREATE_SUCCESS": "Create a support ticket successfully.",
+    "CREATE_FAIL": "Failed to create support ticket, please try again.",
+    "INPUT_TITLE": "Title"
+  },
   "LOGIN_PAGE": {
-    "WELCOME_TITLE": "Welcome to TS24Care",
-    "SUB_TITLE": "Login go continue",
+    "WELCOME_TITLE": "Welcome to\nTS24care!",
+    "SUB_TITLE": "Please login or register\nso we can serve you better",
     "EMAIL": "EMAIL",
     "EMAIL_HINT": "Enter your email address",
     "PASSWORD": "PASSWORD",
     "PASSWORD_HINT": "Enter your password",
-    "PASSWORD_FORGET": "Forget",
+    "PASSWORD_AGAIN": "Password again",
+    "PASSWORD_SHOW": "Show",
+    "PASSWORD_HIDE": "Hide",
     "PASSWORD_REMEMBER": "Remember me",
     "LOGIN_BUTTON": "Login",
     "NO_ACCOUNT": "No have account yet?",
-    "CREATE_ACCOUNT_BUTTON": "Create an account"
+    "REGISTER": "Register",
+    "SOCIAL_LOGIN": "Social Login",
+    "CREATE_ACCOUNT" : "Create account",
+    "FORGOT_PASSWORD" : "Forgot password"
+  },
+  "REGISTER_PAGE": {
+    "TITLE": "Register",
+    "REGISTER": "Register",
+    "SEND": "Send"
   },
   "FORGET_PASSWORD_PAGE": {
     "TITLE": "Forgot Password",
@@ -42,34 +112,56 @@
     "CALL_SERVICE": "Call customer service",
     "LIVE_CHAT": "Live chat",
     "VIEW_MORE": "View more",
-    "SERVICE_LIST": "Services payment",
-    "ALL_BUTTON": "All" ,
+    "SERVICE_LIST": "Services register",
+    "ALL_BUTTON": "All",
     "ADD_BUTTON": "Add",
     "ID_IDENTIFY": "Service Name",
     "CREATE_DATE": "Create date",
     "EXPIRE_DATE": "Expire date",
-    "TODAY": "Today"
+    "TODAY": "Today",
+    "EMPTY_CATEGORY_ACTIVE": "Your services is not register",
+    "EMPTY_CATEGORY_SERVICE": "No service available"
   },
   "FAQ_DETAIL_PAGE": {
     "TITLE": "FAQ",
     "GUIDANCE_TITLE": "Choose article to read more information",
-    "NO_DATA": "Loading...",
+    "NO_DATA": "Chưa có dữ liệu",
+    "LOADING": "Đang tải...",
     "RECENT": "Recent",
     "RESULT": "Result"
   },
   "WANRRANTY_DETAIL_PAGE": {
+    "TITLE": "Services detail",
     "DATE_REMAINING": "Date remaining",
     "SERIAL": "Serial number",
     "PHONE": "Phone",
     "LICENSE": "License",
     "NO_DATA": "No information",
     "DATE_EXPIRED": "Expired",
-    "DATE_STRING": "day"
+    "DATE_STRING": "day",
+
+  },
+  "DASHBOARD_PAGE": {
+    "DASHBOARD": "Dashboard",
+    "TIMELINE": "Time line",
+    "DAY": "days",
+    "MONTH": "month",
+    "MINUTE": "minutes",
+    "SERVICE_SUPPORT": "Classification of supported services",
+    "TOTAL_VOTE": "Total support votes",
+    "VOTE_DONE": "Support ticket has been completed",
+    "TIME_RESPONSE": "Average response time",
+    "VALUE": "Ticket Value",
+    "TIME_AVG": "Time average",
+    "TICKET_DONE": "Ticket done",
+    "SHOW_TOOLTIP_DEFAULT": "Select chart section and hold to show information"
+
   },
   "WAITING_MESSAGE": {
     "PERMISSION_CONNECT": "Checking access permission...",
     "AUTH_ACCOUNT": "Validating account...",
-    "INFO_DOMAIN": "Getting domain information..."
+    "INFO_DOMAIN": "Getting domain information...",
+    "SOCIAL_NETWORK": "Connecting to social networks"
   },
   "ERROR_MESSAGE": {
     "PERMISSION_APP": "Permission deny.",
@@ -83,9 +175,10 @@
     "RECENT_ITEMS": "Recent Items",
     "APPS": "Apps",
     "BLOCKED": "Blocked",
-    "NO_NOTIFICATIONS" : "You have no new notifications"
+    "NO_NOTIFICATIONS": "You have no new notifications"
   },
   "SETTINGS_PAGE": {
+    "TITLE": "Settings",
     "NOTIFICATIONS": "Notifications",
     "LEAVE_FEEDBACK": "Leave feedback",
     "LICENSES": "Licenses",
@@ -134,7 +227,8 @@
     "INPUT_PHONE": "Input phone number...",
     "INPUT_EMAIL": "Input email...",
     "INPUT_ADDRESS": "Input address...",
-    "COMPANY" : "Company"
+    "COMPANY": "Company",
+    "TIN": "TIN"
   },
   "POPUP_CONFIRM": {
     "TITLE": "NOTIFICATION",
@@ -184,7 +278,10 @@
     "REGISTER_FAIL": "Register fail. Email already exist or no internet connected. Please check again...",
     "FAIL": "Fail",
     "DELETE": "Delete",
-    "CROPPER": "Cropper"
+    "CROPPER": "Cropper",
+    "DOWNLOAD_SUCCESSFUL": "Download successful",
+    "DOWNLOAD_FAILED": "Download failed",
+    "DOWNLOAD": "Download"
   },
   "VERSION": "Version"
 }

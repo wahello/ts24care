@@ -56,7 +56,7 @@ class TS24SearchBarWidgetViewModel extends ViewModelBase {
     this.updateState();
   }
 
-  onQueryChanged(String query) {
+  onQueryChanged(String query,OnQueryCallBack callBackSubmit) {
     print("ON_CHANGED");
     if (query != '' && query != null) {
       if (this.query != query) {
@@ -75,13 +75,14 @@ class TS24SearchBarWidgetViewModel extends ViewModelBase {
       searchBarState = SearchBarState.active;
     }
     listHistoryFiltered = _filterTicketHistory(query, listHistorySearch);
-    _timer = new Timer(const Duration(seconds: 2), () {
+    _timer = new Timer(const Duration(seconds: 1), () {
       if (this.query != '' && this.query == query) {
         if (listHistorySearch.contains(query)) listHistorySearch.remove(query);
         listHistorySearch.insert(0, query);
         searchBarState = SearchBarState.submit;
         searching = false;
         this.updateState();
+        callBackSubmit(query);
       }
     });
     this.updateState();
@@ -113,7 +114,7 @@ class TS24SearchBarWidgetViewModel extends ViewModelBase {
 
   @override
   void dispose() {
-    if (_timer.isActive) _timer.cancel();
+    if (_timer!=null) _timer.cancel();
     super.dispose();
   }
 }

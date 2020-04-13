@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ts24care/src/app/models/item_attachment_model.dart';
@@ -72,8 +74,10 @@ class _TS24AddAttachmentWidgetState extends State<TS24AddAttachmentWidget> {
                             child: ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
-                              child: Image.asset(
-                                widget.listIdAttachment[index].localDirectory,
+                              child: Image.file(
+                                File.fromUri(Uri.parse(widget
+                                    .listIdAttachment[index]
+                                    .localDirectory)), //widget.listIdAttachment[index].localDirectory,
                                 height: 90,
                                 width: 40,
                                 fit: BoxFit.cover,

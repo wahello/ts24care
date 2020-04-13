@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/menu.dart';
 import 'package:ts24care/src/app/pages/help/helpChat/helpChat_page.dart';
@@ -34,7 +36,13 @@ class TabsPageViewModel extends ViewModelBase {
   }
 
   onTapCreateTicket() {
-    Navigator.pushNamed(context, TicketNewPage.routeName);
+    Navigator.pushNamed(context, TicketNewPage.routeName).then((result){
+      try{
+        if(result){
+          handleTicketCreated.streamController.sink.add(result);
+        }
+      }catch(e){}
+    });
   }
   onTapChat() {
     Navigator.pushNamed(context, HelpChatPage.routeName);

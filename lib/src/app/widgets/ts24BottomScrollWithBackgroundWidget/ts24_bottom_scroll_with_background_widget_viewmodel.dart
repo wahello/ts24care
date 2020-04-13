@@ -4,8 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 
 typedef OnFreshCallback = Future<void> Function();
+typedef ScrollControllerCallback = void Function(ScrollController controller);
 class TS24BottomScrollWithBackgroundWidgetViewModel extends ViewModelBase {
-  StreamController streamController111 = StreamController<double>();
+  StreamController streamControllerBottomScrollWidget = StreamController<double>();
   double heightImageBackgroundMax = 270;
   double heightImageBackgroundCurrent = 0;
   double heightViewBackground = 0;
@@ -28,7 +29,8 @@ class TS24BottomScrollWithBackgroundWidgetViewModel extends ViewModelBase {
 //  }
   @override
   void dispose() {
-    streamController111.close();
+    streamControllerBottomScrollWidget.close();
+    controller.dispose();
     super.dispose();
   }
 }

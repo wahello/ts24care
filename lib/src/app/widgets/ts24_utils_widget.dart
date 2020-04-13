@@ -1,9 +1,9 @@
 library ts24_utils;
+
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
-
 
 import '../app_localizations.dart';
 
@@ -33,6 +33,11 @@ BoxDecoration boxShaDow() => BoxDecoration(
 //    onPressed: () => scaffoldTabbar.currentState.openDrawer(),
 //  );
 //}
+DecorationImage decorationImageBackground() => DecorationImage(
+    colorFilter:
+        ColorFilter.mode(Colors.black.withOpacity(.2), BlendMode.darken),
+    image: AssetImage('assets/images/bgd.png'),
+    fit: BoxFit.cover);
 
 class LoadingDialog {
   static void showLoadingDialog(BuildContext context, String msg,
@@ -198,7 +203,6 @@ class LoadingIndicator {
           child: LinearProgressIndicator(
             valueColor:
                 AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
-
           ),
         ),
       );

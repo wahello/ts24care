@@ -1,13 +1,22 @@
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/helper/validator-helper.dart';
+import 'package:ts24care/src/app/models/customer.dart';
 import 'package:ts24care/src/app/pages/help/help_page.dart';
+import 'package:ts24care/src/app/pages/login/register/register_page.dart';
 import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
+import 'package:ts24care/src/app/pages/ticket/ticket_page.dart';
 import 'package:ts24care/src/app/provider/api_master.dart';
+import 'package:ts24care/src/app/services/apple-service.dart';
+import 'package:ts24care/src/app/services/googleplus-service.dart';
+import 'package:ts24care/src/app/services/onesingal-service.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 import 'forgetPassword/forget_password.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
+
+enum TypeLogin { facebook, google, apple }
 
 class LoginPageViewModel extends ViewModelBase {
   final formKey = GlobalKey<FormState>();
@@ -109,6 +118,9 @@ class LoginPageViewModel extends ViewModelBase {
         if (customerInfo != null) {
           print("LOGIN OK");
         }
+        Customer customer = Customer();
+        OneSignalService.sendTags(customer.toJsonOneSignal());
+        OneSignalService.setEmail(customer.email.toString());
         LoadingDialog.hideLoadingDialog(context);
         ToastController.show(
             context: context,
@@ -117,7 +129,7 @@ class LoginPageViewModel extends ViewModelBase {
 
         Future.delayed(const Duration(milliseconds: 300), () {
           Navigator.pushReplacementNamed(context, TabsPage.routeName,
-              arguments: TabsArgument(routeChildName: HelpPage.routeName));
+              arguments: TabsArgument(routeChildName: TicketsPage.routeName));
         });
 //         Navigator.popAndPushNamed(context, TabsPage.routeName,
 //             arguments: TabsArgument(routeChildName: HomePage.routeName));
@@ -134,8 +146,94 @@ class LoginPageViewModel extends ViewModelBase {
     this.updateState();
   }
 
+  googleLogin() async {
+    print('googleloin1');
+    LoadingDialog.showLoadingDialog(
+        context, translation.text("WAITING_MESSAGE.SOCIAL_NETWORK"));
+    if (GooglePlusService.currentUser != null)
+      await GooglePlusService.handleSignOut();
+    var _result = await GooglePlusService.handleSignIn();
+
+    LoadingDialog.hideLoadingDialog(context);
+    if (_result) {
+      print('${GooglePlusService.currentUser.email}');
+      _socialLogin(GooglePlusService.currentUser.email, TypeLogin.google);
+      //print('${GooglePlusService.currentUser.email}, ${GooglePlusService.currentUser.displayName}');
+    }
+  }
+
+  appleLogin() async {
+    print('applelogin');
+    LoadingDialog.showLoadingDialog(
+        context, translation.text("WAITING_MESSAGE.SOCIAL_NETWORK"));
+    var _result = await AppleService.handleLogin();
+    LoadingDialog.hideLoadingDialog(context);
+    if (_result) _socialLogin(AppleService.currentUser.email, TypeLogin.apple);
+  }
 
   void onForgetPasswordClicked() {
-    Navigator.pushReplacementNamed(context, ForgetPasswordPage.routeName);
+    Navigator.pushNamed(context, ForgetPasswordPage.routeName);
+  }
+
+  onTapRegister() {
+    Navigator.pushNamed(context, RegisterPage.routeName).then((onValue) {
+      if (onValue != null) {
+        print('onvalue $onValue');
+        List tempt = onValue;
+        _emailController.text = tempt[0];
+        _passController.text = tempt[1];
+      }
+    });
+  }
+
+  _socialLogin(String email, TypeLogin typeLogin) async {
+    print('email $email');
+    LoadingDialog.showLoadingDialog(
+        context, translation.text("WAITING_MESSAGE.AUTH_ACCOUNT"));
+    var _checkExist = await api.checkUserExist(email);
+    if (_checkExist != null) {
+      // get info customer
+      var customerInfo =
+          await api.getCustomerInfoAfterLoginSocial(_checkExist.id);
+      if (customerInfo != null) {
+        print("LOGIN OK");
+      }
+      Customer customer = Customer();
+      OneSignalService.sendTags(customer.toJsonOneSignal());
+      OneSignalService.setEmail(customer.email.toString());
+      LoadingDialog.hideLoadingDialog(context);
+      ToastController.show(
+          context: context,
+          duration: Duration(milliseconds: 300),
+          message: translation.text("WAITING_MESSAGE.PERMISSION_CONNECT"));
+
+      Future.delayed(const Duration(milliseconds: 300), () {
+        Navigator.pushReplacementNamed(context, TabsPage.routeName,
+            arguments: TabsArgument(routeChildName: TicketsPage.routeName));
+      });
+//         Navigator.popAndPushNamed(context, TabsPage.routeName,
+//             arguments: TabsArgument(routeChildName: HomePage.routeName));
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      Navigator.pushNamed(context, RegisterPage.routeName, arguments: typeLogin)
+          .then((onValue) {
+        if (onValue != null) {
+          print('onvalue $onValue');
+          List tempt = onValue;
+          _emailController.text = tempt[0];
+          _passController.text = tempt[1];
+        }
+      });
+//      Navigator.pushNamed(context, RegisterPage.routeName, ).then((result) {
+//        try {
+//          if (result != null) {
+//            _emailController.text = result;
+//            this.updateState();
+//          }
+//        } catch (e) {}
+//      });
+//      return LoadingDialog.showMsgDialog(
+//          context, translation.text("ERROR_MESSAGE.USET_NOT_EXIST"));
+    }
   }
 }

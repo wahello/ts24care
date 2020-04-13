@@ -8,11 +8,13 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
+import 'package:ts24care/src/app/models/ts24_product_category.dart';
 import 'package:ts24care/src/app/services/common-service.dart';
+import 'package:flutter/material.dart' as meterial;
 
 Future<Uint8List> readFileByte(String filePath) async {
   Uri myUri = Uri.parse(filePath);
-  File audioFile = new File.fromUri(myUri);
+  File audioFile = new File.fromUri(myUri); //File.fromUri(Uri.parse(path))
   Uint8List bytes;
   await audioFile.readAsBytes().then((value) {
     bytes = Uint8List.fromList(value);
@@ -37,6 +39,8 @@ String getUrlImage(String css) {
   if (!tempUrl.contains("none")) {
     url = domainApi + tempUrl.substring(4, tempUrl.length - 2);
     print(url);
+    var _indexCut = url.indexOf("?access_token");
+    if (_indexCut != -1) url = url.substring(0, _indexCut);
   }
   return url;
 }
@@ -68,6 +72,14 @@ String formatTime(String time) {
     _time = DateFormat("dd/MM/yyyy").format(dateTime);
   else
     _time = DateFormat("dd/MM").format(dateTime);
+  return _time;
+}
+
+String formatTimeV2(String time) {
+  String _time = "";
+  DateTime dateTime = DateTime.parse(
+      DateFormat("dd/MM/yyyy hh:mm:ss").parse(time).toIso8601String());
+  _time = DateFormat("dd/MM/yyyy  hh:mm").format(dateTime);
   return _time;
 }
 
@@ -127,14 +139,32 @@ bool isImage(String extension) {
       extension == "gif" ||
       extension == "bmp";
 }
-Future<String> createFileFromString(String data,String nameAndExtension) async {
+
+Future<String> createFileFromString(
+    String data, String nameAndExtension) async {
   final encodedStr = data;
   Uint8List bytes = base64.decode(encodedStr);
 //  String dir = (await getApplicationDocumentsDirectory()).path;
 //  if(isImage(extension))
-   String dir = (await getApplicationDocumentsDirectory()).path;
-  File file = File(
-      "$dir/" + nameAndExtension);
+  String dir = (await getApplicationDocumentsDirectory()).path;
+  File file = File("$dir/" + nameAndExtension);
   await file.writeAsBytes(bytes);
   return file.path;
+}
+
+meterial.Color getColorCategory(String categoryName) {
+  TS24ProductCategory result;
+  var category = TS24ProductCategory.list
+      .where((item) => item.name.toLowerCase() == categoryName.toLowerCase());
+  if (category.length > 0) {
+    result = category.first;
+    return result.color;
+  }
+  return meterial.Colors.white;
+}
+
+meterial.Color parseStringToColor(String string){
+  String _strColor = string.replaceFirst("#", "0xFF");
+  int _iColor = int.parse(_strColor);
+  return meterial.Color(_iColor);
 }

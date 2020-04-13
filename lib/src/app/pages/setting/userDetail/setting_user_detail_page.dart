@@ -42,7 +42,8 @@ class UserDetailPageState extends State<UserDetailPage> {
   @override
   Widget build(BuildContext context) {
     viewModel.context = context;
-
+    print('1 ${viewModel.customer.contactAddress.toString().length}');
+    print('2 ${viewModel.customer.contactAddress is bool || viewModel.customer.contactAddress == null}');
     final __styleTextLabel = TextStyle(
         color: ThemePrimary.primaryColor,
         fontWeight: FontWeight.bold,
@@ -305,13 +306,64 @@ class UserDetailPageState extends State<UserDetailPage> {
                           style: TextStyle(fontSize: 18, color: Colors.grey),
                           decoration: InputDecoration(
                               labelText:
-                                  translation.text("USER_PROFILE.ADDRESS"),
-                              hintText: translation
-                                  .text("USER_PROFILE.INPUT_ADDRESS"),
+                              translation.text("USER_PROFILE.ADDRESS"),
                               labelStyle: __styleTextLabel,
                               errorText: viewModel.errorAddress),
                           textInputAction: TextInputAction.done,
                           keyboardType: TextInputType.text),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15.0),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 2,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                          enabled: false,
+                          controller: viewModel.tinEditingController,
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                          decoration: InputDecoration(
+                              labelText:
+                                  translation.text("USER_PROFILE.TIN"),
+                              labelStyle: __styleTextLabel,
+                          ),
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.text),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15.0),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 2,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                          enabled: false,
+                          //focusNode: viewModel.addressFocus,
+                          controller: viewModel.mailEditingController,
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                          decoration: InputDecoration(
+                              labelText:
+                              translation.text("USER_PROFILE.EMAIL"),
+                              labelStyle: __styleTextLabel,
+                              //errorText: viewModel.errorAddress
+                          ),
+//                          textInputAction: TextInputAction.done,
+//                          keyboardType: TextInputType.text
+                      ),
                     ),
                   )
                 ],

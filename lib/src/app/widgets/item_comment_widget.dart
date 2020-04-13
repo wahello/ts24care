@@ -12,6 +12,7 @@ class ItemCommentWidget extends StatefulWidget {
   final String dateTime;
   final String content;
   final bool expand;
+  final bool disableTap;
   final List<int> listAttachId;
   const ItemCommentWidget(
       {Key key,
@@ -20,6 +21,7 @@ class ItemCommentWidget extends StatefulWidget {
       this.dateTime,
       this.content,
       this.expand = false,
+      this.disableTap = false,
       this.listAttachId})
       : super(key: key);
   @override
@@ -30,23 +32,30 @@ class _ItemCommentWidgetState extends State<ItemCommentWidget> {
 //  bool isBuildUi = false;
   bool isExpand = true;
   bool isFirst = true;
-  bool isShow = false;
+  bool isShow = true;
+  bool isControlColor = false;
   List<IrAttachment> listAttachment = List();
   GlobalKey _key = GlobalKey();
   Size _size = Size(0, 0);
   _getSize() {
     final RenderBox renderBox = _key.currentContext.findRenderObject();
     _size = renderBox.size;
-    isFirst = false;
     isExpand = widget.expand;
-    isShow = true;
+    widget.listAttachId.length > 0 ? isShow = false : isShow = true;
+    isFirst = false;
+    isControlColor = true;
   }
 
-  Future<void> getAttachment() async {
+  getAttachment() {
 //    int count = 0;
     for (int i = 0; i < widget.listAttachId.length; i++) {
-      var result = await api.getAttachmentById(1);
-      if (result != null) listAttachment.add(result);
+      api.getAttachmentById(widget.listAttachId[i]).then((result) {
+        if (result != null)
+          setState(() {
+            listAttachment.add(result);
+          });
+      });
+
 //      count++;
 //      if (count == widget.listAttachId.length) {
 //        setState(() {
@@ -78,33 +87,33 @@ class _ItemCommentWidgetState extends State<ItemCommentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _listAttachment() {
-      return TS24LoadAttachmentWidget(
-        listIrAttachment: listAttachment,
-      );
-    }
-
     Widget _content(String content) {
-      return HtmlWidget(
-        content,
-        webView: true,
+      return Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: HtmlWidget(
+          content,
+          webView: true,
+        ),
       );
     }
 
     return InkWell(
       onTap: () {
-        setState(() {
-          isShow = false;
-          isFirst = false;
-          isExpand = !isExpand;
-        });
+        if (!widget.disableTap)
+          setState(() {
+            isShow = false;
+            isFirst = false;
+            isControlColor = false;
+            isExpand = !isExpand;
+          });
       },
       child: Container(
         color:
 //        isFirst
 //            ? ThemePrimary.backgroundColor
 //            :
-            isShow ? ThemePrimary.backgroundColor : Colors.grey[300],
+            isControlColor ? ThemePrimary.backgroundColor : Colors.grey[300],
         child: !isFirst
             ? AnimatedContainer(
                 onEnd: () {
@@ -114,12 +123,13 @@ class _ItemCommentWidgetState extends State<ItemCommentWidget> {
                   }
                   setState(() {
                     isShow = true;
+                    isControlColor = true;
                   });
                 },
                 duration: Duration(milliseconds: 500),
                 curve: Curves.fastOutSlowIn,
                 height: isExpand
-                    ? _size.height + (listAttachment.length > 0 ? 100 : 0) + 85
+                    ? _size.height + (listAttachment.length > 0 ? 1 : 2) + 85
                     : 85,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -218,31 +228,42 @@ class _ItemCommentWidgetState extends State<ItemCommentWidget> {
 //                  key: _key,
 //                  color: Colors.green,
                         child: isExpand
-                            ? isFirst
-                                ? _content(widget.content)
-                                : isShow
-                                    ? Column(
-                                        children: <Widget>[
-                                          _content(widget.content),
-                                          if (listAttachment.length > 0)
-                                            Container(
-                                              height: 100,
-                                              child: _listAttachment(),
-                                            )
-                                        ],
-                                      )
-                                    : Container(
-//                    color: Colors.green,
-//                                height: _size.height,
+                            ? isShow
+                                ? Column(
+                                    children: <Widget>[
+                                      _content(widget.content),
+                                      if (listAttachment.length > 0)
+                                        Container(
+                                          height: 100,
+                                          child: TS24LoadAttachmentWidget(
+                                            listIrAttachment: listAttachment,
+                                          ),
                                         )
-                            : Container())
+                                    ],
+                                  )
+                                : Container(
+                                    color: Colors.green,
+//                                height: _size.height,
+                                  )
+                            : Container(
+                                color: Colors.red,
+                              ))
                   ],
                 ),
               )
             : Container(
                 key: _key,
-//                  color: Colors.green,
-                child: _content(widget.content)),
+//                  color: Clors.green,
+                child: Column(
+                  children: <Widget>[
+                    _content(widget.content),
+                    if (widget.listAttachId.length > 0)
+                      Container(
+                        color: Colors.transparent,
+                        height: 110,
+                      )
+                  ],
+                )),
       ),
     );
   }

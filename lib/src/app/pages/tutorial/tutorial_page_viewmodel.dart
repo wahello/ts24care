@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/models/res-partner.dart';
 import 'package:ts24care/src/app/pages/login/login_page.dart';
 
 class TutorialPageViewModel extends ViewModelBase {
@@ -24,6 +26,17 @@ class TutorialPageViewModel extends ViewModelBase {
   TutorialPageViewModel();
 
   onTapStart() {
-    Navigator.pushNamed(context, LoginPage.routeName);
+    Navigator.pushReplacementNamed(context, LoginPage.routeName);
+    //  api.checkLoginTS24Pro(
+    //      username: "ktpm.ts24@gmail.com", password: "Tm!123789!t");
+    // ResPartner resPartner = ResPartner();
+    // resPartner.email = "ktpm.ts24@gmail.com";
+    // resPartner.password = "123456";
+    // resPartner.name = "KTest";
+    // resPartner.phone = "09312312333";
+    // api.insertUserPortal(resPartner);
+    var a = "0xff" + "ebebeb";
+    var b = Color(int.parse(a));
+    print(b);
   }
 }

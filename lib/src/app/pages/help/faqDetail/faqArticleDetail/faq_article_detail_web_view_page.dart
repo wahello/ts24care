@@ -6,7 +6,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class FaqArticleDetailPage extends StatefulWidget {
   static const String routeName = '/webHtml';
-  final List<dynamic> htmlData;
+  final List<dynamic> htmlData; //[idCategory, title]
 
   FaqArticleDetailPage({this.htmlData});
 
@@ -32,6 +32,7 @@ class _FaqArticleDetailPageState extends State<FaqArticleDetailPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    viewModel.fetchArticleHtmlContent(widget.htmlData[0]);
   }
 
   Widget _appBar(String title) {
@@ -59,7 +60,9 @@ class _FaqArticleDetailPageState extends State<FaqArticleDetailPage> {
           builder: (context, snapshot) {
             return TS24Scaffold(
               appBar: _appBar(widget.htmlData[1]),
-              body: _body(widget.htmlData[0][0]),
+              body: viewModel.htmlData != null
+                  ? _body(viewModel.htmlData.description)
+                  : Offstage(),
             );
           },
         ));

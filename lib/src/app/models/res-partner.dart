@@ -43,6 +43,7 @@ class ResPartner {
   dynamic debitLimit;
   dynamic displayName;
   dynamic email;
+  dynamic password;
   dynamic emailFormatted;
   dynamic employee;
   dynamic eventCount;
@@ -193,6 +194,7 @@ class ResPartner {
     this.debitLimit,
     this.displayName,
     this.email,
+    this.password,
     this.emailFormatted,
     this.employee,
     this.eventCount,
@@ -687,6 +689,8 @@ class ResPartner {
     // data['debit_limit'] = this.debitLimit;
     // data['display_name'] = this.displayName;
     data['email'] = this.email;
+    if (this.password != null) data['password'] = this.password;
+    data['password'] = this.password;
     // data['email_formatted'] = this.emailFormatted;
     // data['employee'] = this.employee;
     // data['event_count'] = this.eventCount;
@@ -782,7 +786,7 @@ class ResPartner {
     // data['tz_offset'] = this.tzOffset;
     // data['user_id'] = this.userId;
     // data['user_ids'] = this.userIds;
-    // data['vat'] = this.vat;
+    if (this.vat != null) data['vat'] = this.vat;
     // data['vehicle_count'] = this.vehicleCount;
     // data['vehicle_ids'] = this.vehicleIds;
     // data['website'] = this.website;

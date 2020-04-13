@@ -13,15 +13,18 @@ class FAQPageViewModel extends ViewModelBase {
   List<KnowsystemSection> listCategory = [];
   List<KnowsystemArticle> listResultSearch = [];
   List<KnowsystemSection> listCategoryHaveColorsAndImages = [];
+  bool isLoading = true;
+  bool shimmerFlat = true;
 
   Future<void> getListCategory() async {
-    try{
+    try {
       listCategory = await api.getCategoryFAQ();
-    }
-    catch(e){
+    } catch (e) {
       print(e);
     }
-    if(listCategory.length>0) {
+    if (listCategory.length > 0) {
+      shimmerFlat = false;
+      this.updateState();
       listCategory.forEach((eachCategory) {
         TS24ProductCategory.list.forEach((catModel) {
           if (eachCategory.name == catModel.name) {
@@ -29,8 +32,7 @@ class FAQPageViewModel extends ViewModelBase {
                 id: eachCategory.id,
                 color: catModel.color,
                 name: eachCategory.name,
-                urlIcon: catModel.photo
-            ));
+                urlIcon: catModel.photo));
           }
         });
       });
@@ -42,11 +44,13 @@ class FAQPageViewModel extends ViewModelBase {
                 id: eachCategory.id,
                 color: Colors.grey,
                 name: eachCategory.name,
-                urlIcon: TS24ProductCategory.list[0].photo
-            ));
+                urlIcon: TS24ProductCategory.list[0].photo));
           }
         });
       });
+      isLoading = false;
+      this.updateState();
+
     }
 
     this.updateState();
@@ -58,15 +62,13 @@ class FAQPageViewModel extends ViewModelBase {
   }
 
   onSearch(String keyword) async {
-    try{
-      listResultSearch =
-      await api.searchFAQ(keyword: keyword.toLowerCase(), offset: 0, limit: 50);
-    }
-    catch(e){
+    try {
+      listResultSearch = await api.searchFAQ(
+          keyword: keyword.toLowerCase(), offset: 0, limit: 50);
+    } catch (e) {
       print(e);
     }
     print(listResultSearch);
     this.updateState();
-
   }
 }

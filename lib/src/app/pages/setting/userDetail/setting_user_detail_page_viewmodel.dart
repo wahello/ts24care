@@ -19,6 +19,8 @@ class UserDetailPageViewModel extends ViewModelBase {
   TextEditingController phoneEditingController = new TextEditingController();
   TextEditingController addressEditingController = new TextEditingController();
   TextEditingController companyEditingController = new TextEditingController();
+  TextEditingController mailEditingController = new TextEditingController();
+  TextEditingController tinEditingController = new TextEditingController();
 
   Uint8List imagePicker;
   File imageFile;
@@ -58,10 +60,21 @@ class UserDetailPageViewModel extends ViewModelBase {
               ? ''
               : customer.phone.toString();
       addressEditingController.text =
-          (customer.contactAddress is bool || customer.contactAddress == null)
-              ? ''
+          (customer.contactAddress is bool || customer.contactAddress == null ||
+              customer.contactAddress.toString().length == 0)
+              ? ' '
               : customer.contactAddress.toString();
       companyEditingController.text = customer.companyName;
+      mailEditingController.text =
+      (customer.email is bool || customer.email == null)
+          ? ''
+          : customer.email.toString();
+      tinEditingController.text =
+      (customer.tin is bool || customer.tin == null ||
+          customer.tin.toString().length == 0)
+          ? ' '
+          : customer.tin.toString();
+      print('a ${customer.contactAddress.toString().length}');
     }
   }
 
@@ -128,7 +141,10 @@ class UserDetailPageViewModel extends ViewModelBase {
       customer.contactAddress = addressEditingController.text;
     if (customer.phone != phoneEditingController.text)
       customer.phone = phoneEditingController.text;
-
+//    if (customer.email != mailEditingController.text)
+//      customer.email = mailEditingController.text;
+//    if (customer.tin != tinEditingController.text)
+//      customer.tin = tinEditingController.text;
     if (imagePicker != null) customer.photo = imagePicker;
   }
 

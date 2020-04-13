@@ -7,6 +7,7 @@ import 'package:ts24care/src/app/pages/help/helpChat/helpChat_page.dart';
 import 'package:ts24care/src/app/pages/home/blogPost/home_blog_post_page.dart';
 import 'package:ts24care/src/app/pages/help/help_page.dart';
 import 'package:ts24care/src/app/pages/help/productWarrantyDetail/product_warranty_detail_page.dart';
+import 'package:ts24care/src/app/pages/home/dashboard/dashboard_page.dart';
 import 'package:ts24care/src/app/pages/home/newsAndTips/home_news_and_tips_page.dart';
 import 'package:ts24care/src/app/pages/login/createAccount/create_new_password.dart';
 import 'package:ts24care/src/app/pages/login/forgetPassword/forget_password.dart';
@@ -19,6 +20,7 @@ import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
 import 'package:ts24care/src/app/pages/ticket/detail/ticket_detail_page.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
 import 'package:ts24care/src/app/pages/tutorial/tutorial_page.dart';
+import 'pages/login/register/register_page.dart';
 import 'pages/setting/settingsFeedback/settings_feedback_page.dart';
 
 class Routes {
@@ -42,20 +44,23 @@ class Routes {
     TutorialPage.routeName: (context) => TutorialPage(),
     TabsPage.routeName: (context) =>
         TabsPage(ModalRoute.of(context).settings.arguments),
-    NewsAndTipsPage.routeName: (context) => NewsAndTipsPage(listNewFeed: ModalRoute.of(context).settings.arguments,),
+    NewsAndTipsPage.routeName: (context) => NewsAndTipsPage(),
     FAQPage.routeName: (context) => FAQPage(),
     FaqDetailPage.routeName: (context) => FaqDetailPage(
           listParams: ModalRoute.of(context).settings.arguments,
         ),
     TicketNewPage.routeName: (context) => TicketNewPage(),
     NotificationsPage.routeName: (context) => NotificationsPage(),
+    HelpPage.routeName: (context) => HelpPage(),
     HelpChatPage.routeName: (context) => HelpChatPage(),
     ForgetPasswordPage.routeName: (context) => ForgetPasswordPage(),
     LoginPage.routeName: (context) => LoginPage(),
+    RegisterPage.routeName: (context) => RegisterPage(typeLogin: ModalRoute.of(context).settings.arguments),
     CreateNewPasswordPage.routeName: (context) => CreateNewPasswordPage(),
 
     // 10/03/2020
-    UserDetailPage.routeName: (context) => UserDetailPage(ModalRoute.of(context).settings.arguments),
+    UserDetailPage.routeName: (context) =>
+        UserDetailPage(ModalRoute.of(context).settings.arguments),
     SettingsNotificationsPage.routeName: (context) =>
         SettingsNotificationsPage(),
     UserDetailPage.routeName: (context) =>
@@ -69,8 +74,8 @@ class Routes {
           itemNewFeedModel: ModalRoute.of(context).settings.arguments,
         ),
     TicketDetailPage.routeName: (context) => TicketDetailPage(
-      args: ModalRoute.of(context).settings.arguments,
-    ),
+          args: ModalRoute.of(context).settings.arguments,
+        ),
     //    20/3/2020
     // show web html when click on article(FAQ page)
     FaqArticleDetailPage.routeName: (context) => FaqArticleDetailPage(

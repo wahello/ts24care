@@ -1,16 +1,13 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
 import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
-import 'package:ts24care/src/app/models/ir-attachment.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
-import 'package:ts24care/src/app/models/mail-message.dart';
 import 'package:ts24care/src/app/pages/ticket/detail/ticket_detail_page_viewmodel.dart';
-import 'package:ts24care/src/app/provider/api.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/item_comment_widget.dart';
 import 'package:ts24care/src/app/widgets/list_message_widget.dart';
@@ -33,8 +30,8 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
   @override
   void initState() {
     viewModel.helpdeskTicket = widget.args;
-    viewModel.onLoad(widget.args.id);
     viewModel.onLoadHelpDeskCategory(widget.args.id);
+    viewModel.onLoad(widget.args.id);
     super.initState();
   }
 
@@ -53,9 +50,18 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
             color: Colors.black,
           ),
         ),
-        title: Text(
-          widget.args.name,
-          style: TextStyle(color: Colors.black),
+        title: Text(widget.args.name),
+      );
+    }
+
+    Widget _title(String title) {
+      return Container(
+        padding: EdgeInsets.all(15),
+        alignment: Alignment.centerLeft,
+//                      height: 50,
+        child: Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
       );
     }
@@ -177,6 +183,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
 //        }
 
         Widget ___listAttachment() {
+//          viewModel.listAttachContent[0].id = 1;
           return viewModel.listAttachContent.length > 0
               ? TS24LoadAttachmentWidget(
                   listIrAttachment: viewModel.listAttachContent,
@@ -212,7 +219,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
         }
 
         String avatarUrl = widget.args.userId.length > 0
-            ? api.getImageByIdPartner(widget.args.userId[0].toString())
+            ? api.getImageByIdUser(widget.args.userId[0].toString())
             : null;
         return Container(
           color: Colors.white,
@@ -236,7 +243,8 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                       height: 25,
                     ),
                     Text(
-                      "người gửi : " + widget.args.contactName.toString(),
+                      "${translation.text("TICKET_DETAIL_PAGE.FROM")} : " +
+                          widget.args.contactName.toString(),
                       style: TextStyle(fontSize: 18, color: Colors.grey[800]),
                     ),
                     SizedBox(
@@ -295,7 +303,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                                 ),
                                 Container(
                                   child: Text(
-                                    widget.args.contactName.toString(),
+                                    widget.args.userId[1].toString(),
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 )
@@ -314,30 +322,56 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
               SizedBox(
                 height: 5,
               ),
+              _title(translation.text("TICKET_DETAIL_PAGE.PROPERTIES")),
               Container(
                 padding: EdgeInsets.all(15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Trạng thái: ",
+                      "${translation.text("TICKET_DETAIL_PAGE.STATUS")}: ",
                       style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                     ),
                     if (viewModel.customPopupMenu != null)
-                      ___buildMenuStatusIcon(
-                          iconData: Icons.add,
-                          onSelected: (customPopupMenu) {
-                            viewModel.customPopupMenu = customPopupMenu;
-                            viewModel.onSelectedTicketStatus(customPopupMenu);
-                          })
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                                color: viewModel.customPopupMenu.color,
+                                border: Border.all(
+                                    color: viewModel.customPopupMenu.color,
+                                    width: 1.0)),
+                            width: 15,
+                            height: 15,
+                            alignment: Alignment.center,
+                            child: Text(
+                              getCharStatusState(
+                                  viewModel.customPopupMenu.state),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(viewModel.customPopupMenu.title.toString())
+                        ],
+                      )
+//                      ___buildMenuStatusIcon(
+//                          iconData: Icons.add,
+//                          onSelected: (customPopupMenu) {
+//                            viewModel.customPopupMenu = customPopupMenu;
+////                            viewModel.onSelectedTicketStatus(customPopupMenu);
+//                          })
                   ],
                 ),
               ),
               SizedBox(
                 height: 5,
               ),
-              if (viewModel.helpDeskCategory != null)
-              ___line(),
+//              if (viewModel.helpDeskCategory != null) ___line(),
               if (viewModel.helpDeskCategory != null)
                 Container(
                   padding: EdgeInsets.all(15),
@@ -345,7 +379,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "Dịch vụ: ",
+                        "${translation.text("TICKET_DETAIL_PAGE.SERVICE")}: ",
                         style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                       ),
                       Text(viewModel.helpDeskCategory.name)
@@ -359,6 +393,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
               SizedBox(
                 height: 5,
               ),
+              _title(translation.text("TICKET_DETAIL_PAGE.CONTENT")),
               ___description(),
               SizedBox(
                 height: 5,
@@ -482,7 +517,8 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                       TextField(
                         controller: viewModel.descriptionEditingController,
                         decoration: InputDecoration(
-                          hintText: "Nhập tin nhắn tại đây...",
+                          hintText: translation
+                              .text("TICKET_DETAIL_PAGE.HINT_INPUT_TEXT"),
                           hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.grey,
@@ -542,7 +578,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                                 color: (viewModel.descriptionEditingController
                                         .text.isNotEmpty)
                                     ? ThemePrimary.primaryColor
-                                    : Colors.black),
+                                    : ThemePrimary.backgroundColor),
                           )
                         ],
                       )
@@ -595,7 +631,12 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
       return Stack(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(bottom: 100),
+            padding: EdgeInsets.only(
+                bottom: (viewModel.customPopupMenu != null &&
+                        viewModel.customPopupMenu.state !=
+                            MenuStatusState.CANCEL)
+                    ? 100
+                    : 0),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: RefreshIndicator(
@@ -607,12 +648,14 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                   children: <Widget>[
                     __info(),
 //                  _listMessage(),
+                    _title(
+                        "${translation.text("TICKET_DETAIL_PAGE.CONVERSATION")}(${viewModel.listMailMessage.length})"),
                     if (!viewModel.loading &&
                         viewModel.listMailMessage.length > 0)
                       ListMessageWidget(
                           listMailMessage: viewModel.listMailMessage),
                     Container(
-                      height: 150,
+                      height: 100,
                       color: ThemePrimary.backgroundColor,
                     )
                   ],
@@ -620,7 +663,9 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
               ),
             ),
           ),
-          _inputText()
+          if (viewModel.customPopupMenu != null &&
+              viewModel.customPopupMenu.state != MenuStatusState.CANCEL)
+            _inputText()
         ],
       );
     }

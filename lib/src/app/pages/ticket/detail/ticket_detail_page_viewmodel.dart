@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
@@ -54,23 +55,29 @@ class TicketDetailViewModel extends ViewModelBase {
     var _listHelpDeskCategory = await api.getListCategoryOfTicket();
     if (_listHelpDeskCategory.length > 0) {
       listHelpDeskCategory = _listHelpDeskCategory;
-      getHelpDeskCategory(id);
+//      getHelpDeskCategory(id);
     }
   }
 
-  getHelpDeskCategory(int id) {
-    var list = listHelpDeskCategory.where((category) => category.id == id);
-    if (list.length > 0) {
-      List<HelpDeskCategory> listHelpDeskCategory = list;
-      helpDeskCategory = listHelpDeskCategory[0];
-    }
-    this.updateState();
-  }
+//  getHelpDeskCategory(int id) {
+//    var list = listHelpDeskCategory.where((category) => category.id == id);
+//    if (list.length > 0) {
+//      List<HelpDeskCategory> listHelpDeskCategory = list;
+//      helpDeskCategory = listHelpDeskCategory[0];
+//    }
+//    this.updateState();
+//  }
 
   onLoad(int id) async {
     loading = true;
     var ticket = await api.getTicketById(id);
     helpdeskTicket = ticket;
+    if (helpdeskTicket.categoryId is List) {
+      helpDeskCategory = HelpDeskCategory(
+        id: helpdeskTicket.categoryId[0],
+        name:helpdeskTicket.categoryId[1]
+      );
+    }
     customPopupMenu = CustomPopupMenu.getTicket(helpdeskTicket.stageId[0]);
 //    isLoadingListAttachContent = true;
 //    this.updateState();
@@ -96,6 +103,7 @@ class TicketDetailViewModel extends ViewModelBase {
     listMailMessage = helpdeskTicket.messageIds
         .map((item) => MailMessage.fromJson(item))
         .toList();
+//    helpDeskCategory =
     loading = false;
     this.updateState();
   }
@@ -151,12 +159,12 @@ class TicketDetailViewModel extends ViewModelBase {
                   fileName: _fileName,
                   extension: _extension,
                   data: image));
-              print(id);
+              print("ID of attachment :" + id.toString());
               this.updateState();
             });
           }
+          print("PATH image:" + directory);
         });
-        print(directory);
       }
     });
   }
@@ -234,28 +242,28 @@ class TicketDetailViewModel extends ViewModelBase {
     }
   }
 
-  onSelectedTicketStatus(CustomPopupMenu customPopupMenu) {
-    switch (customPopupMenu.state) {
-      case MenuStatusState.SOLVED:
-      case MenuStatusState.IN_PROGRESS:
-      case MenuStatusState.CANCEL:
-      case MenuStatusState.NEW:
-      case MenuStatusState.CANCEL:
-      case MenuStatusState.ALL:
-        statusState = customPopupMenu.state;
-        helpdeskTicket.stageId = [
-          customPopupMenu.id,
-          getNameTicketStatus(customPopupMenu.id)
-        ];
-//        api.updateTickets(helpdeskTicket).then((result){
-//          if(result){
-//            print("thanh cong");
-//          }else print("that bai");
-//        });
-        break;
-    }
-    this.updateState();
-  }
+//  onSelectedTicketStatus(CustomPopupMenu customPopupMenu) {
+//    switch (customPopupMenu.state) {
+//      case MenuStatusState.SOLVED:
+//      case MenuStatusState.IN_PROGRESS:
+//      case MenuStatusState.CANCEL:
+//      case MenuStatusState.NEW:
+//      case MenuStatusState.CANCEL:
+//      case MenuStatusState.ALL:
+//        statusState = customPopupMenu.state;
+//        helpdeskTicket.stageId = [
+//          customPopupMenu.id,
+//          getNameTicketStatus(customPopupMenu.id)
+//        ];
+////        api.updateTickets(helpdeskTicket).then((result){
+////          if(result){
+////            print("thanh cong");
+////          }else print("that bai");
+////        });
+//        break;
+//    }
+//    this.updateState();
+//  }
 
   onSend() async {
     String _description = parse(descriptionEditingController.text).outerHtml;
@@ -268,14 +276,20 @@ class TicketDetailViewModel extends ViewModelBase {
       authorId: customer.id,
       model: 'helpdesk.ticket',
       body: _description,
+//      attachmentIds: listAddAttachmentModel.map((model) => model.id).toList(),
     );
     var result = await api.insertMailMessageForTicket(
         mailMessage: _mailMessage, listAttachmentId: _listAttachment);
     if (result != null) {
-      listAddAttachmentModel.clear();
+//      _mailMessage.attachmentIds =
+//          listAddAttachmentModel.map((model) => model.id).toList();
+//      listMailMessage.add(_mailMessage);
       descriptionEditingController.text = '';
       FocusScope.of(context).unfocus();
+      listAddAttachmentModel.clear();
       onLoad(helpdeskTicket.id);
+//      this.updateState();
+//      onLoad(helpdeskTicket.id);
 //      LoadingDialog.showMsgDialog(context, "Gửi message Thành Công.");
       print("Thanh cong");
     } else {

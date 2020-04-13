@@ -42,6 +42,7 @@ class _HelpPageState extends State<HelpPage>
       ProductWarranty fullObject}) {
     var dateFormat = expireDate.split('-');
     return Material(
+      color: Colors.white,
       child: InkWell(
         onTap: () {
           fullObject.name = nameService;
@@ -55,12 +56,12 @@ class _HelpPageState extends State<HelpPage>
             children: <Widget>[
               Text(
                 nameService,
-                style: TextStyle(color: Colors.black87),
+                style: TextStyle(color: Color(0xff666666)),
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
                   '${translation.text('HELP_PAGE.EXPIRE_DATE')}: ${dateFormat[2] + '-' + dateFormat[1] + '-' + dateFormat[0]}',
-                  style: TextStyle(color: Colors.grey)),
+                  style: TextStyle(color: Color(0xff999999))),
               SizedBox(
                 height: 15,
               ),
@@ -104,7 +105,7 @@ class _HelpPageState extends State<HelpPage>
             )
           ],
         ),
-         AnimatedContainer(
+        AnimatedContainer(
           duration: Duration(milliseconds: 700),
           width: double.infinity,
           decoration: BoxDecoration(
@@ -112,72 +113,74 @@ class _HelpPageState extends State<HelpPage>
             borderRadius: BorderRadius.circular(20),
           ),
           margin: EdgeInsets.symmetric(horizontal: 5),
-          child: viewModel.listArticle.length == 0 ? Container(
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20), color: Colors.white70),
-            child: Row(
-              children: <Widget>[
-                Text(translation.text("HELP_PAGE.GROUP_SUBTITLE_1"))
-              ],
-            ),
-          ) : Wrap(
-            spacing: 10,
-            alignment: WrapAlignment.center,
-            children: <Widget>[
-              ...viewModel.listArticle.map((item) {
-                var dateStringFilter = item.createDate.replaceAll('/', '-');
-                var year =
-                    dateStringFilter.split('-')[2].toString().split(' ')[0];
-                var month = dateStringFilter.split('-')[1];
-                var date = dateStringFilter.split('-')[0];
-                var time = dateStringFilter
-                    .split('-')[2]
-                    .toString()
-                    .split(' ')[1]
-                    .substring(
-                        0,
-                        dateStringFilter
-                                .split('-')[2]
-                                .toString()
-                                .split(' ')[1]
-                                .length -
-                            3);
-                return Material(
-                  color: Colors.white10,
-                  child: InkWell(
+          child: viewModel.listArticle.length == 0
+              ? Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      hoverColor: ThemePrimary.backgroundColor,
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, FaqArticleDetailPage.routeName,
-                            arguments: [
-                              [item.description],
-                              item.name
-                            ]);
-                      },
-                      child: Chip(
-                        backgroundColor: ThemePrimary.backgroundColor,
-                        label: Container(
-                          width: (MediaQuery.of(context).size.width / 4),
-                          child: Text(
-                            item.name.toString(),
-                            style:
-                                TextStyle(color: Colors.black87, fontSize: 13),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      )),
-                );
-              })
-            ],
-          ),
+                      color: Colors.white70),
+                  child: Row(
+                    children: <Widget>[
+                      Text(translation.text("HELP_PAGE.GROUP_SUBTITLE_1"))
+                    ],
+                  ),
+                )
+              : Wrap(
+                  spacing: 10,
+                  alignment: WrapAlignment.center,
+                  children: <Widget>[
+                    ...viewModel.listArticle.map((item) {
+                      var dateStringFilter =
+                          item.createDate.replaceAll('/', '-');
+                      var year = dateStringFilter
+                          .split('-')[2]
+                          .toString()
+                          .split(' ')[0];
+                      var month = dateStringFilter.split('-')[1];
+                      var date = dateStringFilter.split('-')[0];
+                      var time = dateStringFilter
+                          .split('-')[2]
+                          .toString()
+                          .split(' ')[1]
+                          .substring(
+                              0,
+                              dateStringFilter
+                                      .split('-')[2]
+                                      .toString()
+                                      .split(' ')[1]
+                                      .length -
+                                  3);
+                      return Material(
+                        color: Colors.white10,
+                        child: InkWell(
+                            borderRadius: BorderRadius.circular(20),
+                            hoverColor: ThemePrimary.backgroundColor,
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, FaqArticleDetailPage.routeName,
+                                  arguments: [item.id, item.name]);
+                            },
+                            child: Chip(
+                              backgroundColor: ThemePrimary.backgroundColor,
+                              label: Container(
+                                width: (MediaQuery.of(context).size.width / 4),
+                                child: Text(
+                                  item.name.toString(),
+                                  style: TextStyle(
+                                      color: Colors.black87, fontSize: 13),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            )),
+                      );
+                    })
+                  ],
+                ),
         )
       ],
     );
   }
-
 
   Widget _renderTitleArticleNotHaveData() {
     return Column(
@@ -228,78 +231,76 @@ class _HelpPageState extends State<HelpPage>
 
   Widget _body() {
     return SingleChildScrollView(
-      child: Container(
-        color: ThemePrimary.backgroundColor,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: <Widget>[
-            _renderArticleHaveData(),
-            GroupContentWidget(
-                title: translation.text('HELP_PAGE.SERVICE_LIST'),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ...viewModel.listProductWarranty.map((item) {
-                      return _categoryDetail(
-                          fullObject: item,
-                          id: item.id,
-                          nameService: item.productId[1],
-                          createDate: item.warrantyCreateDate,
-                          expireDate: item.warrantyEndDate);
-                    }).toList()
-                  ],
-                )),
-
-            Container(
-              padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
-              height: 100,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: TS24Button(
-                      onTap: () {
-                        // add call launcher
-                        launch("tel://0902123123");
-                      },
-                      child: ItemHelpWidget(
-                        icons: Icons.phone_in_talk,
-                        text: translation.text("HELP_PAGE.CALL_SERVICE"),
-                      ),
+      child: Column(
+        children: <Widget>[
+          // _renderArticleHaveData(),
+          GroupContentWidget(
+              title: translation.text('HELP_PAGE.SERVICE_LIST'),
+              child: viewModel.listProductWarranty.length > 0
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        ...viewModel.listProductWarranty.map((item) {
+                          return _categoryDetail(
+                              fullObject: item,
+                              id: item.id,
+                              nameService: item.productId[1],
+                              createDate: item.warrantyCreateDate,
+                              expireDate: item.warrantyEndDate);
+                        }).toList()
+                      ],
+                    )
+                  : Text(translation.text("HELP_PAGE.EMPTY_CATEGORY_SERVICE"))),
+          Container(
+            padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+            height: 100,
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(15)),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: TS24Button(
+                    onTap: () {
+                      // add call launcher
+                      launch("tel://19006154");
+                    },
+                    child: ItemHelpWidget(
+                      icons: Icons.phone_in_talk,
+                      text: translation.text("HELP_PAGE.CALL_SERVICE"),
                     ),
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: TS24Button(
-                      onTap: () {
-                        viewModel.onTapChat();
-                      },
-                      child: ItemHelpWidget(
-                        icons: Icons.chat_bubble,
-                        text: translation.text("HELP_PAGE.LIVE_CHAT"),
-                      ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: TS24Button(
+                    onTap: () {
+                      viewModel.onTapChat();
+                    },
+                    child: ItemHelpWidget(
+                      icons: Icons.chat_bubble,
+                      text: translation.text("HELP_PAGE.LIVE_CHAT"),
                     ),
                   ),
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _appBar() {
     return AppBar(
-      backgroundColor: ThemePrimary.backgroundColor,
       elevation: 0,
       title: Text(
         translation.text("HELP_PAGE.TITLE"),
-        style: TextStyle(color: Colors.black87),
       ),
     );
   }
@@ -325,41 +326,57 @@ class _HelpPageState extends State<HelpPage>
                 onRefresh: () async {
                   viewModel.fetchCategoryTS24Product();
                 },
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    SliverAppBar(
-                      leading: Container(),
-                      expandedHeight: 220.0,
-                      floating: false,
-                      pinned: false,
-                      snap: false,
-                      elevation: 50,
-                      backgroundColor: Colors.transparent,
-                      flexibleSpace: FlexibleSpaceBar(
-                          centerTitle: true,
-                          background: viewModel.listApplication.length > 0
-                              ? TS24SlideWidget(
-                                  listCurrentObject: viewModel.listApplication,
-                                  listFullObject:
-                                      ItemApplicationModel.listApplication,
-                                  onChange: (index) {
-                                    var idCategoryProduct = viewModel
-                                        .listApplication[index]
-                                        .idCategoryServices;
-                                    viewModel.onCategoryIndexChanged(
-                                        idCategoryProduct);
-                                    var categoryArticleId = viewModel
-                                        .listApplication[index]
-                                        .idCategoryArticle;
-                                    viewModel.getListFAQByCategoryId(
-                                        categoryArticleId);
-                                  },
-                                )
-                              : LoadingIndicator.spinner(
-                                  context: context, loading: true)),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    Container(
+                      decoration:
+                          BoxDecoration(image: decorationImageBackground()),
                     ),
-                    new SliverList(
-                        delegate: new SliverChildListDelegate([_body()])),
+                    CustomScrollView(
+                      slivers: <Widget>[
+                        SliverAppBar(
+                          leading: Container(),
+                          expandedHeight: 220.0,
+                          floating: false,
+                          pinned: false,
+                          snap: false,
+                          elevation: 50,
+                          backgroundColor: Colors.transparent,
+                          flexibleSpace: FlexibleSpaceBar(
+                              centerTitle: true,
+                              background:
+                              viewModel.isLoading? LoadingIndicator.spinner(context:context,loading: true) :
+                              viewModel.listApplication.length > 0
+                                  ? TS24SlideWidget(
+                                      listCurrentObject:
+                                          viewModel.listApplication,
+                                      listFullObject:
+                                          ItemApplicationModel.listApplication,
+                                      onChange: (index) {
+                                        var idCategoryProduct = viewModel
+                                            .listApplication[index]
+                                            .idCategoryServices;
+                                        viewModel.onCategoryIndexChanged(
+                                            idCategoryProduct);
+                                        var categoryArticleId = viewModel
+                                            .listApplication[index]
+                                            .idCategoryArticle;
+                                        viewModel.getListFAQByCategoryId(
+                                            categoryArticleId);
+                                      },
+                                    )
+                                  : (viewModel.isLoading)
+                                      ? LoadingIndicator.spinner()
+                                      : Center(
+                                          child: Text(translation.text(
+                                              "HELP_PAGE.EMPTY_CATEGORY_ACTIVE")))
+                              ),
+                        ),
+                        new SliverList(
+                            delegate: new SliverChildListDelegate([_body()])),
+                      ],
+                    )
                   ],
                 ),
               ),

@@ -1,16 +1,86 @@
 {
+  "HOME_PAGE": {
+    "TITLE": "Trang chủ",
+    "NEW_POSTS": "Bài viết mới"
+  },
+  "TAB_PAGE": {
+    "HINT_MENU": "Tiện ích",
+    "HINT_ADD": "Thêm phiếu hỗ trợ",
+    "HINT_CARE": "Gọi trung tâm dịch vụ",
+    "HINT_LIVE_CHAT": "Nhắn tin trực tuyến"
+  },
+  "NEWS_AND_TIPS_PAGE": {
+    "TITLE": "Bài viết mới"
+  },
+  "SEARCH_WIDGET": {
+    "HINT_SEARCH": "Tìm kiếm...",
+    "RECENT": "Từ khóa gần đây",
+    "RESULT": "Kết quả"
+  },
+  "TICKET_PAGE": {
+    "TITLE": "Phiếu hỗ trợ",
+    "STATUS": "Trạng thái",
+    "STATUS_ALL": "Tất cả",
+    "STATUS_NEW": "Mới",
+    "STATUS_IN_PROGRESS": "Đang xử lý",
+    "STATUS_SOLVED": "Đã giải quyết",
+    "STATUS_CANCELED": "Hủy bỏ",
+    "ADD": "Thêm",
+    "DELETE": "Xóa",
+    "IMAGE": "Hình ảnh",
+    "FILE": "Tệp tin",
+    "SORT": "Sắp xếp",
+    "SORT_TICKETS": "Sắp xếp danh sách phiếu hỗ trợ",
+    "CATEGORY": "Danh mục",
+    "DATE": "Ngày",
+    "ASCENDING": "tăng dần",
+    "DECREASE": "giảm dần",
+    "APPLY": "Áp dụng",
+    "TICKET_NUMBER": "Số phiếu"
+  },
+  "TICKET_DETAIL_PAGE": {
+    "FROM": "Người gửi",
+    "STATUS": "Trạng thái",
+    "SERVICE": "Dịch vụ",
+    "HINT_INPUT_TEXT": "Nhập tin nhắn tại đây...",
+    "PROPERTIES": "Các thuộc tính",
+    "CONTENT": "Nội dung",
+    "CONVERSATION": "Cuộc hội thoại"
+  },
+  "TICKET_NEW_PAGE": {
+    "TITLE": "Tạo phiếu hỗ trợ mới",
+    "HINT_TITLE": "Vui lòng nhập...",
+    "PROPERTIES": "Dịch vụ cần hỗ trợ",
+    "STATUS": "Trạng thái",
+    "SELECT_SERVICE": "Chọn dịch vụ",
+    "HINT_INPUT_TEXT": "Nhập nội dung tại đây...",
+    "CREATING": "Đang tạo phiếu hỗ trợ...",
+    "CREATE_SUCCESS": "Tạo phiếu hỗ trợ thành công.",
+    "CREATE_FAIL": "Tạo phiếu hỗ trợ thất bại, vui lòng thử lại.",
+    "INPUT_TITLE": "Tiêu đề"
+  },
   "LOGIN_PAGE": {
-    "WELCOME_TITLE": "Chào mừng đến với TS24Care",
-    "SUB_TITLE": "Đăng nhập để tiếp tục",
+    "WELCOME_TITLE": "Chào mừng Quý Khách\nđến với TS24care!",
+    "SUB_TITLE": "Vui lòng đăng nhập hoặc đăng ký\nđể chúng tôi có thể phục vụ bạn tốt hơn",
     "EMAIL": "Địa chỉ email",
     "EMAIL_HINT": "Nhập địa chỉ email",
     "PASSWORD": "Mật khẩu",
     "PASSWORD_HINT": "Nhập mật khẩu",
-    "PASSWORD_FORGET": "Quên mật khẩu",
+    "PASSWORD_AGAIN": "Nhập lại mật khẩu",
+    "PASSWORD_SHOW": "Hiện",
+    "PASSWORD_HIDE": "Ẩn",
     "PASSWORD_REMEMBER": "Ghi nhớ",
     "LOGIN_BUTTON": "Đăng nhập",
     "NO_ACCOUNT": "Chưa có tài khoản?",
-    "CREATE_ACCOUNT_BUTTON": "Tạo tài khoản"
+    "REGISTER": "Đăng ký",
+    "SOCIAL_LOGIN": "Đăng nhập bằng tài khoản",
+    "CREATE_ACCOUNT" : "Tạo tài khoản",
+    "FORGOT_PASSWORD" : "Quên mật khẩu"
+  },
+  "REGISTER_PAGE": {
+    "TITLE": "Đăng ký",
+    "REGISTER": "Đăng ký",
+    "SEND": "Gửi"
   },
   "FORGET_PASSWORD_PAGE": {
     "TITLE": "Quên Mật Khẩu",
@@ -42,34 +112,55 @@
     "CALL_SERVICE": "Gọi điện",
     "LIVE_CHAT": "Chat trực tuyến",
     "VIEW_MORE": "Xem thêm",
-    "ALL_BUTTON": "Tất cả" ,
+    "ALL_BUTTON": "Tất cả",
     "ADD_BUTTON": "Thêm",
     "ID_IDENTIFY": "Tên dịch vụ",
     "SERVICE_LIST": "Các dịch vụ đã đăng ký",
     "CREATE_DATE": "Ngày đăng ký",
     "EXPIRE_DATE": "Ngày hết hạn",
-    "TODAY": "Hôm nay"
+    "TODAY": "Hôm nay",
+    "EMPTY_CATEGORY_ACTIVE": "Bạn chưa đăng ký dịch vụ",
+    "EMPTY_CATEGORY_SERVICE": "Chưa có dịch vụ"
   },
   "FAQ_DETAIL_PAGE": {
     "TITLE": "FAQ",
     "GUIDANCE_TITLE": "Xem bài bài viết để biết thêm thông tin",
-    "NO_DATA": "Đang tải...",
+    "NO_DATA": "Chưa có dữ liệu",
+    "LOADING": "Đang tải...",
     "RECENT": "Gần đây",
     "RESULT": "Kết quả"
   },
   "WANRRANTY_DETAIL_PAGE": {
+    "TITLE": "Chi tiết dịch vụ",
     "DATE_REMAINING": "Ngày hết hạn",
     "SERIAL": "Số serial",
     "PHONE": "Điện thoại",
-    "LICENSE": "Giấy phép",
+    "LICENSE": "Bản quyền",
     "NO_DATA": "Chưa có thông tin",
     "DATE_EXPIRED": "Hết hạn",
     "DATE_STRING": "ngày"
   },
+  "DASHBOARD_PAGE": {
+    "DASHBOARD": "Bảng tổng hợp",
+    "TIMELINE": "Lược sử thời gian",
+    "DAY": "ngày",
+    "MONTH": "tháng",
+    "MINUTE": "phút",
+    "SERVICE_SUPPORT": "Thống kê phân loại dịch vụ đã hổ trợ",
+    "TOTAL_VOTE": "Tổng số phiếu hõ trợ",
+    "VOTE_DONE": "Phiếu hỗ trợ đã hoàn thành",
+    "TIME_RESPONSE": "Thời gian phản hồi trung bình",
+    "ITEM_OTHER": "Khác",
+    "VALUE": "Giá trị",
+    "TIME_AVG": "Thời gian trung bình trả lời",
+    "TICKET_DONE": "Phiếu hoàn thành",
+    "SHOW_TOOLTIP_DEFAULT": "Chọn màu trên biểu đồ và ấn giữ để xem thông tin"
+  },
   "WAITING_MESSAGE": {
     "PERMISSION_CONNECT": "Đang kiểm tra quyền truy cập...",
     "AUTH_ACCOUNT": "Đang xác thực tài khoản",
-    "INFO_DOMAIN": "Đang lấy thông tin domain..."
+    "INFO_DOMAIN": "Đang lấy thông tin domain...",
+    "SOCIAL_NETWORK": "Đang kết nối mạng xã hội"
   },
   "ERROR_MESSAGE": {
     "PERMISSION_APP": "Bạn không có quyền truy cập vào ứng dụng này.",
@@ -83,9 +174,10 @@
     "RECENT_ITEMS": "Thông báo mới",
     "APPS": "Apps",
     "BLOCKED": "Blocked",
-    "NO_NOTIFICATIONS" : "Bạn chưa có thông báo mới"
+    "NO_NOTIFICATIONS": "Bạn chưa có thông báo mới"
   },
   "SETTINGS_PAGE": {
+    "TITLE": "Cài đặt",
     "NOTIFICATIONS": "Thông báo",
     "LEAVE_FEEDBACK": "Để lại phản hồi",
     "LICENSES": "Điều khoản sử dụng",
@@ -134,7 +226,8 @@
     "INPUT_PHONE": "Nhập số điện thoại...",
     "INPUT_EMAIL": "Nhập email...",
     "INPUT_ADDRESS": "Nhập địa chỉ...",
-    "COMPANY" : "Công ty"
+    "COMPANY": "Công ty",
+    "TIN": "Mã số thuế"
   },
   "POPUP_CONFIRM": {
     "TITLE": "THÔNG BÁO",
@@ -184,7 +277,10 @@
     "REGISTER_FAIL": "Đăng ký thất bại do email đã tồn tại hoặc sự cố kỹ thuật. Vui lòng thử lại...",
     "FAIL": "Thất bại",
     "DELETE": "Xóa",
-    "CROPPER": "Chỉnh sửa ảnh"
+    "CROPPER": "Chỉnh sửa ảnh",
+    "DOWNLOAD_SUCCESSFUL": "Tải thành công",
+    "DOWNLOAD_FAILED": "Tải thất bại",
+    "DOWNLOAD": "Tải xuống"
   },
   "VERSION": "Phiên bản"
 }

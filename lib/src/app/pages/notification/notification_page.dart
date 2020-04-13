@@ -7,6 +7,7 @@ import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/empty_widget.dart';
 import 'package:ts24care/src/app/widgets/item_notification_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 import '../../app_localizations.dart';
 
@@ -35,11 +36,10 @@ class _NotificationsPageState extends State<NotificationsPage>
     Widget _appBar() {
       return AppBar(
         // leading: IconButton(icon: Icon(Icons.menu, color: Colors.black)),
-        backgroundColor: ThemePrimary.backgroundColor,
+        //backgroundColor: ThemePrimary.backgroundColor,
         elevation: 0,
         title: Text(
           translation.text("NOTIFICATIONS_PAGE.TITLE"),
-          style: TextStyle(color: Colors.black87),
         ),
 //        actions: <Widget>[
 //          IconButton(
@@ -53,40 +53,50 @@ class _NotificationsPageState extends State<NotificationsPage>
     }
 
     Widget _body() {
-      return viewModel.choices[0].list.length > 0
-          ? Column(
+      return Stack(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            decoration: BoxDecoration(
+                image: decorationImageBackground()
+            ),
+          ),
+          viewModel.choices[0].list.length > 0
+              ? Column(
               children: viewModel.choices[0].list
                   .map((item) => Column(
-                        children: <Widget>[
-                          ItemNotificationWidget(
-                              notification: item,
-                              listNotification: viewModel.choices[0].list),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 1,
-                            color: ThemePrimary.backgroundColor,
-                          )
-                        ],
-                      ))
-                  .toList())
-          : Center(
-              //height: MediaQuery.of(context).size.height,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Image.asset(
-                    'assets/images/icon_bell.png',
-                    height: 100,
-                    width: 100,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(height: 20),
-                  Text(translation.text('NOTIFICATIONS_PAGE.NO_NOTIFICATIONS'),
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+                  ItemNotificationWidget(
+                      notification: item,
+                      listNotification: viewModel.choices[0].list),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 1,
+                    color: ThemePrimary.backgroundColor,
+                  )
                 ],
-              ),
-            );
+              ))
+                  .toList())
+              : Center(
+            //height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/images/icon_bell.png',
+                  height: 100,
+                  width: 100,
+                  color: Colors.grey,
+                ),
+                SizedBox(height: 20),
+                Text(translation.text('NOTIFICATIONS_PAGE.NO_NOTIFICATIONS'),
+                    style:
+                    TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+              ],
+            ),
+          ),
+        ],
+      );
       return SingleChildScrollView(
         child: viewModel.choices[0].list.length > 0
             ? viewModel.choices[0].list

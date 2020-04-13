@@ -7,6 +7,7 @@ import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 class BlogPostPage extends StatefulWidget {
   static const String routeName = "/blogPostPage";
@@ -50,38 +51,46 @@ class _BlogPostPageState extends State<BlogPostPage> {
     }
 
     Widget _body() {
-      return SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10, top: 10),
-          child: Column(
-            children: <Widget>[
+      return viewModel.loading
+          ? LoadingSpinner.loadingView(
+              context: context, loading: viewModel.loading)
+          : SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+                child: (widget.itemNewFeedModel.content != null &&
+                        widget.itemNewFeedModel.content != '')
+                    ? Column(
+                        children: <Widget>[
 //            Container(
 //              alignment: Alignment.center,
 //              margin: EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 10),
 //              child: Text(widget.itemNewFeedModel.title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
 //            ),
-              if (widget.itemNewFeedModel.content != null)
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: Text(widget.itemNewFeedModel.postDate,
-                      style: TextStyle(fontStyle: FontStyle.italic)),
-                ),
-              Container(
-                margin: EdgeInsets.only(left: 20, right: 20),
-                child: Text(
-                  widget.itemNewFeedModel.subTitle,
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                                widget.itemNewFeedModel.postDate.substring(
+                                    0,
+                                    widget.itemNewFeedModel.postDate.length -
+                                        3),
+                                style: TextStyle(fontStyle: FontStyle.italic)),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            child: Text(
+                              widget.itemNewFeedModel.subTitle,
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          HtmlWidget(
+                            addDomainHtml(widget.itemNewFeedModel.content),
+                            webViewJs: true,
+                          )
+                        ],
+                      )
+                    : Container(),
               ),
-              if (widget.itemNewFeedModel.content != null)
-                HtmlWidget(
-                  addDomainHtml(widget.itemNewFeedModel.content),
-                  webViewJs: true,
-                )
-            ],
-          ),
-        ),
-      );
+            );
     }
 
     return ViewModelProvider(

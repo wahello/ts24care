@@ -43,10 +43,10 @@ class KnowsystemSection {
   KnowsystemSection.fromJson(Map<String, dynamic> json) {
     sLastUpdate = json['__last_update'];
     active = json['active'];
-    articleIds = json['article_ids'];
-    childIds = json['child_ids'];
+    articleIds = json['article_ids'] is bool ? [] : json['article_ids'];
+    childIds = json['child_ids'] is bool ? [] : json['child_ids'];
     createDate = json['create_date'];
-    createUid = json['create_uid'];
+    createUid = json['create_uid'] is bool ? [] : json['create_uid'];
     description = json['description'];
     displayName = json['display_name'];
     hasRightTo = json['has_right_to'];
@@ -54,9 +54,9 @@ class KnowsystemSection {
     name = json['name'];
     parentId = json['parent_id'];
     sequence = json['sequence'];
-    userGroupIds = json['user_group_ids'];
+    userGroupIds = json['user_group_ids'] is bool ? [] : json['user_group_ids'];
     writeDate = json['write_date'];
-    writeUid = json['write_uid'];
+    writeUid = json['write_uid'] is bool ? [] : json['write_uid'];
   }
 
   Map<String, dynamic> toJson() {

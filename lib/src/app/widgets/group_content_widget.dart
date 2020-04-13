@@ -51,7 +51,8 @@ class GroupContentWidget extends StatelessWidget {
             padding: EdgeInsets.all(15),
             margin: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
-              color: Colors.white70,
+              // change to white old : white white70
+              color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(25))
             ),
             child: child,

@@ -21,35 +21,49 @@ class _ItemNewFeedHorizontalWidgetState
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        ClipRRect(
-          borderRadius: BorderRadius.circular(25.0),
-          child: widget.url != null
-              ? CachedNetworkImage(
-                  imageUrl: widget.url,
-                  imageBuilder: (context, imageProvider) => Container(
-                    width: MediaQuery.of(context).size.width * 0.43,
-                    height: MediaQuery.of(context).size.width * 0.43,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.cover,
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25.0),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black12,
+                    offset: Offset(0.0, 1.0),
+                    blurRadius: 1.0),
+                BoxShadow(
+                    color: Colors.black12,
+                    offset: Offset(0.0, -1.0),
+                    blurRadius: 1.0),
+              ]),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(25.0),
+            child: widget.url != null
+                ? CachedNetworkImage(
+                    imageUrl: widget.url,
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: MediaQuery.of(context).size.width * 0.43,
+                      height: MediaQuery.of(context).size.width * 0.43,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Image.asset(
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Image.asset(
+                      "assets/images/default.jpg",
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width * 0.43,
+                      height: MediaQuery.of(context).size.width * 0.43,
+                    ),
+                  )
+                : Image.asset(
                     "assets/images/default.jpg",
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width * 0.43,
                     height: MediaQuery.of(context).size.width * 0.43,
                   ),
-                )
-              : Image.asset(
-                  "assets/images/default.jpg",
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width * 0.43,
-                  height: MediaQuery.of(context).size.width * 0.43,
-                ),
+          ),
         ),
 //        Container(
 ////          width: MediaQuery.of(context).size.width * 0.3,
@@ -72,6 +86,7 @@ class _ItemNewFeedHorizontalWidgetState
             widget.title,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w100),
             maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
         )
       ],
@@ -98,21 +113,35 @@ class _ItemNewFeedVerticalWidgetState extends State<ItemNewFeedVerticalWidget> {
           borderRadius: BorderRadius.all(Radius.circular(25))),
       child: Row(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(25.0),
-            child: widget.itemNewFeedModel.avatarUrl != null
-                ? Image.network(
-                    widget.itemNewFeedModel.avatarUrl,
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width * 0.33,
-                    height: MediaQuery.of(context).size.width * 0.33,
-                  )
-                : Image.asset(
-                    "assets/images/default.jpg",
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width * 0.33,
-                    height: MediaQuery.of(context).size.width * 0.33,
-                  ),
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.0),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12,
+                      offset: Offset(0.0, 1.0),
+                      blurRadius: 1.0),
+                  BoxShadow(
+                      color: Colors.black12,
+                      offset: Offset(0.0, -1.0),
+                      blurRadius: 1.0),
+                ]),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(25.0),
+              child: widget.itemNewFeedModel.avatarUrl != null
+                  ? Image.network(
+                      widget.itemNewFeedModel.avatarUrl,
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      height: MediaQuery.of(context).size.width * 0.33,
+                    )
+                  : Image.asset(
+                      "assets/images/default.jpg",
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      height: MediaQuery.of(context).size.width * 0.33,
+                    ),
+            ),
           ),
           Expanded(
             child: Container(
@@ -123,7 +152,8 @@ class _ItemNewFeedVerticalWidgetState extends State<ItemNewFeedVerticalWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    widget.itemNewFeedModel.postDate.toString(),
+                    widget.itemNewFeedModel.postDate.substring(
+                        0, widget.itemNewFeedModel.postDate.length - 3),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                   Text(
@@ -137,28 +167,6 @@ class _ItemNewFeedVerticalWidgetState extends State<ItemNewFeedVerticalWidget> {
                     style: TextStyle(fontSize: 14, color: Colors.grey[500]),
                     overflow: TextOverflow.ellipsis,
                   ),
-//                  Row(
-//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                    children: <Widget>[
-//                      Icon(
-//                        Icons.star,
-//                        color: Colors.grey[500],
-//                      ),
-//                      Row(
-//                        children: <Widget>[
-//                          Icon(
-//                            Icons.favorite_border,
-//                            color: Colors.grey[500],
-//                          ),
-//                          Text(
-//                            "100",
-//                            style: TextStyle(
-//                                fontSize: 14, color: Colors.grey[500]),
-//                          )
-//                        ],
-//                      )
-//                    ],
-//                  )
                 ],
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/customer.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
+import 'package:ts24care/src/app/pages/help/help_page.dart';
 import 'package:ts24care/src/app/pages/login/login_page.dart';
 import 'package:ts24care/src/app/pages/setting/userDetail/setting_user_detail_page.dart';
 import 'package:ts24care/src/app/widgets/popupConfirm.dart';
@@ -91,6 +92,11 @@ class SettingPageViewModel extends ViewModelBase {
   onChangeLanguage(String language) async {
     await translation.setNewLanguage(language, true);
     //OneSignalService.sendTags(parent.toJsonOneSignal(language: language));
+    CustomPopupMenu.reLoad();
     RestartWidget.restartApp(context);
+  }
+
+  onTapListService() {
+    Navigator.pushNamed(context, HelpPage.routeName);
   }
 }
