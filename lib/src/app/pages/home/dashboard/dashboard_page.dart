@@ -376,7 +376,7 @@ class MyCustomPainter extends CustomPainter {
 
     String messageTooltip =
         "${translation.text("DASHBOARD_PAGE.VALUE")}: ${ticket.ticketCount ?? 0}\n"
-        "${translation.text("DASHBOARD_PAGE.TIME_AVG")}: ${ticket.ticketsAvgTime.toStringAsFixed(1) ?? 0}\"\n"
+        "${translation.text("DASHBOARD_PAGE.TIME_AVG")}: ${ticket.ticketsAvgTime.toStringAsFixed(1) ?? 0}\n"
         "${translation.text("DASHBOARD_PAGE.TICKET_DONE")}: ${ticket.ticketsDone ?? 0}";
 
     final paragraphStyle = ParagraphStyle(textAlign: TextAlign.left);

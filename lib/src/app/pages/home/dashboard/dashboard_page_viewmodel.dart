@@ -126,7 +126,9 @@ class DashboardPageViewModel extends ViewModelBase {
           ticketCount: ticketCount,
           ticketsAvgTime: listData[i].ticketsAvgTime,
           ticketsDone: listData[i].ticketsDone,
-          xCatColor: xCatColor == "" || xCatColor == "false" ? findColor(categoryName) : xCatColor,
+          xCatColor: xCatColor == "" || xCatColor == "false"
+              ? findColor(categoryName)
+              : xCatColor,
           category: categoryName == ""
               ? translation.text("DASHBOARD_PAGE.ITEM_OTHER")
               : categoryName));
@@ -159,10 +161,10 @@ class DashboardPageViewModel extends ViewModelBase {
   onTapAnalyticSummary(String status) {
     switch (status) {
       case "done":
-        tabsPageViewModel.onTap(1);
+        tabsPageViewModel.onOpenTicketPage(3);
         break;
       case "all":
-        tabsPageViewModel.onTap(1);
+        tabsPageViewModel.onOpenTicketPage(0);
         break;
       default:
     }
