@@ -40,4 +40,4 @@ const emptyState = {
 const String version = "1.0.0";
 
 Api api = new Api();
-HandleTicketCreated handleTicketCreated = HandleTicketCreated();
+HandleTicketStatus handleTicketStatus = HandleTicketStatus();

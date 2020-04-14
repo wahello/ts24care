@@ -5,19 +5,21 @@ import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/ticketStatistic.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:ts24care/src/app/models/ts24_product_category.dart';
+import 'package:ts24care/src/app/pages/tabs/tabs_page_viewmodel.dart';
 
 class DashboardPageViewModel extends ViewModelBase {
   DashboardPageViewModel() {
-    // getStatisticTicket(month: 1);
-    // getStatisticTicketByCategory(month: 1);
+    getStatisticTicket(month: 1);
+    getStatisticTicketByCategory(month: 1);
   }
-
+  TabsPageViewModel tabsPageViewModel;
   List<charts.Series> seriesList;
   bool animate = false;
   bool isSpinnerInText = true;
   Offset offset;
   RenderBox referenceBox;
   GlobalKey paintKey = GlobalKey();
+
   TicketStatistic ticketObjectForPainter;
   String messageTooltip = "";
   List<TicketStatistic> dataChart = [
@@ -27,15 +29,19 @@ class DashboardPageViewModel extends ViewModelBase {
 //     TicketChart(3, 7, "#ff9900"),
   ];
 
-  List<charts.Series<TicketStatistic, int>> _createSampleData() {
+  List<charts.Series<TicketStatistic, int>> _createChartData() {
     return [
       charts.Series<TicketStatistic, int>(
         id: 'Chart',
-        domainFn: (TicketStatistic sales, _) => sales.chartValue,
-        measureFn: (TicketStatistic sales, _) => sales.ticketCount,
-        colorFn: (TicketStatistic sales, _) =>
-            charts.Color.fromHex(code: sales.xCatColor),
+        domainFn: (TicketStatistic ticket, _) => ticket.index,
+        measureFn: (TicketStatistic ticket, _) => ticket.ticketCount,
+        colorFn: (TicketStatistic ticket, _) =>
+            charts.Color.fromHex(code: ticket.xCatColor),
         data: dataChart,
+//        labelAccessorFn: (TicketStatistic ticket, _) =>
+//            "${translation.text("DASHBOARD_PAGE.VALUE")}: ${ticket.ticketCount}",
+//                "\n${translation.text("DASHBOARD_PAGE.TIME_AVG")}: ${sales.ticketsAvgTime?? 0}"
+//                "\n${translation.text("DASHBOARD_PAGE.TICKET_DONE")}: ${sales.ticketsDone??0}",
       )
     ];
   }
@@ -51,8 +57,8 @@ class DashboardPageViewModel extends ViewModelBase {
   final GlobalKey keyTooltip = GlobalKey();
 
   void onRefresh() {
-    // getStatisticTicketByCategory(month: monthValueRefresh);
-    // getStatisticTicket(month: monthValueRefresh);
+    getStatisticTicketByCategory(month: monthValueRefresh);
+    getStatisticTicket(month: monthValueRefresh);
   }
 
   void updateForCustomPainter(TicketStatistic ticket) {
@@ -105,30 +111,27 @@ class DashboardPageViewModel extends ViewModelBase {
     dataChart = [];
     this.updateState();
     List<TicketStatistic> listData = await api.statisticTicketByCategory(month);
+    print("hello and helelo");
+    print(listData[0].ticketsDone);
+    print(listData[0].category);
+    print(listData[0].xCatColor);
+    print(listData[0].ticketsAvgTime);
 
     for (var i = 0; i < listData.length; i++) {
       String categoryName = listData[i].category;
-      String xCatColor = listData[i].xCatColor;
+      String xCatColor = listData[i].xCatColor.toString();
       int ticketCount = listData[i].ticketCount;
       dataChart.add(TicketStatistic(
-              chartValue: i,
-              ticketCount: ticketCount,
-              xCatColor: xCatColor == "" ? findColor(categoryName) : xCatColor,
-              category: categoryName == ""
-                  ? translation.text("DASHBOARD_PAGE.ITEM_OTHER")
-                  : categoryName)
-
-//          TicketChart(
-//          i,
-//          ticketCount,
-//          xCatColor == "" ? findColor(categoryName) : xCatColor,
-//          categoryName == ""
-//              ? translation.text("DASHBOARD_PAGE.ITEM_OTHER")
-//              : categoryName)
-//
-          );
+          index: i,
+          ticketCount: ticketCount,
+          ticketsAvgTime: listData[i].ticketsAvgTime,
+          ticketsDone: listData[i].ticketsDone,
+          xCatColor: xCatColor == "" || xCatColor == "false" ? findColor(categoryName) : xCatColor,
+          category: categoryName == ""
+              ? translation.text("DASHBOARD_PAGE.ITEM_OTHER")
+              : categoryName));
     }
-    seriesList = _createSampleData();
+    seriesList = _createChartData();
 
     this.updateState();
   }
@@ -151,6 +154,18 @@ class DashboardPageViewModel extends ViewModelBase {
     }
     isSpinnerInText = false;
     this.updateState();
+  }
+
+  onTapAnalyticSummary(String status) {
+    switch (status) {
+      case "done":
+        tabsPageViewModel.onTap(1);
+        break;
+      case "all":
+        tabsPageViewModel.onTap(1);
+        break;
+      default:
+    }
   }
 }
 

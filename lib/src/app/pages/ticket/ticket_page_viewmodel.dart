@@ -10,6 +10,7 @@ import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/pages/ticket/detail/ticket_detail_page.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
 
 class TicketPageViewModel extends ViewModelBase {
   List<HelpdeskTicket> listTicketFiltered = List();
@@ -28,13 +29,13 @@ class TicketPageViewModel extends ViewModelBase {
   int status = 0;
   CustomPopupMenu customPopupMenu = CustomPopupMenu(
       id: 0,
-      color: Colors.green,
+      color: Colors.grey[400],
       title: translation.text("TICKET_PAGE.STATUS_ALL"),
       state: MenuStatusState.ALL);
   List<Color> listColor = [
     Colors.blue,
     Colors.orange,
-    Colors.grey[400],
+    ThemePrimary.primaryColor,
     Colors.red,
     Colors.purple,
     Colors.pinkAccent,
@@ -84,14 +85,14 @@ class TicketPageViewModel extends ViewModelBase {
   Future listenTicketCreated() async {
     if (streamSubscriptionTicketCreated != null)
       streamSubscriptionTicketCreated.cancel();
-    var _snap = handleTicketCreated.streamController.stream;
+    var _snap = handleTicketStatus.streamController.stream;
     streamSubscriptionTicketCreated = _snap.listen((onData) {
       if (onData != null) {
         try {
-          if (onData == true) {
-            this.customPopupMenu = this.listStatusTicket[1];
+//          if (onData == true) {
+            this.customPopupMenu = this.listStatusTicket[onData];
             onLoad();
-          }
+//          }
         } catch (e) {
           print(e);
         }
@@ -163,7 +164,7 @@ class TicketPageViewModel extends ViewModelBase {
     listStatusTicket.clear();
     listStatusTicket.add(CustomPopupMenu(
         id: 0,
-        color: Colors.green,
+        color: Colors.grey[400],
         title: translation.text("TICKET_PAGE.STATUS_ALL"),
         state: MenuStatusState.ALL));
     int count = 0;
@@ -276,5 +277,10 @@ class TicketPageViewModel extends ViewModelBase {
     int id = helpDeskCategory.id != -1 ? helpDeskCategory.id : 0;
     int date = isAscendingDate ? 1 : 0;
     onLoad(categoryID: id, date: date);
+  }
+  @override
+  void dispose() {
+    streamSubscriptionTicketCreated.cancel();
+    super.dispose();
   }
 }

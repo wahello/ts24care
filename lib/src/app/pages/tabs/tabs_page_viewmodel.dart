@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
@@ -10,6 +9,7 @@ import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
 class TabsPageViewModel extends ViewModelBase {
   PageController controller;
   Menu menu = Menu.tabMenu[0];
+
   TabsPageViewModel() {
     controller = PageController();
   }
@@ -35,15 +35,27 @@ class TabsPageViewModel extends ViewModelBase {
     super.dispose();
   }
 
+  /// statusTicket value
+  /// 0 - all
+  /// 1 - new
+  /// 2 - in progress
+  /// 3 - solved
+  /// 4 - canceled
+  onOpenTicketPage(int statusTicket) {
+    handleTicketStatus.streamController.sink.add(statusTicket);
+    onTap(1);
+  }
+
   onTapCreateTicket() {
-    Navigator.pushNamed(context, TicketNewPage.routeName).then((result){
-      try{
-        if(result){
-          handleTicketCreated.streamController.sink.add(result);
+    Navigator.pushNamed(context, TicketNewPage.routeName).then((result) {
+      try {
+        if (result) {
+          handleTicketStatus.streamController.sink.add(1);
         }
-      }catch(e){}
+      } catch (e) {}
     });
   }
+
   onTapChat() {
     Navigator.pushNamed(context, HelpChatPage.routeName);
   }

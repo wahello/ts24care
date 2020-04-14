@@ -1,7 +1,7 @@
 import 'dart:async';
 
-class HandleTicketCreated {
-  StreamController streamController = StreamController<bool>();
+class HandleTicketStatus {
+  StreamController streamController = StreamController<int>();
 
   void dispose() {
     streamController.close();

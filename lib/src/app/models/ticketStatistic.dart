@@ -1,5 +1,5 @@
 class TicketStatistic {
-  dynamic chartValue;
+  dynamic index;
   dynamic category;
   dynamic ticketCount;
   dynamic ticketsAvgTime;
@@ -8,7 +8,7 @@ class TicketStatistic {
 
   TicketStatistic(
       {this.category,
-      this.chartValue,
+      this.index,
       this.ticketCount,
       this.ticketsAvgTime,
       this.ticketsDone,

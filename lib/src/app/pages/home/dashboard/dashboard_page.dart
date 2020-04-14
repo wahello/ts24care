@@ -6,6 +6,9 @@ import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/ticketStatistic.dart';
 import 'package:ts24care/src/app/pages/home/dashboard/dashboard_page_viewmodel.dart';
+import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
+import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
+import 'package:ts24care/src/app/pages/ticket/ticket_page.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
@@ -80,81 +83,89 @@ class _DashboardState extends State<Dashboard> {
         dynamic countNumber,
         IconData icon,
         bool isTime = false,
-        isCircleProgress = false}) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-        margin: EdgeInsets.only(bottom: 20),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(15)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 17, color: Color(0xff666666)),
-                ),
-                viewModel.isSpinnerInText
-                    ? LoadingIndicator.spinner(context: context, loading: true)
-                    : Text(
-                        countNumber.toString() +
-                            '${isTime ? ' ${translation.text("DASHBOARD_PAGE.MINUTE")}' : ''}',
+        isCircleProgress = false,
+        String route,
+        String status}) {
+      return InkWell(
+        onTap: () {
+          viewModel.onTapAnalyticSummary(status);
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+          margin: EdgeInsets.only(bottom: 20),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(15)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: TextStyle(fontSize: 17, color: Color(0xff666666)),
+                  ),
+                  viewModel.isSpinnerInText
+                      ? LoadingIndicator.spinner(
+                          context: context, loading: true)
+                      : Text(
+                          countNumber.toString() +
+                              '${isTime ? ' ${translation.text("DASHBOARD_PAGE.MINUTE")}' : ''}',
+                          style: TextStyle(
+                              fontSize: 22,
+                              color: Color(0xff666666),
+                              fontWeight: FontWeight.bold),
+                        ),
+                ],
+              ),
+              isCircleProgress
+                  ? CircularPercentIndicator(
+                      radius: 60.0,
+                      lineWidth: 7.0,
+                      animation: true,
+                      percent: viewModel.percentTicketDone / 100,
+                      center: Text(
+                        "${viewModel.percentTicketDone.round()}%",
                         style: TextStyle(
-                            fontSize: 22,
-                            color: Color(0xff666666),
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold, fontSize: 16.0),
                       ),
-              ],
-            ),
-            isCircleProgress
-                ? CircularPercentIndicator(
-                    radius: 60.0,
-                    lineWidth: 7.0,
-                    animation: true,
-                    percent: viewModel.percentTicketDone / 100,
-                    center: Text(
-                      "${viewModel.percentTicketDone.round()}%",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16.0),
-                    ),
-                    circularStrokeCap: CircularStrokeCap.round,
-                    progressColor: ThemePrimary.primaryColor,
-                  )
-                : Icon(
-                    icon,
-                    size: 60,
-                    color: ThemePrimary.primaryColor,
-                  )
-          ],
+                      circularStrokeCap: CircularStrokeCap.round,
+                      progressColor: ThemePrimary.primaryColor,
+                    )
+                  : Icon(
+                      icon,
+                      size: 60,
+                      color: ThemePrimary.primaryColor,
+                    )
+            ],
+          ),
         ),
       );
     }
 
     Widget __chartSection() {
-      Widget ___chartColorDescription({Color color, String text}) {
-        return Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: 20,
-                height: 20,
-                color: color,
-                margin: EdgeInsets.only(right: 5),
-              ),
-              Text(text)
-            ],
+      Widget ___chartColorDescription({Color color, String text, int index}) {
+        return Tooltip(
+          message:
+              "${translation.text("DASHBOARD_PAGE.VALUE")}: ${viewModel.dataChart[index].ticketCount ?? 0}"
+              "\n${translation.text("DASHBOARD_PAGE.TIME_AVG")}: ${viewModel.dataChart[index].ticketsAvgTime.toStringAsFixed(1) ?? 0}"
+              "\n${translation.text("DASHBOARD_PAGE.TICKET_DONE")}: ${viewModel.dataChart[index].ticketsDone ?? 0}",
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 20,
+                  height: 20,
+                  color: color,
+                  margin: EdgeInsets.only(right: 5),
+                ),
+                Flexible(
+                  child: Text(text,overflow: TextOverflow.ellipsis,),
+                )
+              ],
+            ),
           ),
-        );
-      }
-
-      Widget ____tooltip() {
-        return Container(
-          width: 30,
-          height: 30,
-          color: Colors.white,
         );
       }
 
@@ -179,79 +190,96 @@ class _DashboardState extends State<Dashboard> {
                 color: Colors.grey,
               ),
             ),
-            Container(
-                width: 300,
-                height: 300,
-                // decoration: BoxDecoration(
-                //     color: Colors.red,
-                //     borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: viewModel.seriesList == null
-                    ? Offstage()
-                    : Listener(onPointerDown: (PointerDownEvent event) {
-                        print("listener");
-                        setState(() {
-                          viewModel.referenceBox = viewModel
-                              .paintKey.currentContext
-                              .findRenderObject();
-                          viewModel.offset = viewModel.referenceBox
-                              .globalToLocal(event.position);
-                        });
-                      }, child: Builder(
-                        builder: (context) {
-                          return CustomPaint(
-                            key: viewModel.paintKey,
-//                                painter: MyCustomPainter(viewModel.offset,
-//                                    viewModel.ticketObjectForPainter),
-                            foregroundPainter: MyCustomPainter(
-                                viewModel.offset,
-                                viewModel.ticketObjectForPainter ??
-                                    TicketStatistic(
-                                        category: null,
-                                        ticketCount: 0,
-                                        ticketsAvgTime: 0,
-                                        ticketsDone: 0)),
+            viewModel.seriesList == null
+                ? Offstage()
+                : Material(
+                    elevation: 0,
+                    color: Colors.white,
+                    shape: CircleBorder(),
+                    child: Listener(
+                        onPointerDown: (PointerDownEvent event) {
+                          print("listener");
+                          setState(() {
+                            viewModel.referenceBox = viewModel
+                                .paintKey.currentContext
+                                .findRenderObject();
+                            viewModel.offset = viewModel.referenceBox
+                                .globalToLocal(event.position);
+                          });
+                        },
+                        child: CustomPaint(
+                          foregroundPainter: MyCustomPainter(
+                              viewModel.offset,
+                              viewModel.ticketObjectForPainter ??
+                                  viewModel.ticketStatistic),
+                          key: viewModel.paintKey,
+                          child: Container(
+                            constraints: BoxConstraints.expand(
+                                width: MediaQuery.of(context).size.width - 50,
+                                height: MediaQuery.of(context).size.width - 50),
                             child: charts.PieChart(
                               viewModel.seriesList,
                               animate: true,
+//                              defaultRenderer: charts.ArcRendererConfig(
+//                                  arcRendererDecorators: [
+//                                    charts.ArcLabelDecorator(
+//                                        labelPosition:
+//                                            charts.ArcLabelPosition.outside)
+//                                  ]),
                               selectionModels: [
                                 charts.SelectionModelConfig(
                                   type: charts.SelectionModelType.info,
                                   changedListener:
                                       (charts.SelectionModel model) {
                                     print("change líterner");
-//                                    print(model.selectedSeries[0]
-//                                        .data[model.selectedDatum[0].index]);
-                                    print(model.selectedSeries[0].measureFn(
-                                        model.selectedDatum[0].index));
+                                    print(model.selectedSeries[0]
+                                        .data[model.selectedDatum[0].index]);
                                     setState(() {
-//                                      viewModel.ticketObjectForPainter = model
-//                                          .selectedSeries[0]
-//                                          .data[model.selectedDatum[0].index];
-                                      viewModel.ticketObjectForPainter =
-                                          viewModel.ticketStatistic;
-                                      viewModel.ticketObjectForPainter
-                                              .chartValue =
-                                          model.selectedSeries[0].measureFn(
-                                              model.selectedDatum[0].index);
-                                      print("*******");
-                                      print(viewModel
-                                          .ticketStatistic.ticketCount);
-                                      print(viewModel
-                                          .ticketStatistic.ticketsDone);
-                                      print(viewModel
-                                          .ticketStatistic.ticketsAvgTime);
-                                      print(viewModel.ticketStatistic.category);
-                                      print(
-                                          viewModel.ticketStatistic.xCatColor);
-                                      print("******");
+                                      viewModel.ticketObjectForPainter = model
+                                          .selectedSeries[0]
+                                          .data[model.selectedDatum[0].index];
                                     });
                                   },
                                 )
                               ],
                             ),
-                          );
-                        },
-                      ))),
+                          ),
+                        )
+
+//                      Container(
+//                        padding: EdgeInsets.all(0),
+//                        margin: EdgeInsets.all(0),
+//                        width: 300,
+//                        height: 300,
+//                        child: CustomPaint(
+//                          key: viewModel.paintKey,
+//                          foregroundPainter: MyCustomPainter(
+//                              viewModel.offset,
+//                              viewModel.ticketObjectForPainter ??
+//                                  viewModel.ticketStatistic),
+//                          child: charts.PieChart(
+//                            viewModel.seriesList,
+//                            animate: true,
+//                            selectionModels: [
+//                              charts.SelectionModelConfig(
+//                                type: charts.SelectionModelType.info,
+//                                changedListener: (charts.SelectionModel model) {
+//                                  print("change líterner");
+//                                  print(model.selectedSeries[0]
+//                                      .data[model.selectedDatum[0].index]);
+//                                  setState(() {
+//                                    viewModel.ticketObjectForPainter = model
+//                                        .selectedSeries[0]
+//                                        .data[model.selectedDatum[0].index];
+//                                  });
+//                                },
+//                              )
+//                            ],
+//                          ),
+//                        ),
+//                      ),
+                        ),
+                  ),
             Container(
               child: GridView.builder(
                   shrinkWrap: true,
@@ -263,7 +291,8 @@ class _DashboardState extends State<Dashboard> {
                     return ___chartColorDescription(
                         color: Color(int.parse(
                             "0xff${viewModel.dataChart[index].xCatColor.substring(1, viewModel.dataChart[index].xCatColor.length)}")),
-                        text: viewModel.dataChart[index].category);
+                        text: viewModel.dataChart[index].category,
+                        index: index);
                   }),
             )
           ],
@@ -286,12 +315,16 @@ class _DashboardState extends State<Dashboard> {
                 __analyticSummary(
                     title: translation.text("DASHBOARD_PAGE.TOTAL_VOTE"),
                     countNumber: viewModel.ticketStatistic.ticketCount,
-                    icon: Icons.insert_chart),
+                    icon: Icons.insert_chart,
+                    route: TicketsPage.routeName,
+                    status: "all"),
                 __analyticSummary(
                     title: translation.text("DASHBOARD_PAGE.VOTE_DONE"),
                     countNumber: viewModel.ticketStatistic.ticketsDone,
                     icon: Icons.check_circle,
-                    isCircleProgress: true),
+                    isCircleProgress: true,
+                    route: TicketsPage.routeName,
+                    status: "done"),
                 __analyticSummary(
                     title: translation.text("DASHBOARD_PAGE.TIME_RESPONSE"),
                     countNumber: viewModel.ticketStatistic.ticketsAvgTime,
@@ -314,6 +347,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    viewModel.tabsPageViewModel = ViewModelProvider.of(context);
     viewModel.context = context;
     return ViewModelProvider(
       viewmodel: viewModel,
@@ -338,30 +372,59 @@ class MyCustomPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    print("%%%%%%%%%%%%%%%%%%%%");
-    print(offset);
-    print(ticket.ticketsDone);
-    // draw text
+    if (offset == null) return;
+
+    String messageTooltip =
+        "${translation.text("DASHBOARD_PAGE.VALUE")}: ${ticket.ticketCount ?? 0}\n"
+        "${translation.text("DASHBOARD_PAGE.TIME_AVG")}: ${ticket.ticketsAvgTime.toStringAsFixed(1) ?? 0}\"\n"
+        "${translation.text("DASHBOARD_PAGE.TICKET_DONE")}: ${ticket.ticketsDone ?? 0}";
+
     final paragraphStyle = ParagraphStyle(textAlign: TextAlign.left);
     final paragraphBuilder = ParagraphBuilder(paragraphStyle)
-      ..pushStyle(ui.TextStyle(color: Colors.black87))
-      ..addText("${translation.text("DASHBOARD_PAGE.VALUE")}: ")
-      ..addText(ticket.chartValue.toString())
-      ..addText("\n${translation.text("DASHBOARD_PAGE.TIME_AVG")}: ")
-      ..addText(ticket.ticketsAvgTime.toString())
-      ..addText("\n${translation.text("DASHBOARD_PAGE.TICKET_DONE")}: ")
-      ..addText(ticket.ticketsDone.toString());
+      ..pushStyle(ui.TextStyle(
+        color: Colors.white,
+      ))
+//          color: Colors.white, background: Paint()..color = Colors.black38))
+      ..addText(messageTooltip);
 
     final paragraph = paragraphBuilder.build()
-      ..layout(ParagraphConstraints(width: 300));
+      ..layout(ParagraphConstraints(width: 240));
 
-    if (offset == null) return;
-    canvas.drawCircle(Offset(offset.dx, offset.dy - 3), 3.0,
-        new Paint()..color = Colors.blue);
-    canvas.drawParagraph(paragraph, offset);
+    // draw a rectangle around the text
+
+//    final right = paragraph.width;
+//    final right = paragraph.longestLine;
+//    final right = paragraph.maxIntrinsicWidth;
+//    final right = paragraph.minIntrinsicWidth;
+//    final bottom = paragraph.height;
+//    final rect = Rect.fromLTRB(offset.dx - 40, offset.dy, 100, 100);
+    var rect = Rect.fromLTWH(offset.dx - 10, offset.dy - 3,
+        paragraph.longestLine + 15, paragraph.height + 10);
+
+    if (offset.dx.round() > 230) {
+      rect = Rect.fromLTWH(offset.dx - 160, offset.dy - 3,
+          paragraph.longestLine + 15, paragraph.height + 10);
+    }
+    final paint = Paint()
+      ..color = Colors.black38
+      ..style = PaintingStyle.fill
+      ..strokeWidth = 1;
+    canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(5)), paint);
+
+    if (offset.dx.round() > 220.0) {
+      canvas.drawParagraph(
+        paragraph,
+        Offset(offset.dx - 150, offset.dy),
+      );
+    } else {
+      canvas.drawParagraph(
+        paragraph,
+        offset,
+      );
+    }
   }
 
   @override
 //  bool shouldRepaint(MyCustomPainter other) => other.offset != offset;
-  bool shouldRepaint(MyCustomPainter other) => true;
+  bool shouldRepaint(MyCustomPainter other) => other.offset != offset;
 }

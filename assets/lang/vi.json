@@ -32,7 +32,7 @@
     "SORT": "Sắp xếp",
     "SORT_TICKETS": "Sắp xếp danh sách phiếu hỗ trợ",
     "CATEGORY": "Danh mục",
-    "DATE": "Ngày",
+    "DATE": "Thời gian",
     "ASCENDING": "tăng dần",
     "DECREASE": "giảm dần",
     "APPLY": "Áp dụng",
@@ -57,7 +57,8 @@
     "CREATING": "Đang tạo phiếu hỗ trợ...",
     "CREATE_SUCCESS": "Tạo phiếu hỗ trợ thành công.",
     "CREATE_FAIL": "Tạo phiếu hỗ trợ thất bại, vui lòng thử lại.",
-    "INPUT_TITLE": "Tiêu đề"
+    "INPUT_TITLE": "Tiêu đề",
+    "ATTACH_FILE": "Đính kèm tập tin"
   },
   "LOGIN_PAGE": {
     "WELCOME_TITLE": "Chào mừng Quý Khách\nđến với TS24care!",
@@ -151,9 +152,9 @@
     "VOTE_DONE": "Phiếu hỗ trợ đã hoàn thành",
     "TIME_RESPONSE": "Thời gian phản hồi trung bình",
     "ITEM_OTHER": "Khác",
-    "VALUE": "Giá trị",
-    "TIME_AVG": "Thời gian trung bình trả lời",
-    "TICKET_DONE": "Phiếu hoàn thành",
+    "VALUE": "Tổng phiếu hồ sơ",
+    "TIME_AVG": "Thời gian phản hồi trung bình",
+    "TICKET_DONE": "Tổng phiếu hoàn thành",
     "SHOW_TOOLTIP_DEFAULT": "Chọn màu trên biểu đồ và ấn giữ để xem thông tin"
   },
   "WAITING_MESSAGE": {

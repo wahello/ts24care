@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    viewModel.emailSetter = 'quan2103@gmail.com';
+    viewModel.emailSetter = 'demo@ts24corp.com';
     viewModel.passSetter = '123456';
   }
 
@@ -617,7 +617,7 @@ class _LoginPageState extends State<LoginPage> {
           }
 
           Widget _loginGoogle() {
-            return  Container(
+            return Container(
               width: 50,
               height: 50,
               decoration: BoxDecoration(
@@ -642,33 +642,32 @@ class _LoginPageState extends State<LoginPage> {
           }
 
           Widget _loginApple() {
-            return
-              Platform.isIOS ?
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  shape: BoxShape.circle,
-                  boxShadow: __initBoxShadow(),
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(24.0),
-                    onTap: (){
-                      viewModel.appleLogin();
-                    },
-                    child: Center(
-                      child: Icon(
-                        FontAwesomeIcons.apple,
-                        color: Colors.white,
-                        size: 27,
+            return Platform.isIOS
+                ? Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                      boxShadow: __initBoxShadow(),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(24.0),
+                        onTap: () {
+                          viewModel.appleLogin();
+                        },
+                        child: Center(
+                          child: Icon(
+                            FontAwesomeIcons.apple,
+                            color: Colors.white,
+                            size: 27,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              )
+                  )
                 : Container();
           }
 
@@ -819,8 +818,7 @@ class _LoginPageState extends State<LoginPage> {
                                       translation.text("LOGIN_PAGE.EMAIL_HINT"),
                                   hintStyle: TextStyle(
                                     fontSize: 13,
-                                  )
-                              ),
+                                  )),
                               keyboardType: TextInputType.emailAddress,
                               onSubmitted: (_) {
                                 viewModel.fieldFocusChange(
@@ -990,82 +988,81 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 __middle(),
-
               ],
             ),
           )
         ]);
       });
-      SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/bgd.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              __header(),
-              // __middle(),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Image.asset('assets/images/Ts24care-text.png',
-                    width: 150, height: 30),
-              ),
-              SizedBox(height: 10)
-              // Expanded(flex: 2, child: __header()),
-              // Expanded(
-              //   flex: 4,
-              //   child: __middle(),
-              // ),
-              // Expanded(
-              //   flex: 1,
-              //   child: Align(
-              //     alignment: Alignment.bottomCenter,
-              //     child: Image.asset('assets/images/Ts24care-text.png',
-              //         width: 150, height: 30),
-              //   ),
-              // ),
+//       SingleChildScrollView(
+//         child: Container(
+//           decoration: BoxDecoration(
+//             image: DecorationImage(
+//               image: AssetImage("assets/images/bgd.png"),
+//               fit: BoxFit.cover,
+//             ),
+//           ),
+//           child: Column(
+//             mainAxisSize: MainAxisSize.max,
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: <Widget>[
+//               __header(),
+//               // __middle(),
+//               Align(
+//                 alignment: Alignment.bottomCenter,
+//                 child: Image.asset('assets/images/Ts24care-text.png',
+//                     width: 150, height: 30),
+//               ),
+//               SizedBox(height: 10)
+//               // Expanded(flex: 2, child: __header()),
+//               // Expanded(
+//               //   flex: 4,
+//               //   child: __middle(),
+//               // ),
+//               // Expanded(
+//               //   flex: 1,
+//               //   child: Align(
+//               //     alignment: Alignment.bottomCenter,
+//               //     child: Image.asset('assets/images/Ts24care-text.png',
+//               //         width: 150, height: 30),
+//               //   ),
+//               // ),
 
-              //Image.asset('assets/images/Ts24care-text.jpg')
-            ],
-          ) /* add child content here */,
-        ),
-      );
+//               //Image.asset('assets/images/Ts24care-text.jpg')
+//             ],
+//           ) /* add child content here */,
+//         ),
+//       );
 
-      return SingleChildScrollView(
-        child: Container(
-          constraints: BoxConstraints(minWidth: width, minHeight: height),
-//          child: Column(
-//            mainAxisSize: MainAxisSize.max,
-//            crossAxisAlignment: CrossAxisAlignment.start,
-//            children: <Widget>[
-//              Expanded(
-//                flex: 2,
-//                child: __header()
-//              ),
-//              Expanded(
-//                flex: 4,
-//                child: __middle(),
-//              ),
-//              Expanded(
-//                flex: 1,
-//                child: Align(
-//                  alignment: Alignment.bottomCenter,
-//                  child: Image.asset('assets/images/Ts24care-text.png',
-//                      width: 150, height: 30),
-//                ),
-//              ),
-//
-//
-//              //Image.asset('assets/images/Ts24care-text.jpg')
-//            ],
-//          ),
-        ),
-      );
+//       return SingleChildScrollView(
+//         child: Container(
+//           constraints: BoxConstraints(minWidth: width, minHeight: height),
+// //          child: Column(
+// //            mainAxisSize: MainAxisSize.max,
+// //            crossAxisAlignment: CrossAxisAlignment.start,
+// //            children: <Widget>[
+// //              Expanded(
+// //                flex: 2,
+// //                child: __header()
+// //              ),
+// //              Expanded(
+// //                flex: 4,
+// //                child: __middle(),
+// //              ),
+// //              Expanded(
+// //                flex: 1,
+// //                child: Align(
+// //                  alignment: Alignment.bottomCenter,
+// //                  child: Image.asset('assets/images/Ts24care-text.png',
+// //                      width: 150, height: 30),
+// //                ),
+// //              ),
+// //
+// //
+// //              //Image.asset('assets/images/Ts24care-text.jpg')
+// //            ],
+// //          ),
+//         ),
+//       );
     }
 
     return ViewModelProvider(

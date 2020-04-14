@@ -578,7 +578,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                                 color: (viewModel.descriptionEditingController
                                         .text.isNotEmpty)
                                     ? ThemePrimary.primaryColor
-                                    : ThemePrimary.backgroundColor),
+                                    : Colors.grey[300]),
                           )
                         ],
                       )

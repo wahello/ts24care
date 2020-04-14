@@ -32,7 +32,7 @@
     "SORT": "Sort",
     "SORT_TICKETS": "Arrange support tickets",
     "CATEGORY": "Category",
-    "DATE": "Date",
+    "DATE": "Time",
     "ASCENDING": "ascending",
     "DECREASE": "decrease",
     "APPLY": "Apply",
@@ -57,7 +57,8 @@
     "CREATING": "Creating a support ticket...",
     "CREATE_SUCCESS": "Create a support ticket successfully.",
     "CREATE_FAIL": "Failed to create support ticket, please try again.",
-    "INPUT_TITLE": "Title"
+    "INPUT_TITLE": "Title",
+    "ATTACH_FILE": "Attach the file"
   },
   "LOGIN_PAGE": {
     "WELCOME_TITLE": "Welcome to\nTS24care!",
@@ -138,7 +139,7 @@
     "LICENSE": "License",
     "NO_DATA": "No information",
     "DATE_EXPIRED": "Expired",
-    "DATE_STRING": "day",
+    "DATE_STRING": "day"
 
   },
   "DASHBOARD_PAGE": {
@@ -151,8 +152,8 @@
     "TOTAL_VOTE": "Total support votes",
     "VOTE_DONE": "Support ticket has been completed",
     "TIME_RESPONSE": "Average response time",
-    "VALUE": "Ticket Value",
-    "TIME_AVG": "Time average",
+    "VALUE": "Total ticket",
+    "TIME_AVG": "Time average response",
     "TICKET_DONE": "Ticket done",
     "SHOW_TOOLTIP_DEFAULT": "Select chart section and hold to show information"
 

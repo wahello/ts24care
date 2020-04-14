@@ -404,6 +404,18 @@ class _TicketNewPageState extends State<TicketNewPage> {
                         viewModel.updateState();
                       },
                     ),
+                  if (viewModel.listAttachmentModel.length > 0)
+                    SizedBox(
+                      height: 10,
+                    ),
+//                  Container(height: 1,color: Colors.grey,width: MediaQuery.of(context).size.width,),
+                  Container(
+                    child: Text(
+                      translation.text("TICKET_NEW_PAGE.ATTACH_FILE"),
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    alignment: Alignment.centerLeft,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -456,10 +468,12 @@ class _TicketNewPageState extends State<TicketNewPage> {
             ? Container(
                 color: Colors.red,
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - AppBar().preferredSize.height,
+                height: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top -
+                    AppBar().preferredSize.height,
                 child: Column(
                   children: <Widget>[
-                    Expanded(flex: 7, child: __background()),
+                    Expanded(child: __background()),
                     Container(child: __inputText())
                   ],
                 ),
