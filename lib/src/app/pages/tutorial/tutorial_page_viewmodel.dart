@@ -35,8 +35,8 @@ class TutorialPageViewModel extends ViewModelBase {
     // resPartner.name = "KTest";
     // resPartner.phone = "09312312333";
     // api.insertUserPortal(resPartner);
-    var a = "0xff" + "ebebeb";
-    var b = Color(int.parse(a));
-    print(b);
+    // var a = "0xff" + "ebebeb";
+    // var b = Color(int.parse(a));
+    // print(b);
   }
 }
