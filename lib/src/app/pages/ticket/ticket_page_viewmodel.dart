@@ -87,12 +87,26 @@ class TicketPageViewModel extends ViewModelBase {
       streamSubscriptionTicketCreated.cancel();
     var _snap = handleTicketStatus.streamController.stream;
     streamSubscriptionTicketCreated = _snap.listen((onData) {
-      if (onData != null) {
+      if (onData != null && listStatusTicket.length > 4) {
         try {
-//          if (onData == true) {
-            this.customPopupMenu = this.listStatusTicket[onData];
-            onLoad();
-//          }
+          switch (onData) {
+            case 0:
+              this.customPopupMenu = this.listStatusTicket[0];
+              break;
+            case 1:
+              this.customPopupMenu = this.listStatusTicket[1];
+              break;
+            case 2:
+              this.customPopupMenu = this.listStatusTicket[2];
+              break;
+            case 3:
+              this.customPopupMenu = this.listStatusTicket[3];
+              break;
+            case 4:
+              this.customPopupMenu = this.listStatusTicket[4];
+              break;
+          }
+          onLoad();
         } catch (e) {
           print(e);
         }
@@ -278,6 +292,7 @@ class TicketPageViewModel extends ViewModelBase {
     int date = isAscendingDate ? 1 : 0;
     onLoad(categoryID: id, date: date);
   }
+
   @override
   void dispose() {
     streamSubscriptionTicketCreated.cancel();
