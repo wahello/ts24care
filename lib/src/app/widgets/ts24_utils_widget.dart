@@ -3,6 +3,7 @@ library ts24_utils;
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 
 import '../app_localizations.dart';
@@ -91,6 +92,43 @@ class LoadingDialog {
           ),
         ],
       ),
+    );
+  }
+
+  static Widget dialogMessageWithButtonWidget(
+      {Function onTapYes, String content, String btnYes, String btnNo}) {
+    return AlertDialog(
+      title: Text(
+        translation.text("POPUP_CONFIRM.TITLE"),
+        style: TextStyle(color: ThemePrimary.primaryColor),
+      ),
+      content: Text(
+        content,
+        style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+      ),
+      actions: [
+        OutlineButton(
+            borderSide: BorderSide(color: ThemePrimary.primaryColor),
+            child: new Text(
+              btnNo,
+              style: TextStyle(fontSize: 16, color: ThemePrimary.primaryColor),
+            ),
+            onPressed: () {
+//                result = false;
+              Get.back();
+            },
+            shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(0.0))),
+        OutlineButton(
+            borderSide: BorderSide(color: ThemePrimary.primaryColor),
+            child: new Text(
+              btnYes,
+              style: TextStyle(fontSize: 16, color: ThemePrimary.primaryColor),
+            ),
+            onPressed: onTapYes,
+            shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(0.0))),
+      ],
     );
   }
 

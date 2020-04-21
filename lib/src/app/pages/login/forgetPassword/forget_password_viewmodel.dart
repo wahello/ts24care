@@ -44,7 +44,7 @@ class ForgetPasswordPageViewModel extends ViewModelBase {
     if (result) {
       LoadingDialog.hideLoadingDialog(context);
       LoadingDialog.showMsgDialog(
-          context, 'Đã gửi password mới tới địa chỉ email của bạn');
+          context, translation.text("FORGET_PASSWORD_PAGE.RESET_SUCCESS"));
     } else {
       LoadingDialog.hideLoadingDialog(context);
       LoadingDialog.showMsgDialog(context, translation.text("COMMON.FAIL"));

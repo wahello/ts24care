@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
@@ -15,10 +14,11 @@ import 'package:ts24care/src/app/widgets/ts24_load_attachment_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_appbar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_add_attachment_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 class TicketDetailPage extends StatefulWidget {
   static const String routeName = "/ticketDetailPage";
-  final HelpdeskTicket args;
+  final int args;
 
   const TicketDetailPage({Key key, this.args}) : super(key: key);
   @override
@@ -29,9 +29,8 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
   TicketDetailViewModel viewModel = TicketDetailViewModel();
   @override
   void initState() {
-    viewModel.helpdeskTicket = widget.args;
-    viewModel.onLoadHelpDeskCategory(widget.args.id);
-    viewModel.onLoad(widget.args.id);
+    viewModel.onLoadHelpDeskCategory(widget.args);
+    viewModel.onLoad(widget.args);
     super.initState();
   }
 
@@ -44,13 +43,15 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
         backgroundColorEnd: ThemePrimary.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(context, viewModel.ticketChanged),
           icon: Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
         ),
-        title: Text(widget.args.name),
+        title: Text(viewModel.helpdeskTicket != null
+            ? viewModel.helpdeskTicket.name.toString()
+            : ''),
       );
     }
 
@@ -202,7 +203,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
 //                Container(height: 0.5,color: Colors.grey[400],width: MediaQuery.of(context).size.width*0.3,),
 //                SizedBox(height: 15,),
                 HtmlWidget(
-                  widget.args.description,
+                  viewModel.helpdeskTicket.description,
                   webViewJs: true,
                 ),
               ],
@@ -218,8 +219,9 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
           );
         }
 
-        String avatarUrl = widget.args.userId.length > 0
-            ? api.getImageByIdUser(widget.args.userId[0].toString())
+        String avatarUrl = viewModel.helpdeskTicket.userId.length > 0
+            ? api
+                .getImageByIdUser(viewModel.helpdeskTicket.userId[0].toString())
             : null;
         return Container(
           color: Colors.white,
@@ -232,7 +234,10 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      widget.args.subject,
+                      (viewModel.helpdeskTicket.subject == null ||
+                              viewModel.helpdeskTicket.subject is bool)
+                          ? ''
+                          : viewModel.helpdeskTicket.subject.toString(),
                       style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 20,
@@ -243,8 +248,11 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                       height: 25,
                     ),
                     Text(
-                      "${translation.text("TICKET_DETAIL_PAGE.FROM")} : " +
-                          widget.args.contactName.toString(),
+                      (viewModel.helpdeskTicket.contactName == null ||
+                              viewModel.helpdeskTicket.contactName is bool)
+                          ? "${translation.text("TICKET_DETAIL_PAGE.FROM")} : "
+                          : "${translation.text("TICKET_DETAIL_PAGE.FROM")} : " +
+                              viewModel.helpdeskTicket.contactName.toString(),
                       style: TextStyle(fontSize: 18, color: Colors.grey[800]),
                     ),
                     SizedBox(
@@ -254,7 +262,11 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          widget.args.createDate,
+                          (viewModel.helpdeskTicket.createDate == null ||
+                                  viewModel.helpdeskTicket.createDate is bool)
+                              ? ''
+                              : formatTimeV2(
+                                  viewModel.helpdeskTicket.createDate),
                           style:
                               TextStyle(fontSize: 16, color: Colors.grey[800]),
                         ),
@@ -303,7 +315,8 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                                 ),
                                 Container(
                                   child: Text(
-                                    widget.args.userId[1].toString(),
+                                    viewModel.helpdeskTicket.userId[1]
+                                        .toString(),
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 )
@@ -591,43 +604,6 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
         );
       }
 
-      Widget _listMessage() {
-//        var listMailMessage = List();
-//        if(viewModel.listModel.length > 0)
-//        viewModel.listModel.forEach((message) {
-//          listMailMessage.;
-//        });
-        return !viewModel.loading && viewModel.listMailMessage.length > 0
-            ? Column(
-                children: <Widget>[
-                  ...viewModel.listMailMessage.reversed.map((message) {
-                    List<int> _listIdAttachment = List();
-                    _listIdAttachment = message.attachmentIds
-                        .map((item) => int.parse(item.toString()))
-                        .toList();
-                    return Column(
-                      children: <Widget>[
-                        ItemCommentWidget(
-                          name: message.authorId[1].toString(),
-                          avatarUrl: api.getImageByIdPartner(
-                              message.authorId[0].toString()),
-                          dateTime: message.writeDate.toString(),
-                          content: message.body.toString(),
-                          listAttachId: _listIdAttachment,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 0.5,
-                          color: Colors.grey[400],
-                        )
-                      ],
-                    );
-                  })
-                ],
-              )
-            : Container();
-      }
-
       return Stack(
         children: <Widget>[
           Container(
@@ -641,25 +617,32 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
             height: MediaQuery.of(context).size.height,
             child: RefreshIndicator(
               onRefresh: () async {
-                viewModel.onLoad(widget.args.id);
+                viewModel.onLoad(widget.args);
               },
               child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    __info(),
-//                  _listMessage(),
-                    _title(
-                        "${translation.text("TICKET_DETAIL_PAGE.CONVERSATION")}(${viewModel.listMailMessage.length})"),
-                    if (!viewModel.loading &&
-                        viewModel.listMailMessage.length > 0)
-                      ListMessageWidget(
-                          listMailMessage: viewModel.listMailMessage),
-                    Container(
-                      height: 100,
-                      color: ThemePrimary.backgroundColor,
-                    )
-                  ],
-                ),
+                child: viewModel.loading
+                    ? Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.9,
+                        child: LoadingIndicator.progress(
+                            context: context, loading: viewModel.loading),
+                      )
+                    : Column(
+                        children: <Widget>[
+                          __info(),
+                          _title(
+                              "${translation.text("TICKET_DETAIL_PAGE.CONVERSATION")}(${viewModel.listMailMessage.length})"),
+                          if (!viewModel.loading &&
+                              !(viewModel.listMailMessage is bool) &&
+                              viewModel.listMailMessage.length > 0)
+                            ListMessageWidget(
+                                listMailMessage: viewModel.listMailMessage),
+                          Container(
+                            height: 100,
+                            color: ThemePrimary.backgroundColor,
+                          )
+                        ],
+                      ),
               ),
             ),
           ),
@@ -675,9 +658,15 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
       child: StreamBuilder(
         stream: viewModel.stream,
         builder: (context, snapshot) {
-          return TS24Scaffold(
-            appBar: _appBar(),
-            body: _body(),
+          return WillPopScope(
+            onWillPop: () async {
+              Navigator.pop(context, viewModel.ticketChanged);
+              return false;
+            },
+            child: TS24Scaffold(
+              appBar: _appBar(),
+              body: _body(),
+            ),
           );
         },
       ),

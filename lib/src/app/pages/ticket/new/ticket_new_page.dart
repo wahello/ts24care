@@ -466,7 +466,6 @@ class _TicketNewPageState extends State<TicketNewPage> {
         reverse: true,
         child: (MediaQuery.of(context).orientation == Orientation.portrait)
             ? Container(
-                color: Colors.red,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height -
                     MediaQuery.of(context).padding.top -

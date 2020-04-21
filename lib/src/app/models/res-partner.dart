@@ -688,7 +688,7 @@ class ResPartner {
     // data['debit'] = this.debit;
     // data['debit_limit'] = this.debitLimit;
     // data['display_name'] = this.displayName;
-    data['email'] = this.email;
+    if (this.email != null) data['email'] = this.email;
     if (this.password != null) data['password'] = this.password;
     data['password'] = this.password;
     // data['email_formatted'] = this.emailFormatted;

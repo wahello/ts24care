@@ -17,7 +17,7 @@ class ItemTicketsWidget extends StatelessWidget {
       this.title,
       this.content,
       this.time,
-      this.color = Colors.white})
+      this.color = Colors.grey})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -31,8 +31,8 @@ class ItemTicketsWidget extends StatelessWidget {
             decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    bottomLeft: Radius.circular(20))),
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10))),
           ),
           Container(
 //          margin: EdgeInsets.only(left: 10, right: 10),

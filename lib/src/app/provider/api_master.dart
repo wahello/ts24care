@@ -505,6 +505,11 @@ class ApiMaster {
     return "$domainApi/web/image?model=res.users&field=image&id=$id&$sessionId";
   }
 
+  //Lấy avatar nhân viên
+  getImageByIdProduct(String id) {
+    return "$domainApi/web/image?model=product.product&field=image&id=$id&$sessionId";
+  }
+
   /* TS24pro api service */
 
   Future<TS24PROAccount> checkLoginTS24Pro({String username, String password}) {

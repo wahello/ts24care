@@ -16,18 +16,19 @@ class GroupContentWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            // margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
             color: Colors.transparent,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.bold),
-                ),
+//                Text(
+//                  title,
+//                  style: TextStyle(
+//                      fontSize: 15,
+//                      color: Colors.grey[600],
+//                      fontWeight: FontWeight.bold),
+//                ),
                 (tapMore != null)?
                 InkWell(
                   onTap: tapMore,
@@ -49,7 +50,8 @@ class GroupContentWidget extends StatelessWidget {
           Container(
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(15),
-            margin: EdgeInsets.symmetric(horizontal: 5),
+            // margin: EdgeInsets.symmetric(horizontal: 5),
+            margin: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               // change to white old : white white70
               color: Colors.white,

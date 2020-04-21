@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/models/blog-post.dart';
 import 'package:ts24care/src/app/models/customer.dart';
@@ -11,12 +12,14 @@ import 'package:ts24care/src/app/models/ir-attachment.dart';
 import 'package:ts24care/src/app/models/knowsystem-article.dart';
 import 'package:ts24care/src/app/models/knowsystem-section.dart';
 import 'package:ts24care/src/app/models/mail-message.dart';
+import 'package:ts24care/src/app/models/onesignal-notification-messages.dart';
 import 'package:ts24care/src/app/models/product-category.dart';
 import 'package:ts24care/src/app/models/product-warranty.dart';
 import 'package:ts24care/src/app/models/res-partner.dart';
 import 'package:ts24care/src/app/models/res-users.dart';
 import 'package:ts24care/src/app/models/ticketStatistic.dart';
 import 'package:ts24care/src/app/models/ts24proAccount.dart';
+import 'package:validators/sanitizers.dart';
 import 'api_master.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,51 +36,111 @@ class Api1 extends ApiMaster {
   ///Trả về true or false.
   Future<StatusCodeGetToken> checkLogin(
       {String username, String password}) async {
+    StatusCodeGetToken result = StatusCodeGetToken.FALSE;
     TS24PROAccount ts24proAccount =
         await this.checkLoginTS24Pro(username: username, password: password);
     if (ts24proAccount != null) {
       this.username = ts24proAccount.uid;
+      var _checkUserExists = await this.checkUserExist(this.username);
+      if (_checkUserExists != null) {
+        this.grandType = GrandType.password;
+        this.clientId = password_client_id;
+        this.clienSecret = password_client_secret;
+        this.username = username;
+        this.password = password;
+        result = await this.authorization(refresh: true);
+      } else {
+        ResPartner resPartner = ResPartner();
+        resPartner.name = ts24proAccount.fullname;
+        resPartner.email = username;
+        resPartner.phone = ts24proAccount.telephoneNumber;
+        resPartner.password = password;
+        resPartner.street = ts24proAccount.street;
+        var _result = await this.insertUserPortal(resPartner);
+        if (_result != null) {
+          this.grandType = GrandType.password;
+          this.clientId = password_client_id;
+          this.clienSecret = password_client_secret;
+          this.username = username;
+          this.password = password;
+          result = await this.authorization(refresh: true);
+        }
+      }
     }
-    StatusCodeGetToken result = StatusCodeGetToken.FALSE;
-    this.grandType = GrandType.password;
-    this.clientId = password_client_id;
-    this.clienSecret = password_client_secret;
-    this.username = username;
-    this.password = password;
-    result = await this.authorization(refresh: true);
+    // Nếu k có ts24pro account
+    {
+      this.grandType = GrandType.password;
+      this.clientId = password_client_id;
+      this.clienSecret = password_client_secret;
+      this.username = username;
+      this.password = password;
+      result = await this.authorization(refresh: true);
+    }
     return result;
   }
 
   ///Kiểm tra user tồn tại trong hệ thống
   ///@params String email
-  Future<ResPartner> checkUserExist(String email) async {
+  Future<ResUsers> checkUserExist(String email) async {
     this.grandType = GrandType.client_credentials;
     this.clientId = client_id;
     this.clienSecret = client_secret;
     await this.authorization();
     body = new Map();
     body["domain"] = [
-      ['email', '=', email],
+      ['login', '=', email],
     ];
     body["fields"] = ["login"];
     var params = convertSerialize(body);
-    List<ResPartner> listResult = new List();
-    ResPartner resPartner;
+    List<ResUsers> listResult = new List();
+    ResUsers resPartner;
     return http
-        .get('${this.api}/search_read/res.partner?$params',
-            headers: this.headers)
+        .get('${this.api}/search_read/res.users?$params', headers: this.headers)
         .then((http.Response response) async {
       this.updateCookie(response);
       if (response.statusCode == 200) {
         List list = json.decode(response.body);
         if (list.length > 0) {
-          listResult = list.map((item) => ResPartner.fromJson(item)).toList();
+          listResult = list.map((item) => ResUsers.fromJson(item)).toList();
           resPartner = listResult[0];
         }
       }
       return resPartner;
     }).catchError((error) {
       return resPartner;
+    });
+  }
+
+  ///Kiểm tra quyền đăng nhập user
+  ///@params int user id
+  Future<ResUsers> checkPermissionUser(int id) async {
+    this.grandType = GrandType.client_credentials;
+    this.clientId = client_id;
+    this.clienSecret = client_secret;
+    await this.authorization();
+    body = new Map();
+    body["domain"] = [
+      ['id', '=', id],
+    ];
+    body["fields"] = ["login", "sel_groups_1_9_10"];
+    var params = convertSerialize(body);
+    List<ResUsers> listResult = new List();
+    ResUsers resUsers;
+    return http
+        .get('${this.api}/search_read/res.users?$params', headers: this.headers)
+        .then((http.Response response) async {
+      this.updateCookie(response);
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult = list.map((item) => ResUsers.fromJson(item)).toList();
+          resUsers = listResult[0];
+        }
+      }
+      if (resUsers.selGroups1910 != 9) return null;
+      return resUsers;
+    }).catchError((error) {
+      return resUsers;
     });
   }
 
@@ -142,7 +205,7 @@ class Api1 extends ApiMaster {
         "vat"
       ];
       body["domain"] = [
-        ['user_ids', '=', uid]
+        ['user_ids', '=', uid],
       ];
       var params = convertSerialize(body);
       List<ResPartner> listResult = new List();
@@ -174,7 +237,10 @@ class Api1 extends ApiMaster {
         this.grandType = GrandType.client_credentials;
         this.clientId = client_id;
         this.clienSecret = client_secret;
+        var checkPermission = await this.checkPermissionUser(userInfo["uid"]);
+        if (checkPermission == null) return null;
         var partner = await _getPartner(userInfo["uid"]);
+//         partner.id = 180173;
         Customer customer = Customer();
         customer.fromResPartner(partner);
         customer.saveLocal();
@@ -187,7 +253,7 @@ class Api1 extends ApiMaster {
   }
 
   ///Kiểm tra user tồn tại trong hệ thống
-  ///@params String email
+  ///@params int user id
   Future<dynamic> getCustomerInfoAfterLoginSocial(int id) async {
     this.grandType = GrandType.client_credentials;
     this.clientId = client_id;
@@ -243,11 +309,13 @@ class Api1 extends ApiMaster {
       "vat"
     ];
     body["domain"] = [
-      ['id', '=', id]
+      ['user_ids', '=', id]
     ];
     var params = convertSerialize(body);
     List<ResPartner> listResult = new List();
     ResPartner resPartner;
+    var checkPermission = await this.checkPermissionUser(id);
+    if (checkPermission == null) return null;
     return http
         .get('${this.api}/search_read/res.partner?$params',
             headers: this.headers)
@@ -662,6 +730,35 @@ class Api1 extends ApiMaster {
     });
   }
 
+  ///Lấy danh sách dịch vụ của user
+  Future<List<ProductWarranty>> getProductWarranty() async {
+    await this.authorization();
+    List<ProductWarranty> listResult = new List();
+    Customer customer = Customer();
+    body = new Map();
+    List<int> listId = [];
+    listId.add(customer.id);
+    if (customer.companyId is int) listId.add(customer.companyId);
+    body["partner_id"] = listId.toString();
+    return http
+        .post('${this.api}/${this.nameCustomApi}/listProduct_Warranty_all',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        this.updateCookie(response);
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult =
+              list.map((item) => ProductWarranty.fromJson(item)).toList();
+        }
+      }
+
+      return listResult;
+    }).catchError((error) {
+      return listResult;
+    });
+  }
+
   ///Hàm tạo ticket
   ///
   ///Success - Trả về new id
@@ -848,7 +945,7 @@ class Api1 extends ApiMaster {
     await this.authorization();
     body = new Map();
     body["id"] = ticket.id.toString();
-    body["values"] = json.encode(ticket.toJson());
+    body["values"] = json.encode(ticket.toJson(update: true));
     return http
         .post('${this.api}/${this.nameCustomApi}/updateTicket',
             headers: this.headers, body: body)
@@ -856,7 +953,7 @@ class Api1 extends ApiMaster {
       var result;
       if (response.statusCode == 200) {
         var list = json.decode(response.body);
-        if (list is List) result = list[0];
+        if (list is List) result = toBoolean(list[0]);
         //print(list);
       } else {
         result = null;
@@ -956,5 +1053,38 @@ class Api1 extends ApiMaster {
       print("insertUserPortal: $ex");
       return result;
     }
+  }
+
+  ///Lấy danh sách thông báo
+  Future<List<OneSignalNotificationMessages>> getListNotification(
+      {int offset = 0, int limit = 20}) async {
+    await this.authorization();
+    List<OneSignalNotificationMessages> listResult = new List();
+    body = new Map();
+    body["offset"] = offset.toString();
+    body["limit"] = limit.toString();
+    body["gmt"] = DateTime.now().timeZoneOffset.inHours.toString();
+    Customer customer = Customer();
+    body["email"] = customer.email.toString();
+    return http
+        .post(
+            '${this.api}/${this.nameCustomApi}/listOneSignalNotificationMessages',
+            headers: this.headers,
+            body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        this.updateCookie(response);
+        List list = json.decode(response.body);
+        if (list.length > 0) {
+          listResult = list
+              .map((item) => OneSignalNotificationMessages.fromJson(item))
+              .toList();
+        }
+      }
+
+      return listResult;
+    }).catchError((error) {
+      return listResult;
+    });
   }
 }

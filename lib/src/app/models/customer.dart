@@ -59,10 +59,10 @@ class Customer {
     email = (resPartner.email is bool) ? "" : resPartner.email;
     phone = (resPartner.phone is bool) ? "" : resPartner.phone;
     contactAddress = (resPartner.street is bool) ? "" : resPartner.street;
-    if (resPartner.companyId is List) if (resPartner.companyId.length > 0) {
-      companyId = resPartner.companyId[0];
+    if (resPartner.parentId is List) if (resPartner.parentId.length > 0) {
+      companyId = resPartner.parentId[0];
 
-      companyName = resPartner.companyId[1];
+      companyName = resPartner.parentId[1];
     }
     tin = (resPartner.vat is bool) ? "" : resPartner.vat;
   }

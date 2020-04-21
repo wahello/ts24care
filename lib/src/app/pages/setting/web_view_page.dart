@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
-class WebViewArg{
+
+class WebViewArg {
   final String title;
   final String url;
 
   WebViewArg({this.title, this.url});
 }
-class WebViewPage extends StatefulWidget {
 
+class WebViewPage extends StatefulWidget {
   static const String routeName = "/webViewPage";
 
   final WebViewArg arg;
@@ -20,10 +21,9 @@ class WebViewPage extends StatefulWidget {
   _WebViewPageState createState() => _WebViewPageState();
 }
 
-class _WebViewPageState extends State<WebViewPage>{
+class _WebViewPageState extends State<WebViewPage> {
   String selectUrl = '';
   String title = '';
-
 
   @override
   void initState() {
@@ -41,26 +41,24 @@ class _WebViewPageState extends State<WebViewPage>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return WebviewScaffold(
-      url: selectUrl,
-      mediaPlaybackRequiresUserGesture: false,
-      appBar: AppBar(
-        backgroundColor: ThemePrimary.backgroundColor,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black54),
-          onPressed: (){
-            Navigator.of(context).pop();
-          },
-        ),
-        centerTitle: true,
-        elevation: 0,
-        title:  Text(title, style: TextStyle(fontSize: 18, color: Colors.black),),
-      ),
-      withZoom: true,
-      withLocalStorage: true,
-      hidden: true,
-      initialChild: LoadingSpinner.loadingView(
-          context: context, loading: true)
-    );
+        url: selectUrl,
+        mediaPlaybackRequiresUserGesture: false,
+        appBar: AppBar(
+            // backgroundColor: ThemePrimary.backgroundColor,
+            // leading: IconButton(
+            //   icon: Icon(Icons.arrow_back, color: Colors.black54),
+            //   onPressed: (){
+            //     Navigator.of(context).pop();
+            //   },
+            // ),
+            // centerTitle: true,
+            // elevation: 0,
+            // title:  Text(title, style: TextStyle(fontSize: 18, color: ThemePrimary.primaryColor),),
+            title: Text(title)),
+        withZoom: true,
+        withLocalStorage: true,
+        hidden: true,
+        initialChild:
+            LoadingSpinner.loadingView(context: context, loading: true));
   }
-
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemePrimary {
-  static const primaryColor = Color(0xFF3154aa);
+  static const primaryColor = Color(0xFFd52a26);
   // static const appBarColor = Color(0xFFECF3FD);
   static const appBarColor = Color(0xFFFFFFFF);
   static const gradientColor = Color(0xFFc49b29);

@@ -75,8 +75,8 @@
     "NO_ACCOUNT": "Chưa có tài khoản?",
     "REGISTER": "Đăng ký",
     "SOCIAL_LOGIN": "Đăng nhập bằng tài khoản",
-    "CREATE_ACCOUNT" : "Tạo tài khoản",
-    "FORGOT_PASSWORD" : "Quên mật khẩu"
+    "CREATE_ACCOUNT": "Tạo tài khoản",
+    "FORGOT_PASSWORD": "Quên mật khẩu"
   },
   "REGISTER_PAGE": {
     "TITLE": "Đăng ký",
@@ -90,7 +90,8 @@
     "EMAIL_HINT": "Nhập email",
     "SUBMIT_BUTTON": "Gửi",
     "NO_ACCOUNT": "Chưa có tài khoản",
-    "CREATE_ACCOUNT": "Đăng ký"
+    "CREATE_ACCOUNT": "Đăng ký",
+    "RESET_SUCCESS": "Đã gửi password mới tới địa chỉ email của bạn"
   },
   "CREATE_NEW_PASSWORD_PAGE": {
     "TITLE": "Tạo Mới Mật Khẩu",
@@ -104,7 +105,7 @@
     "CREATE_ACCOUNT": "Đăng ký"
   },
   "HELP_PAGE": {
-    "TITLE": "Trợ giúp",
+    "TITLE": "Dịch vụ đang sử dụng",
     "GROUP_TITLE_1": "FAQ",
     "GROUP_SUBTITLE_1": "Tìm câu hỏi về dịch vụ bạn sử dụng",
     "GROUP_TITLE_2": "Phản hồi",
@@ -115,6 +116,7 @@
     "VIEW_MORE": "Xem thêm",
     "ALL_BUTTON": "Tất cả",
     "ADD_BUTTON": "Thêm",
+    "ADD_TICKET": "Tạo phiếu",
     "ID_IDENTIFY": "Tên dịch vụ",
     "SERVICE_LIST": "Các dịch vụ đã đăng ký",
     "CREATE_DATE": "Ngày đăng ký",
@@ -133,13 +135,20 @@
   },
   "WANRRANTY_DETAIL_PAGE": {
     "TITLE": "Chi tiết dịch vụ",
-    "DATE_REMAINING": "Ngày hết hạn",
-    "SERIAL": "Số serial",
+    "DATE_REMAINING": "Ngày còn lại",
     "PHONE": "Điện thoại",
     "LICENSE": "Bản quyền",
     "NO_DATA": "Chưa có thông tin",
     "DATE_EXPIRED": "Hết hạn",
-    "DATE_STRING": "ngày"
+    "DATE_STRING": "ngày",
+    "CUSTOMER": "Khách hàng",
+    "EMAIL": "Email",
+    "START_DAY": "Ngày đăng ký",
+    "END_DAY": "Ngày hết hạn",
+    "ACTIVE_COMPANY":"Công ty kích hoạt",
+    "CUSTOMER_INFO": "Thông tin khách hàng",
+    "SERVICE_INFO": "Thông tin dịch vụ",
+    "NAME_SERVICE": "Dịch vụ"
   },
   "DASHBOARD_PAGE": {
     "DASHBOARD": "Bảng tổng hợp",
@@ -148,7 +157,7 @@
     "MONTH": "tháng",
     "MINUTE": "phút",
     "SERVICE_SUPPORT": "Thống kê phân loại dịch vụ đã hổ trợ",
-    "TOTAL_VOTE": "Tổng số phiếu hõ trợ",
+    "TOTAL_VOTE": "Tổng số phiếu hỗ trợ",
     "VOTE_DONE": "Phiếu hỗ trợ đã hoàn thành",
     "TIME_RESPONSE": "Thời gian phản hồi trung bình",
     "ITEM_OTHER": "Khác",
@@ -236,6 +245,8 @@
     "DESC_STATUS": "Xác nhận thay đổi trạng thái?",
     "DESC_LOG_OUT": "Xác nhận đăng xuất?",
     "DESC_DELETE_CHILD": "Bạn thực sự muốn xóa trẻ em này?",
+    "DESC_TICKET_NEW": "Bạn có phiếu hỗ trợ mới",
+    "OPEN": "Mở",
     "YES": "Có",
     "NO": "Không",
     "OK": "Đồng ý",
@@ -281,7 +292,8 @@
     "CROPPER": "Chỉnh sửa ảnh",
     "DOWNLOAD_SUCCESSFUL": "Tải thành công",
     "DOWNLOAD_FAILED": "Tải thất bại",
-    "DOWNLOAD": "Tải xuống"
+    "DOWNLOAD": "Tải xuống",
+    "NO_INFORMATION": "Chưa có thông tin"
   },
   "VERSION": "Phiên bản"
 }

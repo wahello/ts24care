@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
-import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
+import 'package:ts24care/src/app/models/onesignal-notification-messages.dart';
 import 'package:ts24care/src/app/pages/notification/notification_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
-import 'package:ts24care/src/app/widgets/empty_widget.dart';
 import 'package:ts24care/src/app/widgets/item_notification_widget.dart';
+import 'package:ts24care/src/app/widgets/shimmer/shimmer_item_ticket.dart';
+import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
@@ -41,6 +42,44 @@ class _NotificationsPageState extends State<NotificationsPage>
         title: Text(
           translation.text("NOTIFICATIONS_PAGE.TITLE"),
         ),
+//        bottom: PreferredSize(
+//          child: Container(
+//            padding: EdgeInsets.all(20),
+//            child: Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//              children: <Widget>[
+////                        Text(
+////                          "Status: Open",
+////                          style: TextStyle(
+////                              color: Colors.grey[800],
+////                              fontSize: 18,
+////                              fontWeight: FontWeight.w600),
+////                        ),
+//                Text('Lựa chọn'),
+//                InkWell(
+//                  onTap: () {
+//                    //_scaffoldKey.currentState.openEndDrawer();
+//                  },
+//                  child: Row(
+//                    mainAxisAlignment: MainAxisAlignment.center,
+//                    crossAxisAlignment: CrossAxisAlignment.center,
+//                    children: <Widget>[
+//                      Text(
+//                        translation.text("NOTIFICATIONS_PAGE.ALL"),
+//                        style: TextStyle(color: ThemePrimary.primaryColor),
+//                      ),
+//                      Icon(
+//                        Icons.keyboard_arrow_down,
+//                        color: ThemePrimary.primaryColor,
+//                      )
+//                    ],
+//                  ),
+//                )
+//              ],
+//            ),
+//          ),
+//          preferredSize: Size(MediaQuery.of(context).size.width, 55),
+//        ),
 //        actions: <Widget>[
 //          IconButton(
 //            icon: Icon(
@@ -52,187 +91,188 @@ class _NotificationsPageState extends State<NotificationsPage>
       );
     }
 
-    Widget _body() {
-      return Stack(
+    Widget _listNotification(
+        List<OneSignalNotificationMessages> listNotification,
+        {bool loadMore = false}) {
+      return
+//        viewModel.listNotification.length > 0
+          Stack(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-                image: decorationImageBackground()
+              image: decorationImageBackground(),
             ),
           ),
-          viewModel.choices[0].list.length > 0
-              ? Column(
-              children: viewModel.choices[0].list
-                  .map((item) => Column(
-                children: <Widget>[
-                  ItemNotificationWidget(
-                      notification: item,
-                      listNotification: viewModel.choices[0].list),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 1,
-                    color: ThemePrimary.backgroundColor,
-                  )
-                ],
-              ))
-                  .toList())
-              : Center(
-            //height: MediaQuery.of(context).size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  'assets/images/icon_bell.png',
-                  height: 100,
-                  width: 100,
-                  color: Colors.grey,
-                ),
-                SizedBox(height: 20),
-                Text(translation.text('NOTIFICATIONS_PAGE.NO_NOTIFICATIONS'),
-                    style:
-                    TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
-              ],
-            ),
-          ),
+          viewModel.initLoading == 0
+              ? LoadingIndicator.spinner(context: context, loading: true)
+              : viewModel.listNotification.length > 0
+                  ? SingleChildScrollView(
+                      controller:
+                          loadMore ? viewModel.controller : ScrollController(),
+                      child: Container(
+                          constraints: BoxConstraints(
+                              minHeight:
+                                  MediaQuery.of(context).size.height * 0.9),
+                          child: Column(
+//        itemExtent: 110,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 5,
+                              ),
+                              ...listNotification.map((itemNotification) {
+                                return TS24Button(
+                                  onTap: () {
+                                    viewModel
+                                        .onTapNotification(itemNotification);
+                                  },
+                                  margin: EdgeInsets.only(
+                                      top: 5, bottom: 5, left: 10, right: 10),
+//                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 110,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+//                height: 90,
+                                  child: ItemNotificationWidget(
+                                    notification: itemNotification,
+                                    //listNotification: viewModel.choices[0].list,
+                                    color: Colors.grey,
+                                  ),
+                                );
+                              }).toList(),
+                              if (viewModel.loadingMore)
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 50,
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                ThemePrimary.primaryColor),
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(
+                                        translation.text("COMMON.LOADING_DATA"),
+                                        style: TextStyle(
+                                            color: ThemePrimary.primaryColor),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          )),
+                    )
+                  : SingleChildScrollView(
+                      child: Container(
+                        constraints: BoxConstraints(
+                            minHeight:
+                                MediaQuery.of(context).size.height - 135),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            //mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Icon(Icons.notifications,
+                                  size: 50, color: const Color(0xff666666)),
+                              SizedBox(height: 15),
+                              Text(
+                                translation.text(
+                                    'NOTIFICATIONS_PAGE.NO_NOTIFICATIONS'),
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xff666666)),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
         ],
       );
-      return SingleChildScrollView(
-        child: viewModel.choices[0].list.length > 0
-            ? viewModel.choices[0].list
-                .map((item) => Column(
-                      children: <Widget>[
-                        ItemNotificationWidget(
-                            notification: item,
-                            listNotification: viewModel.choices[0].list),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 1,
-                          color: ThemePrimary.backgroundColor,
-                        )
-                      ],
-                    ))
-                .toList()
-            : Container(
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-//            crossAxisAlignment: CrossAxisAlignment.center,
-//            mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Image.asset(
-                      'assets/images/icon_bell.png',
-                      height: 100,
-                      width: 100,
-                      color: Colors.grey,
-                    ),
-                    SizedBox(height: 20),
-                    Text('Không có thông báo',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold))
-                  ],
-                ),
-              ),
-      );
-
-      return Column(
-          children: viewModel.choices[0].list.length > 0
-              ? viewModel.choices[0].list
-                  .map(
-                    (item) => Column(
-                      children: <Widget>[
-                        ItemNotificationWidget(
-                            notification: item,
-                            listNotification: viewModel.choices[0].list),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 1,
-                          color: ThemePrimary.backgroundColor,
-                        )
-                      ],
-                    ),
-                  )
-                  .toList()
-              : Text('No notification'));
-//      return Column(
-//        children: <Widget>[
-//          ItemNotificationWidget(notification: item, listNotification: viewModel.choices[0].list),
-//          Container(
-//            width: MediaQuery.of(context).size.width,
-//            height: 1,
-//            color: ThemePrimary.backgroundColor,
-//          )
-//        ],
-//      );
-//      return DefaultTabController(
-//        length: viewModel.choices.length,
-//        child: Scaffold(
-//          backgroundColor: ThemePrimary.backgroundColor,
-//          appBar: new TabBar(
-//            labelColor: Colors.black,
-////            indicator: BoxDecoration(
-////                borderRadius: BorderRadius.only(topRight:  Radius.circular(25), topLeft: Radius.circular(25)),
-////                border: Border(
-////                  bottom: BorderSide(
-////                    color: Colors.green,
-////                    width: 2.0,
-////                  ),
-////                ),
-////            ),
-//            indicator: UnderlineTabIndicator(
-//                borderSide:
-//                    BorderSide(width: 2, color: ThemePrimary.primaryColor),
-//                insets: EdgeInsets.symmetric(horizontal: 16.0)),
-//            //indicatorPadding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
-////            indicator: BoxDecoration(
-////              //borderRadius: ,
-////              border: Border(
-////                bottom: BorderSide(
-////                  color: Colors.green,
-////                  width: 2.0,
-////                ),
-////              ),
-////            ),
-//            controller: viewModel.tabController,
-//            tabs: viewModel.choices.map((Choice choice) {
-//              return Tab(
-//                text: choice.title,
-//              );
-//            }).toList(),
-//          ),
-//          body: TabBarView(
-//            children: viewModel.choices.map((Choice choice) {
-//              return Container(
-//                color: Colors.white,
-//                child: ListView(
-//                  children: <Widget>[
-////                  SizedBox(
-////                    height: 5,
-////                  ),
-////                    Container(
-////                      width: MediaQuery.of(context).size.width,
-////                      height: 0.5,
-////                      color: Colors.grey,
-////                    ),
-//                    ...choice.list
-//                        .map((item) => Column(
-//                              children: <Widget>[
-//                                ItemNotificationWidget(notification: item, listNotification: choice.list),
-//                                Container(
-//                                  width: MediaQuery.of(context).size.width,
-//                                  height: 1,
-//                                  color: ThemePrimary.backgroundColor,
-//                                )
-//                              ],
-//                            ))
-//                        .toList()
-//                  ],
+//          : SingleChildScrollView(
+//              child: Container(
+//                decoration: BoxDecoration(
+//                  image: DecorationImage(
+//                    image: AssetImage('assets/images/bgd.png'),
+//                    fit: BoxFit.cover,
+//                  ),
 //                ),
-//              );
-//            }).toList(),
-//          ),
-//        ),
-//      );
+//                constraints: BoxConstraints(
+//                    maxHeight: MediaQuery.of(context).size.height * 0.9),
+//              ),
+//            );
+    }
+
+    Widget _itemShimmer() {
+      return Container(
+        margin: EdgeInsets.only(top: 5, bottom: 5),
+        padding: EdgeInsets.only(top: 10, bottom: 10),
+        width: MediaQuery.of(context).size.width,
+        height: 110,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        child: ShimmerItemTicketsWidget(),
+      );
+    }
+
+    Widget _content() {
+      return RefreshIndicator(
+          onRefresh: () async {
+            print('refresh');
+            viewModel.onLoad();
+          },
+          child: viewModel.loading
+              ? Stack(
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      decoration: BoxDecoration(
+                        image: decorationImageBackground(),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10, right: 10),
+                      constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height * 0.8),
+                      child: ListView(
+                        children: [
+                          SizedBox(
+                            height: 5,
+                          ),
+                          _itemShimmer(),
+                          _itemShimmer(),
+                          _itemShimmer(),
+                          _itemShimmer(),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              : Stack(
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      decoration: BoxDecoration(
+                        image: decorationImageBackground(),
+                      ),
+                    ),
+                    _listNotification(viewModel.listNotification,
+                        loadMore: true)
+                  ],
+                ));
     }
 
     return ViewModelProvider(
@@ -245,7 +285,7 @@ class _NotificationsPageState extends State<NotificationsPage>
 //              body: EmptyWidget(
 //                message: "Chưa có thông báo mới.",
 //              )
-            body: _body(),
+            body: _content(),
           );
         },
       ),

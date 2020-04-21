@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/customer.dart';
@@ -42,13 +43,15 @@ class UserDetailPageState extends State<UserDetailPage> {
   @override
   Widget build(BuildContext context) {
     viewModel.context = context;
-    print('1 ${viewModel.customer.contactAddress.toString().length}');
-    print('2 ${viewModel.customer.contactAddress is bool || viewModel.customer.contactAddress == null}');
     final __styleTextLabel = TextStyle(
         color: ThemePrimary.primaryColor,
         fontWeight: FontWeight.bold,
         fontSize: 16);
 
+//    print('photo ${viewModel.customer.photo}');
+//    viewModel.customer.photo = null;
+//    viewModel.customer.contactAddress = null;
+    print('len ${viewModel.customer.email.toString().length}');
     Widget _avatar() {
       Widget _initImage() {
         // return Image(
@@ -59,10 +62,10 @@ class UserDetailPageState extends State<UserDetailPage> {
         // );
         return Image(
           image: (viewModel.customer == null && viewModel.imagePicker == null)
-              ? AssetImage('assets/images/user.png')
+              ? AssetImage('assets/images/default.jpg')
               : (viewModel.customer != null && viewModel.imagePicker == null
                   ? (viewModel.customer.photo == null
-                      ? AssetImage('assets/images/user.png')
+                      ? AssetImage('assets/images/default.jpg')
                       : NetworkImage(viewModel.customer.photo))
                   : MemoryImage(viewModel.imagePicker)),
           fit: BoxFit.cover,
@@ -179,9 +182,61 @@ class UserDetailPageState extends State<UserDetailPage> {
       return Container(
         margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min, // To make the card compact
           children: <Widget>[
             SizedBox(height: 15.0),
+            Text(
+              translation.text("USER_PROFILE.EMAIL"),
+              style: __styleTextLabel,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 2,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                        enabled: false,
+                        focusNode: viewModel.mailFocus,
+                        controller: viewModel.mailEditingController,
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                        decoration: InputDecoration(
+                          //labelText: translation.text("USER_PROFILE.EMAIL"),
+                          hintText: customer.email.toString().length > 0
+                              ? customer.email.toString()
+                              : translation.text("COMMON.NO_INFORMATION"),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: new BorderSide(
+                                  color: Colors.black, width: 0.25)),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: new BorderSide(
+                                  color: ThemePrimary.primaryColor, width: 1)),
+                          //translation.text("COMMON.NO_INFORMATION"),
+                          //labelStyle: __styleTextLabel,
+                          //errorText: viewModel.errorAddress
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (v) {
+                          viewModel.fieldFocusChange(context,
+                              viewModel.mailFocus, viewModel.nameFocus);
+                        },
+//                          textInputAction: TextInputAction.done,
+//                          keyboardType: TextInputType.text
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15.0),
+            Text(
+              translation.text("USER_PROFILE.FULL_NAME"),
+              style: __styleTextLabel,
+            ),
             Container(
               width: MediaQuery.of(context).size.width,
               child: Row(
@@ -194,11 +249,12 @@ class UserDetailPageState extends State<UserDetailPage> {
                         style: TextStyle(fontSize: 18, color: Colors.black),
                         focusNode: viewModel.nameFocus,
                         decoration: InputDecoration(
-                          labelText: translation.text("USER_PROFILE.FULL_NAME"),
-                          hintText: customer != null
-                              ? customer.name
-                              : translation.text("USER_PROFILE.INPUT_NAME"),
-                          labelStyle: __styleTextLabel,
+                          //labelText: translation.text("USER_PROFILE.FULL_NAME"),
+                          hintText: translation.text("COMMON.NO_INFORMATION"),
+//                          customer != null
+//                              ? customer.name
+//                              : translation.text("USER_PROFILE.INPUT_NAME"),
+                          //labelStyle: __styleTextLabel,
                           errorText: viewModel.errorName,
                           enabledBorder: UnderlineInputBorder(
                               borderSide: new BorderSide(
@@ -220,6 +276,10 @@ class UserDetailPageState extends State<UserDetailPage> {
               ),
             ),
             SizedBox(height: 15.0),
+            Text(
+              translation.text("USER_PROFILE.PHONE_NUMBER"),
+              style: __styleTextLabel,
+            ),
             Container(
               width: MediaQuery.of(context).size.width,
               child: Row(
@@ -233,12 +293,13 @@ class UserDetailPageState extends State<UserDetailPage> {
                         style: TextStyle(fontSize: 18, color: Colors.black),
                         focusNode: viewModel.phoneFocus,
                         decoration: InputDecoration(
-                          labelText:
-                              translation.text("USER_PROFILE.PHONE_NUMBER"),
-                          hintText: customer != null
-                              ? customer.phone.toString()
-                              : translation.text("USER_PROFILE.INPUT_PHONE"),
-                          labelStyle: __styleTextLabel,
+//                          labelText:
+//                              translation.text("USER_PROFILE.PHONE_NUMBER"),
+                          hintText: translation.text("COMMON.NO_INFORMATION"),
+//                              customer.phone.toString().length > 0
+//                                  ? customer.phone.toString()
+//                                  : translation.text("COMMON.NO_INFORMATION"),
+                          //labelStyle: __styleTextLabel,
                           errorText: viewModel.errorPhone,
                           enabledBorder: UnderlineInputBorder(
                               borderSide: new BorderSide(
@@ -250,10 +311,10 @@ class UserDetailPageState extends State<UserDetailPage> {
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.number,
                         onFieldSubmitted: (v) {
-                          viewModel.phoneFocus.unfocus();
-                          viewModel.saveCustomer(viewModel.customer);
-//                          viewModel.fieldFocusChange(context,
-//                              viewModel.phoneFocus, viewModel.addressFocus);
+//                          viewModel.phoneFocus.unfocus();
+//                          viewModel.saveCustomer(viewModel.customer);
+                          viewModel.fieldFocusChange(context,
+                              viewModel.phoneFocus, viewModel.addressFocus);
                         },
                       ),
                     ),
@@ -291,85 +352,139 @@ class UserDetailPageState extends State<UserDetailPage> {
 //              ),
 //            ),
             SizedBox(height: 15.0),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: <Widget>[
-                  Flexible(
-                    flex: 2,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: TextFormField(
-                          enabled: false,
-                          focusNode: viewModel.addressFocus,
-                          controller: viewModel.addressEditingController,
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
-                          decoration: InputDecoration(
-                              labelText:
-                              translation.text("USER_PROFILE.ADDRESS"),
-                              labelStyle: __styleTextLabel,
-                              errorText: viewModel.errorAddress),
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.text),
-                    ),
-                  )
-                ],
-              ),
+            Text(
+              translation.text("USER_PROFILE.ADDRESS"),
+              style: __styleTextLabel,
             ),
-            SizedBox(height: 15.0),
             Container(
               width: MediaQuery.of(context).size.width,
               child: Row(
                 children: <Widget>[
                   Flexible(
-                    flex: 2,
+                    flex: 4,
                     child: Align(
                       alignment: Alignment.center,
                       child: TextFormField(
-                          enabled: false,
-                          controller: viewModel.tinEditingController,
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
-                          decoration: InputDecoration(
-                              labelText:
-                                  translation.text("USER_PROFILE.TIN"),
-                              labelStyle: __styleTextLabel,
-                          ),
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.text),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 15.0),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: <Widget>[
-                  Flexible(
-                    flex: 2,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: TextFormField(
-                          enabled: false,
-                          //focusNode: viewModel.addressFocus,
-                          controller: viewModel.mailEditingController,
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
-                          decoration: InputDecoration(
-                              labelText:
-                              translation.text("USER_PROFILE.EMAIL"),
-                              labelStyle: __styleTextLabel,
-                              //errorText: viewModel.errorAddress
-                          ),
-//                          textInputAction: TextInputAction.done,
-//                          keyboardType: TextInputType.text
+                        focusNode: viewModel.addressFocus,
+                        controller: viewModel.addressEditingController,
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                        decoration: InputDecoration(
+//                            labelText: translation.text("USER_PROFILE.ADDRESS"),
+//                            labelStyle: __styleTextLabel,
+                            hintStyle:
+                                TextStyle(fontSize: 18, color: Colors.grey),
+                            hintText: translation.text("COMMON.NO_INFORMATION"),
+//                                customer.contactAddress != null
+//                                    ? customer.contactAddress.toString()
+//                                    : translation.text("COMMON.NO_INFORMATION"),
+                            errorText: viewModel.errorAddress,
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.black, width: 0.25)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: ThemePrimary.primaryColor,
+                                    width: 1))),
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.text,
+                        onFieldSubmitted: (v) {
+                          viewModel.addressFocus.unfocus();
+                          //viewModel.saveCustomer(viewModel.customer);
+//                        viewModel.fieldFocusChange(context,
+//                            viewModel.phoneFocus, viewModel.addressFocus);
+                        },
                       ),
                     ),
-                  )
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: InkWell(
+                        onTap: () {
+                          viewModel.onTapPickMaps();
+                        },
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          child: Icon(
+                            FontAwesomeIcons.searchLocation,
+                            color: ThemePrimary.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
+//            Container(
+//              width: MediaQuery.of(context).size.width,
+//              child: Row(
+//                children: <Widget>[
+//                  Flexible(
+//                    flex: 2,
+//                    child: Align(
+//                      alignment: Alignment.center,
+//                      child: TextFormField(
+//                          enabled: false,
+//                          focusNode: viewModel.addressFocus,
+//                          controller: viewModel.addressEditingController,
+//                          style: TextStyle(fontSize: 18, color: Colors.grey),
+//                          decoration: InputDecoration(
+//                              labelText:
+//                                  translation.text("USER_PROFILE.ADDRESS"),
+//                              labelStyle: __styleTextLabel,
+//                              errorText: viewModel.errorAddress),
+//                          textInputAction: TextInputAction.done,
+//                          keyboardType: TextInputType.text),
+//                    ),
+//                  )
+//                ],
+//              ),
+//            ),
+            Visibility(
+              child: SizedBox(height: 15.0),
+              visible: viewModel.showTin,
+            ),
+            Visibility(
+              child: Text(
+                translation.text("USER_PROFILE.TIN"),
+                style: __styleTextLabel,
+              ),
+              visible: viewModel.showTin,
+            ),
+            Visibility(
+              visible: viewModel.showTin,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      flex: 2,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: TextFormField(
+                            enabled: false,
+                            controller: viewModel.tinEditingController,
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
+                            decoration: InputDecoration(
+//                              labelText: translation.text("USER_PROFILE.TIN"),
+//                              labelStyle: __styleTextLabel,
+                                ),
+                            textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.text),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
             SizedBox(height: 15.0),
+            Text(
+              translation.text("USER_PROFILE.COMPANY"),
+              style: __styleTextLabel,
+            ),
             Container(
               width: MediaQuery.of(context).size.width,
               child: Row(
@@ -383,9 +498,13 @@ class UserDetailPageState extends State<UserDetailPage> {
                           controller: viewModel.companyEditingController,
                           style: TextStyle(fontSize: 18, color: Colors.grey),
                           decoration: InputDecoration(
-                            labelText: translation.text("USER_PROFILE.COMPANY"),
-                            hintText: translation.text("USER_PROFILE.COMPANY"),
-                            labelStyle: __styleTextLabel,
+//                            labelText: translation.text("USER_PROFILE.COMPANY"),
+                            hintText: translation.text("COMMON.NO_INFORMATION"),
+                            //translation.text("USER_PROFILE.COMPANY"),
+//                                customer.companyName.toString().length > 0
+//                                    ? customer.companyName.toString()
+//                                    : translation.text("COMMON.NO_INFORMATION"),
+//                            labelStyle: __styleTextLabel,
                           )),
                     ),
                   )

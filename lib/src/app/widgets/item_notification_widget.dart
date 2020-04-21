@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
-import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
-import 'package:ts24care/src/app/models/item_notification_model.dart';
+import 'package:ts24care/src/app/models/onesignal-notification-messages.dart';
 import 'package:ts24care/src/app/pages/notification/notification_page_viewmodel.dart';
 
 class ItemNotificationWidget extends StatefulWidget {
 //  ItemNotificationWidget({this.notification});
 
-  final ItemNotificationModel notification;
-  final List<ItemNotificationModel> listNotification;
+  final OneSignalNotificationMessages notification;
+
+  //final List<ItemNotificationModel> listNotification;
+  final Color color;
 
   const ItemNotificationWidget(
-      {Key key, this.notification, this.listNotification})
+      {Key key, this.notification, this.color = Colors.grey})
       : super(key: key);
 
   @override
@@ -21,10 +23,10 @@ class ItemNotificationWidget extends StatefulWidget {
 
 class _ItemNotificationWidgetState extends State<ItemNotificationWidget> {
   NotificationPageViewModel viewModel;
+
   @override
   Widget build(BuildContext context) {
     viewModel = ViewModelProvider.of(context);
-
 //    Widget _buildMenuIcon() {
 //      return PopupMenuButton<CustomPopupMenu>(
 //        child: IconButton(icon: Icon(Icons.more_vert)),
@@ -61,60 +63,167 @@ class _ItemNotificationWidgetState extends State<ItemNotificationWidget> {
 //        },
 //      );
 //    }
-
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
+    return Container(
+      width: MediaQuery.of(context).size.width,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
-            alignment: Alignment.center,
-            width: 30,
-            height: 30,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Image.network(
-                widget.notification.image,
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width * 0.33,
-                height: MediaQuery.of(context).size.width * 0.33,
+            width: 10,
+            decoration: BoxDecoration(
+                color: widget.color,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10))),
+          ),
+//          Container(
+////          margin: EdgeInsets.only(left: 10, right: 10),
+//            alignment: Alignment.center,
+//            width: 50,
+//            height: 50,
+//            child: ClipRRect(
+//              borderRadius: BorderRadius.circular(45.0),
+//              child: avatarUrl != null
+//                  ? CachedNetworkImage(
+//                imageUrl: avatarUrl,
+//                imageBuilder: (context, imageProvider) => Container(
+//                  width: MediaQuery.of(context).size.width * 0.33,
+//                  height: MediaQuery.of(context).size.width * 0.33,
+//                  decoration: BoxDecoration(
+//                    image: DecorationImage(
+//                      image: imageProvider,
+//                      fit: BoxFit.cover,
+//                    ),
+//                  ),
+//                ),
+//                placeholder: (context, url) =>
+//                    CircularProgressIndicator(),
+//                errorWidget: (context, url, error) => Image.asset(
+//                  "assets/images/default.jpg",
+//                  fit: BoxFit.cover,
+//                  width: MediaQuery.of(context).size.width * 0.33,
+//                  height: MediaQuery.of(context).size.width * 0.33,
+//                ),
+//              )
+//                  : Image.asset(
+//                "assets/images/default.jpg",
+//                fit: BoxFit.cover,
+//                width: MediaQuery.of(context).size.width * 0.33,
+//                height: MediaQuery.of(context).size.width * 0.33,
+//              ),
+//            ),
+//          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  if (widget.notification.createDate != null)
+                    Text(
+                      widget.notification.createDate.toString().substring(0,
+                          widget.notification.createDate.toString().length - 3),
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+//                Container(
+//                  color: Colors.grey,
+//                  height: 0.5,
+//                  width: MediaQuery.of(context).size.width * 0.7,
+//                ),
+                  Container(
+                    //width: MediaQuery.of(context).size.width * 0.7,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(top: 5, bottom: 5),
+                            height: 60,
+                            child: (widget.notification.contents != null)
+                                ? Text(
+                                    widget.notification.contents,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  )
+                                : Container(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
           ),
-          Expanded(
-            flex: 3,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.only(top: 10, left: 10),
-                    child: Text(
-                        widget.notification.type +
-                            ' • ' +
-                            widget.notification.time,
-                        style: TextStyle(color: Colors.grey, fontSize: 14))),
-                Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                    child: Text(widget.notification.description,
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 16)))
-              ],
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            alignment: Alignment.center,
+            child: Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey,
             ),
-          ),
-//          Expanded(
-//            flex: 1,
-//            child: Container(
-//                padding: EdgeInsets.only(right: 5),
-//                alignment: Alignment.centerRight,
-//                child: _buildMenuIcon()
-////              IconButton(icon: Icon(Icons.more_vert), onPressed: (){
-////                onEdit();
-////              }),
-//                ),
-//          )
+          )
         ],
       ),
     );
+
+//    return Padding(
+//      padding: EdgeInsets.symmetric(vertical: 8),
+//      child: Row(
+//        children: <Widget>[
+//          Container(
+//            margin: EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
+//            alignment: Alignment.center,
+//            width: 30,
+//            height: 30,
+//            child: ClipRRect(
+//              borderRadius: BorderRadius.circular(8.0),
+//              child: Image.network(
+//                widget.notification.image,
+//                fit: BoxFit.cover,
+//                width: MediaQuery.of(context).size.width * 0.33,
+//                height: MediaQuery.of(context).size.width * 0.33,
+//              ),
+//            ),
+//          ),
+//          Expanded(
+//            flex: 3,
+//            child: Column(
+//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//              crossAxisAlignment: CrossAxisAlignment.start,
+//              children: <Widget>[
+//                Padding(
+//                    padding: EdgeInsets.only(top: 10, left: 10),
+//                    child: Text(
+//                        widget.notification.type +
+//                            ' • ' +
+//                            widget.notification.time,
+//                        style: TextStyle(color: Colors.grey, fontSize: 14))),
+//                Padding(
+//                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+//                    child: Text(widget.notification.description,
+//                        style: TextStyle(
+//                            fontWeight: FontWeight.normal, fontSize: 16)))
+//              ],
+//            ),
+//          ),
+////          Expanded(
+////            flex: 1,
+////            child: Container(
+////                padding: EdgeInsets.only(right: 5),
+////                alignment: Alignment.centerRight,
+////                child: _buildMenuIcon()
+//////              IconButton(icon: Icon(Icons.more_vert), onPressed: (){
+//////                onEdit();
+//////              }),
+////                ),
+////          )
+//        ],
+//      ),
+//    );
   }
 }

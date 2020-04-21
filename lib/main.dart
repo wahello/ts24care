@@ -9,7 +9,8 @@ import 'package:ts24care/src/app/widgets/restart_widget.dart';
 Future main() async {
   //from fluter version v.1.12.3 higher
   WidgetsFlutterBinding.ensureInitialized();
-  OneSignalService.setup(oneSignal_appId);
+  await OneSignalService.setup(oneSignal_appId,
+      successCallBack: handlerPushNotification.init);
   await translation.init("vi");
   await Routes.navigateDefaultPage();
   runApp(

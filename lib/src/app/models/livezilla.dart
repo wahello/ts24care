@@ -25,7 +25,7 @@ class LiveZilla {
       this.ptc,
       this.ptq,
       this.ptp,
-      this.ptl,
+      this.ptl = "vi",
       this.pto = true});
 
   LiveZilla.fromJson(Map<String, dynamic> json) {

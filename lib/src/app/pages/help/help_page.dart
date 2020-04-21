@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/item_application_model.dart';
@@ -13,7 +14,7 @@ import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'faqDetail/faqArticleDetail/faq_article_detail_web_view_page.dart';
 
 class HelpPage extends StatefulWidget {
@@ -36,11 +37,15 @@ class _HelpPageState extends State<HelpPage>
 
   Widget _categoryDetail(
       {int id,
-      String createDate,
-      String expireDate,
-      String nameService,
-      ProductWarranty fullObject}) {
-    var dateFormat = expireDate.split('-');
+        String createDate,
+        String expireDate,
+        String nameService,
+        ProductWarranty fullObject}) {
+    var dateFormat;
+    if (expireDate != '') {
+      dateFormat = DateFormat('dd-MM-yyyy')
+          .format(DateTime.parse(expireDate.toString()));
+    }
     return Material(
       color: Colors.white,
       child: InkWell(
@@ -60,7 +65,7 @@ class _HelpPageState extends State<HelpPage>
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                  '${translation.text('HELP_PAGE.EXPIRE_DATE')}: ${dateFormat[2] + '-' + dateFormat[1] + '-' + dateFormat[0]}',
+                  '${translation.text('HELP_PAGE.EXPIRE_DATE')}: ${expireDate == '' ? 'Không xác định' : dateFormat}',
                   style: TextStyle(color: Color(0xff999999))),
               SizedBox(
                 height: 15,
@@ -115,68 +120,68 @@ class _HelpPageState extends State<HelpPage>
           margin: EdgeInsets.symmetric(horizontal: 5),
           child: viewModel.listArticle.length == 0
               ? Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white70),
-                  child: Row(
-                    children: <Widget>[
-                      Text(translation.text("HELP_PAGE.GROUP_SUBTITLE_1"))
-                    ],
-                  ),
-                )
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white70),
+            child: Row(
+              children: <Widget>[
+                Text(translation.text("HELP_PAGE.GROUP_SUBTITLE_1"))
+              ],
+            ),
+          )
               : Wrap(
-                  spacing: 10,
-                  alignment: WrapAlignment.center,
-                  children: <Widget>[
-                    ...viewModel.listArticle.map((item) {
-                      var dateStringFilter =
-                          item.createDate.replaceAll('/', '-');
-                      var year = dateStringFilter
-                          .split('-')[2]
-                          .toString()
-                          .split(' ')[0];
-                      var month = dateStringFilter.split('-')[1];
-                      var date = dateStringFilter.split('-')[0];
-                      var time = dateStringFilter
-                          .split('-')[2]
-                          .toString()
-                          .split(' ')[1]
-                          .substring(
-                              0,
-                              dateStringFilter
-                                      .split('-')[2]
-                                      .toString()
-                                      .split(' ')[1]
-                                      .length -
-                                  3);
-                      return Material(
-                        color: Colors.white10,
-                        child: InkWell(
-                            borderRadius: BorderRadius.circular(20),
-                            hoverColor: ThemePrimary.backgroundColor,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, FaqArticleDetailPage.routeName,
-                                  arguments: [item.id, item.name]);
-                            },
-                            child: Chip(
-                              backgroundColor: ThemePrimary.backgroundColor,
-                              label: Container(
-                                width: (MediaQuery.of(context).size.width / 4),
-                                child: Text(
-                                  item.name.toString(),
-                                  style: TextStyle(
-                                      color: Colors.black87, fontSize: 13),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            )),
-                      );
-                    })
-                  ],
-                ),
+            spacing: 10,
+            alignment: WrapAlignment.center,
+            children: <Widget>[
+              ...viewModel.listArticle.map((item) {
+                var dateStringFilter =
+                item.createDate.replaceAll('/', '-');
+                var year = dateStringFilter
+                    .split('-')[2]
+                    .toString()
+                    .split(' ')[0];
+                var month = dateStringFilter.split('-')[1];
+                var date = dateStringFilter.split('-')[0];
+                var time = dateStringFilter
+                    .split('-')[2]
+                    .toString()
+                    .split(' ')[1]
+                    .substring(
+                    0,
+                    dateStringFilter
+                        .split('-')[2]
+                        .toString()
+                        .split(' ')[1]
+                        .length -
+                        3);
+                return Material(
+                  color: Colors.white10,
+                  child: InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      hoverColor: ThemePrimary.backgroundColor,
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, FaqArticleDetailPage.routeName,
+                            arguments: [item.id, item.name]);
+                      },
+                      child: Chip(
+                        backgroundColor: ThemePrimary.backgroundColor,
+                        label: Container(
+                          width: (MediaQuery.of(context).size.width / 4),
+                          child: Text(
+                            item.name.toString(),
+                            style: TextStyle(
+                                color: Colors.black87, fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      )),
+                );
+              })
+            ],
+          ),
         )
       ],
     );
@@ -238,21 +243,27 @@ class _HelpPageState extends State<HelpPage>
               title: translation.text('HELP_PAGE.SERVICE_LIST'),
               child: viewModel.listProductWarranty.length > 0
                   ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        ...viewModel.listProductWarranty.map((item) {
-                          return _categoryDetail(
-                              fullObject: item,
-                              id: item.id,
-                              nameService: item.productId[1],
-                              createDate: item.warrantyCreateDate,
-                              expireDate: item.warrantyEndDate);
-                        }).toList()
-                      ],
-                    )
-                  : Text(translation.text("HELP_PAGE.EMPTY_CATEGORY_SERVICE"))),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ...viewModel.listProductWarranty.map((item) {
+                    return _categoryDetail(
+                        fullObject: item,
+                        id: item.id,
+                        nameService: item.productId[1],
+                        createDate: item.warrantyCreateDate,
+                        expireDate: item.warrantyEndDate is bool
+                            ? ''
+                            : item.warrantyEndDate);
+                  }).toList()
+                ],
+              )
+                  : viewModel.loading
+                  ? LoadingIndicator.spinner(
+                  context: context, loading: viewModel.loading)
+                  : Text(translation
+                  .text("HELP_PAGE.EMPTY_CATEGORY_SERVICE"))),
           Container(
-            padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+//            padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
             height: 100,
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
@@ -260,7 +271,7 @@ class _HelpPageState extends State<HelpPage>
             child: Row(
               children: <Widget>[
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: TS24Button(
                     onTap: () {
                       // add call launcher
@@ -273,11 +284,26 @@ class _HelpPageState extends State<HelpPage>
                   ),
                 ),
                 Expanded(
-                  flex: 2,
-                  child: Container(),
+                  flex: 1,
+                  child: TS24Button(
+                    onTap: () {
+                      //ở đây hả đún
+                      viewModel.onCreateTicket();
+                      //ở đây tạo mới ticket thì phải vô page tạo tick ket chứ
+                    },
+                    child: ItemHelpWidget(
+                      icons: FontAwesomeIcons.ticketAlt,
+                      text: translation.text("HELP_PAGE.ADD_TICKET"),
+                    ),
+                  ),
                 ),
+
+//                Expanded(
+//                  flex: 2,
+//                  child: Container(),
+//                ),
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: TS24Button(
                     onTap: () {
                       viewModel.onTapChat();
@@ -308,6 +334,7 @@ class _HelpPageState extends State<HelpPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    viewModel.tabsPageViewModel = ViewModelProvider.of(context);
     viewModel.context = context;
     return ViewModelProvider(
       viewmodel: viewModel,
@@ -331,11 +358,12 @@ class _HelpPageState extends State<HelpPage>
                   children: <Widget>[
                     Container(
                       decoration:
-                          BoxDecoration(image: decorationImageBackground()),
+                      BoxDecoration(image: decorationImageBackground()),
                     ),
                     CustomScrollView(
                       slivers: <Widget>[
-                        SliverAppBar(
+                        viewModel.listApplication.length > 0
+                            ? SliverAppBar(
                           leading: Container(),
                           expandedHeight: 220.0,
                           floating: false,
@@ -345,36 +373,58 @@ class _HelpPageState extends State<HelpPage>
                           backgroundColor: Colors.transparent,
                           flexibleSpace: FlexibleSpaceBar(
                               centerTitle: true,
-                              background:
-                              viewModel.isLoading? LoadingIndicator.spinner(context:context,loading: true) :
-                              viewModel.listApplication.length > 0
+                              background: viewModel.isLoading
+                                  ? LoadingIndicator.spinner(
+                                  context: context, loading: true)
+                                  : viewModel.listApplication.length > 0
                                   ? TS24SlideWidget(
-                                      listCurrentObject:
-                                          viewModel.listApplication,
-                                      listFullObject:
-                                          ItemApplicationModel.listApplication,
-                                      onChange: (index) {
-                                        var idCategoryProduct = viewModel
-                                            .listApplication[index]
-                                            .idCategoryServices;
-                                        viewModel.onCategoryIndexChanged(
-                                            idCategoryProduct);
-                                        var categoryArticleId = viewModel
-                                            .listApplication[index]
-                                            .idCategoryArticle;
-                                        viewModel.getListFAQByCategoryId(
-                                            categoryArticleId);
-                                      },
-                                    )
+                                listCurrentObject:
+                                viewModel.listApplication,
+                                listFullObject:
+                                ItemApplicationModel
+                                    .listApplication,
+                                onChange: (index) {
+                                  var idCategoryProduct =
+                                      viewModel
+                                          .listApplication[
+                                      index]
+                                          .idCategoryServices;
+                                  viewModel
+                                      .onCategoryIndexChanged(
+                                      idCategoryProduct);
+                                  var categoryArticleId =
+                                      viewModel
+                                          .listApplication[
+                                      index]
+                                          .idCategoryArticle;
+                                  viewModel
+                                      .getListFAQByCategoryId(
+                                      categoryArticleId);
+                                },
+                              )
                                   : (viewModel.isLoading)
-                                      ? LoadingIndicator.spinner()
-                                      : Center(
-                                          child: Text(translation.text(
-                                              "HELP_PAGE.EMPTY_CATEGORY_ACTIVE")))
-                              ),
+                                  ? LoadingIndicator.spinner()
+                                  : Offstage()
+
+//                              Center(
+//                                          child: Text(translation.text(
+//                                              "HELP_PAGE.EMPTY_CATEGORY_ACTIVE")))
+                          ),
+                        )
+                            : SliverList(
+                          delegate: SliverChildListDelegate([]),
                         ),
-                        new SliverList(
-                            delegate: new SliverChildListDelegate([_body()])),
+//                        SliverAppBar(
+//                                leading: Offstage(),
+//                                expandedHeight: 0,
+////                                floating: false,
+//                                pinned: true,
+////                                snap: false,
+//                                elevation: 0,
+//                                backgroundColor: Colors.transparent,
+//                              ),
+                        SliverList(
+                            delegate: SliverChildListDelegate([_body()])),
                       ],
                     )
                   ],

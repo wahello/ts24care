@@ -49,21 +49,24 @@ class _TicketsPageState extends State<TicketsPage>
                     child: Column(
 //        itemExtent: 110,
                       children: <Widget>[
-                        SizedBox(height: 5,),
+                        SizedBox(
+                          height: 5,
+                        ),
                         ...listItemTicket.map((itemTickets) {
                           List<dynamic> _listCategory = itemTickets.categoryId;
                           return TS24Button(
                             onTap: () {
                               viewModel.onTapTicket(itemTickets);
                             },
-                            margin: EdgeInsets.only(top: 5, bottom: 5,left: 10,right: 10),
+                            margin: EdgeInsets.only(
+                                top: 5, bottom: 5, left: 10, right: 10),
 //                        padding: EdgeInsets.only(top: 10, bottom: 10),
                             width: MediaQuery.of(context).size.width,
                             height: 110,
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
+                                    BorderRadius.all(Radius.circular(10))),
 //                height: 90,
                             child: ItemTicketsWidget(
                               title: itemTickets.subject,
@@ -74,16 +77,19 @@ class _TicketsPageState extends State<TicketsPage>
 //                content: itemTickets.content,
                               name: itemTickets.name,
                               time:
-                                  formatTimeV2(itemTickets.dateLastStageUpdate),
+                                  formatTimeV2(itemTickets.createDate),
                               color: itemTickets.categoryId is List
-                                  ? itemTickets.categoryId.length > 2 &&
-                                          !(itemTickets.categoryId[2] is bool)
+                                  ? (itemTickets.categoryId.length > 2 &&
+                                          !(itemTickets.categoryId[2] is bool))
                                       ? parseStringToColor(
                                           itemTickets.categoryId[2].toString())
-                                      : itemTickets.categoryId.length > 0
-                                          ? getColorCategory(
-                                              itemTickets.categoryId[1])
-                                          : Colors.grey
+                                      : (itemTickets.categoryId.length > 2 &&
+                                              itemTickets.categoryId[2] is bool)
+                                          ? Colors.grey
+                                          : itemTickets.categoryId.length > 0
+                                              ? getColorCategory(
+                                                  itemTickets.categoryId[1])
+                                              : Colors.grey
                                   : Colors.grey,
                             ),
                           );
@@ -139,7 +145,7 @@ class _TicketsPageState extends State<TicketsPage>
         height: 110,
         decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20))),
+            borderRadius: BorderRadius.all(Radius.circular(10))),
         child: ShimmerItemTicketsWidget(),
       );
     }
@@ -160,12 +166,14 @@ class _TicketsPageState extends State<TicketsPage>
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 10,right: 10),
+                      margin: EdgeInsets.only(left: 10, right: 10),
                       constraints: BoxConstraints(
                           minHeight: MediaQuery.of(context).size.height * 0.8),
                       child: ListView(
                         children: [
-                          SizedBox(height: 5,),
+                          SizedBox(
+                            height: 5,
+                          ),
                           _itemShimmer(),
                           _itemShimmer(),
                           _itemShimmer(),

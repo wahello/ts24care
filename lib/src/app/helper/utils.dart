@@ -78,8 +78,8 @@ String formatTime(String time) {
 String formatTimeV2(String time) {
   String _time = "";
   DateTime dateTime = DateTime.parse(
-      DateFormat("dd/MM/yyyy hh:mm:ss").parse(time).toIso8601String());
-  _time = DateFormat("dd/MM/yyyy  hh:mm").format(dateTime);
+      DateFormat("dd/MM/yyyy hh:mm").parse(time).toString());
+  _time = DateFormat("dd/MM/yyy HH:mm").format(dateTime);
   return _time;
 }
 

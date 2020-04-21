@@ -10,7 +10,7 @@ import 'package:ts24care/src/app/helper/index.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
 import 'package:ts24care/src/app/models/customer.dart';
 import 'package:ts24care/src/app/models/res-partner.dart';
-
+import 'package:google_map_location_picker/google_map_location_picker.dart';
 import '../../../app_localizations.dart';
 
 class UserDetailPageViewModel extends ViewModelBase {
@@ -21,6 +21,12 @@ class UserDetailPageViewModel extends ViewModelBase {
   TextEditingController companyEditingController = new TextEditingController();
   TextEditingController mailEditingController = new TextEditingController();
   TextEditingController tinEditingController = new TextEditingController();
+
+  bool noEmail = true,
+      noName = true,
+      noPhone = true,
+      noAddress = true,
+      noCompany = true;
 
   Uint8List imagePicker;
   File imageFile;
@@ -35,6 +41,8 @@ class UserDetailPageViewModel extends ViewModelBase {
   final FocusNode phoneFocus = FocusNode();
   final FocusNode mailFocus = FocusNode();
   final FocusNode addressFocus = FocusNode();
+
+  bool showTin = true;
 
   fieldFocusChange(
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
@@ -59,22 +67,24 @@ class UserDetailPageViewModel extends ViewModelBase {
           (customer.phone is bool || customer.phone == null)
               ? ''
               : customer.phone.toString();
-      addressEditingController.text =
-          (customer.contactAddress is bool || customer.contactAddress == null ||
+      addressEditingController.text = (customer.contactAddress is bool ||
+              customer.contactAddress == null ||
               customer.contactAddress.toString().length == 0)
-              ? ' '
-              : customer.contactAddress.toString();
+          ? ''
+          : customer.contactAddress.toString();
       companyEditingController.text = customer.companyName;
-      mailEditingController.text =
-      (customer.email is bool || customer.email == null)
+      mailEditingController.text = (customer.email is bool ||
+              customer.email == null ||
+              customer.email.toString().length == 0)
           ? ''
           : customer.email.toString();
-      tinEditingController.text =
-      (customer.tin is bool || customer.tin == null ||
-          customer.tin.toString().length == 0)
-          ? ' '
-          : customer.tin.toString();
-      print('a ${customer.contactAddress.toString().length}');
+      if (customer.tin is bool ||
+          customer.tin == null ||
+          customer.tin.toString().length == 0) {
+        showTin = false;
+      } else {
+        tinEditingController.text = customer.tin.toString();
+      }
     }
   }
 
@@ -141,11 +151,13 @@ class UserDetailPageViewModel extends ViewModelBase {
       customer.contactAddress = addressEditingController.text;
     if (customer.phone != phoneEditingController.text)
       customer.phone = phoneEditingController.text;
-//    if (customer.email != mailEditingController.text)
-//      customer.email = mailEditingController.text;
+    if (customer.email != mailEditingController.text)
+      customer.email = mailEditingController.text;
 //    if (customer.tin != tinEditingController.text)
 //      customer.tin = tinEditingController.text;
-    if (imagePicker != null) customer.photo = imagePicker;
+    if (imagePicker != null) {
+      customer.photo = imagePicker;
+    }
   }
 
   Future<bool> saveCustomer(Customer customer) async {
@@ -177,6 +189,7 @@ class UserDetailPageViewModel extends ViewModelBase {
       customer.photo =
           '$domainApi/web/image?model=res.partner&field=image&id=${customer.id}&${api.sessionId}';
       //await api.getCustomerInfoAfterLogin();
+      customer.saveLocal();
       //api.getTicketOfListChildren();
       return true;
     }
@@ -235,5 +248,17 @@ class UserDetailPageViewModel extends ViewModelBase {
     } catch (e) {
       pickImageError = e;
     }
+  }
+
+  onTapPickMaps() async {
+    LocationResult result = await showLocationPicker(
+      context,
+      ggKey,
+      myLocationButtonEnabled: true,
+      layersButtonEnabled: true,
+    );
+    print("result = $result");
+    addressEditingController.text = result.address;
+    this.updateState();
   }
 }

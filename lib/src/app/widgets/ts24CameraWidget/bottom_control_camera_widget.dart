@@ -7,6 +7,7 @@ import 'package:ts24care/src/app/widgets/ts24CameraWidget/ts24_camera_widget_vie
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 
 typedef DirectoryCallback = void Function(String derectory);
+
 class BottomControlCameraWidget extends StatefulWidget {
 //  final TS24CameraWidgetViewModel viewModel;
   final Function() onShoot;
@@ -20,6 +21,7 @@ class BottomControlCameraWidget extends StatefulWidget {
 
 class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
   TS24CameraWidgetViewModel viewModel;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -51,10 +53,9 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
             if (viewModel.isCamera) {
               viewModel.toogleFlatRunCamera();
             }
-            if (viewModel.isTakePicture &&
-                viewModel.isCamera == false) {
+            if (viewModel.isTakePicture && viewModel.isCamera == false) {
 //              viewModel.onTakePictureButtonPressed(mounted);
-                widget.onShoot();
+              widget.onShoot();
             }
           },
           alignment: Alignment.center,
@@ -117,15 +118,31 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
         child: Container(
           height: 55,
           width: 55,
-          decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.white,
-              image: DecorationImage(
-                  image: viewModel.imagePath == null
-                      ? AssetImage("assets/images/default.jpg")
-                      : AssetImage(viewModel.imagePath),
-                  fit: BoxFit.cover),
-              borderRadius: BorderRadius.circular(5)),
+
+          decoration: viewModel.imagePath != null
+              ? BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Colors.white,
+                  image: DecorationImage(
+                      image: AssetImage(viewModel.imagePath),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(5))
+              : BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Colors.black,
+//              image: DecorationImage(
+//                  image: AssetImage(viewModel.imagePath),
+//                  fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(5)),
+//          decoration: BoxDecoration(
+//              shape: BoxShape.rectangle,
+//              color: Colors.white,
+//              image: DecorationImage(
+//                  image: viewModel.imagePath == null
+//                      ? AssetImage("assets/images/default.jpg")
+//                      : AssetImage(viewModel.imagePath),
+//                  fit: BoxFit.cover),
+//              borderRadius: BorderRadius.circular(5)),
         ),
       );
     }
@@ -202,7 +219,7 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    _reviewBox(),
+//                    _reviewBox(),
                   ],
                 ),
               ),

@@ -5,7 +5,7 @@ import 'package:ts24care/src/app/pages/help/faqDetail/faq_detail_page.dart';
 import 'package:ts24care/src/app/pages/help/faqDetail/faqArticleDetail/faq_article_detail_web_view_page.dart';
 import 'package:ts24care/src/app/pages/help/helpChat/helpChat_page.dart';
 import 'package:ts24care/src/app/pages/home/blogPost/home_blog_post_page.dart';
-import 'package:ts24care/src/app/pages/help/help_page.dart';
+import 'package:ts24care/src/app/pages/help/help_page_v2.dart';
 import 'package:ts24care/src/app/pages/help/productWarrantyDetail/product_warranty_detail_page.dart';
 import 'package:ts24care/src/app/pages/home/dashboard/dashboard_page.dart';
 import 'package:ts24care/src/app/pages/home/newsAndTips/home_news_and_tips_page.dart';
@@ -19,6 +19,7 @@ import 'package:ts24care/src/app/pages/setting/web_view_page.dart';
 import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
 import 'package:ts24care/src/app/pages/ticket/detail/ticket_detail_page.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
+import 'package:ts24care/src/app/pages/ticket/ticket_page.dart';
 import 'package:ts24care/src/app/pages/tutorial/tutorial_page.dart';
 import 'pages/login/register/register_page.dart';
 import 'pages/setting/settingsFeedback/settings_feedback_page.dart';
@@ -33,7 +34,7 @@ class Routes {
     bool result = await customer.checkCustomerExist();
     if (result) {
       Routes.defaultPage =
-          TabsPage(TabsArgument(routeChildName: HelpPage.routeName));
+          TabsPage(TabsArgument(routeChildName: Dashboard.routeName));
     } else
       Routes.defaultPage = TutorialPage();
   }
@@ -55,7 +56,8 @@ class Routes {
     HelpChatPage.routeName: (context) => HelpChatPage(),
     ForgetPasswordPage.routeName: (context) => ForgetPasswordPage(),
     LoginPage.routeName: (context) => LoginPage(),
-    RegisterPage.routeName: (context) => RegisterPage(typeLogin: ModalRoute.of(context).settings.arguments),
+    RegisterPage.routeName: (context) =>
+        RegisterPage(typeLogin: ModalRoute.of(context).settings.arguments),
     CreateNewPasswordPage.routeName: (context) => CreateNewPasswordPage(),
 
     // 10/03/2020

@@ -30,6 +30,7 @@ class TicketDetailViewModel extends ViewModelBase {
   HelpDeskCategory helpDeskCategory;
   TextEditingController descriptionEditingController = TextEditingController();
   List<ItemAddAttachmentModel> listAddAttachmentModel = List();
+  bool ticketChanged = false;
   TicketDetailViewModel() {
     loading = true;
     statusState = MenuStatusState.NEW;
@@ -70,13 +71,12 @@ class TicketDetailViewModel extends ViewModelBase {
 
   onLoad(int id) async {
     loading = true;
+    this.updateState();
     var ticket = await api.getTicketById(id);
     helpdeskTicket = ticket;
     if (helpdeskTicket.categoryId is List) {
       helpDeskCategory = HelpDeskCategory(
-        id: helpdeskTicket.categoryId[0],
-        name:helpdeskTicket.categoryId[1]
-      );
+          id: helpdeskTicket.categoryId[0], name: helpdeskTicket.categoryId[1]);
     }
     customPopupMenu = CustomPopupMenu.getTicket(helpdeskTicket.stageId[0]);
 //    isLoadingListAttachContent = true;
@@ -84,7 +84,6 @@ class TicketDetailViewModel extends ViewModelBase {
     listAttachContent = helpdeskTicket.attachmentIds
         .map((item) => IrAttachment.fromJson(item))
         .toList();
-    this.updateState();
 //    if (_listAttachment.length > 0) {
 //      listAttachContent.clear();
 //      int count = 0;
@@ -99,7 +98,6 @@ class TicketDetailViewModel extends ViewModelBase {
 //              });
 //      }
 //    }
-
     listMailMessage = helpdeskTicket.messageIds
         .map((item) => MailMessage.fromJson(item))
         .toList();
@@ -281,17 +279,24 @@ class TicketDetailViewModel extends ViewModelBase {
     var result = await api.insertMailMessageForTicket(
         mailMessage: _mailMessage, listAttachmentId: _listAttachment);
     if (result != null) {
+      HelpdeskTicket updateHeldesk = HelpdeskTicket();
+      updateHeldesk.id = this.helpdeskTicket.id;
+      updateHeldesk.stageId = 1;
+      bool updateTicketResult = await api.updateTickets(updateHeldesk);
+      if (updateTicketResult) {
 //      _mailMessage.attachmentIds =
 //          listAddAttachmentModel.map((model) => model.id).toList();
 //      listMailMessage.add(_mailMessage);
-      descriptionEditingController.text = '';
-      FocusScope.of(context).unfocus();
-      listAddAttachmentModel.clear();
-      onLoad(helpdeskTicket.id);
+        descriptionEditingController.text = '';
+        FocusScope.of(context).unfocus();
+        listAddAttachmentModel.clear();
+        onLoad(helpdeskTicket.id);
+        ticketChanged = true;
 //      this.updateState();
 //      onLoad(helpdeskTicket.id);
 //      LoadingDialog.showMsgDialog(context, "Gửi message Thành Công.");
-      print("Thanh cong");
+        print("Thanh cong");
+      }
     } else {
       LoadingDialog.showMsgDialog(context, "Thất bại.");
       print("That bai");

@@ -90,7 +90,8 @@
     "EMAIL_HINT": "Enter your email",
     "SUBMIT_BUTTON": "Submit",
     "NO_ACCOUNT": "Don't have an account",
-    "CREATE_ACCOUNT": "Sign up"
+    "CREATE_ACCOUNT": "Sign up",
+    "RESET_SUCCESS" : "Sent a new password to your email address"
   },
   "CREATE_NEW_PASSWORD_PAGE": {
     "TITLE": "Create New Password",
@@ -104,7 +105,7 @@
     "CREATE_ACCOUNT": "Sign up"
   },
   "HELP_PAGE": {
-    "TITLE": "Help",
+    "TITLE": "Services used",
     "GROUP_TITLE_1": "FAQ",
     "GROUP_SUBTITLE_1": "Find questions regarding your service",
     "GROUP_TITLE_2": "Feedback",
@@ -115,6 +116,7 @@
     "VIEW_MORE": "View more",
     "SERVICE_LIST": "Services register",
     "ALL_BUTTON": "All",
+    "ADD_TICKET": "Create ticket",
     "ADD_BUTTON": "Add",
     "ID_IDENTIFY": "Service Name",
     "CREATE_DATE": "Create date",
@@ -134,12 +136,21 @@
   "WANRRANTY_DETAIL_PAGE": {
     "TITLE": "Services detail",
     "DATE_REMAINING": "Date remaining",
-    "SERIAL": "Serial number",
     "PHONE": "Phone",
     "LICENSE": "License",
     "NO_DATA": "No information",
     "DATE_EXPIRED": "Expired",
-    "DATE_STRING": "day"
+    "DATE_STRING": "day",
+    "CUSTOMER": "Customer",
+    "EMAIL": "Email",
+    "START_DAY": "Date create",
+    "END_DAY": "Date end",
+    "ACTIVE_COMPANY":"Active Company",
+    "CUSTOMER_INFO": "Customer information",
+    "SERVICE_INFO": "Customer information",
+    "NAME_SERVICE": "Name service"
+
+
 
   },
   "DASHBOARD_PAGE": {
@@ -237,6 +248,8 @@
     "DESC_STATUS": "Confirm status changes?",
     "DESC_LOG_OUT": "Confirm log out?",
     "DESC_DELETE_CHILD": "Are you sure to delete this child profile?",
+    "DESC_TICKET_NEW": "You have a new support ticket",
+    "OPEN": "Open",
     "YES": "Yes",
     "NO": "No",
     "OK": "Ok",
@@ -282,7 +295,8 @@
     "CROPPER": "Cropper",
     "DOWNLOAD_SUCCESSFUL": "Download successful",
     "DOWNLOAD_FAILED": "Download failed",
-    "DOWNLOAD": "Download"
+    "DOWNLOAD": "Download",
+    "NO_INFORMATION": "Chưa có thông tin"
   },
   "VERSION": "Version"
 }

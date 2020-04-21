@@ -1,3 +1,5 @@
+import 'package:validators/sanitizers.dart';
+
 class HelpdeskTicket {
   dynamic sLastUpdate;
   dynamic active;
@@ -94,6 +96,10 @@ class HelpdeskTicket {
       this.writeDate,
       this.writeUid});
 
+  HelpdeskTicket.fromJsonPushNotification(Map<String, dynamic> json) {
+    id = toInt(json['res_id'].toString());
+  }
+
   HelpdeskTicket.fromJson(Map<String, dynamic> json) {
     sLastUpdate = json['__last_update'];
     active = json['active'];
@@ -143,7 +149,7 @@ class HelpdeskTicket {
     writeUid = json['write_uid'];
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool update = false}) {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.sLastUpdate != null) data['__last_update'] = this.sLastUpdate;
     if (this.active != null) data['active'] = this.active;
@@ -164,7 +170,7 @@ class HelpdeskTicket {
     if (this.description != null) data['description'] = this.description;
     if (this.displayName != null) data['display_name'] = this.displayName;
     if (this.email != null) data['email'] = this.email;
-    if (this.id != null) data['id'] = this.id;
+    if (!update) if (this.id != null) data['id'] = this.id;
     if (this.kanbanState != null) data['kanban_state'] = this.kanbanState;
     if (this.messageAttachmentCount != null)
       data['message_attachment_count'] = this.messageAttachmentCount;

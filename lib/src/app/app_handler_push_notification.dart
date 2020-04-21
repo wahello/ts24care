@@ -1,17 +1,17 @@
-import 'dart:async';
-import 'package:ts24care/src/app/core/app_setting.dart';
-import 'package:ts24care/src/app/models/message.dart';
-import 'package:flutter/material.dart';
+import 'package:ts24care/src/app/app_localizations.dart';
+import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:get/get.dart';
+import 'package:ts24care/src/app/pages/ticket/detail/ticket_detail_page.dart';
 import 'package:ts24care/src/app/services/onesingal-service.dart';
+import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 class HandlerPushNotification {
-  StreamController streamController = StreamController.broadcast();
-  Stream get stream => streamController.stream;
+  // StreamController streamController = StreamController.broadcast();
+  // Stream get stream => streamController.stream;
 
   void dispose() {
-    streamController.close();
-    streamController = StreamController();
+    // streamController.close();
+    // streamController = StreamController();
   }
 
   init() {
@@ -34,8 +34,34 @@ class HandlerPushNotification {
     if (additionalData != null)
       additionalData.forEach((key, value) {
         switch (key) {
-          //Chat messages
-          case "senderId":
+          //lấy theo model odoo
+          case "model":
+            switch (value) {
+              case "helpdesk.ticket":
+                HelpdeskTicket helpdeskTicket =
+                    HelpdeskTicket.fromJsonPushNotification(additionalData);
+                if (type == 0) {
+                  print("push opened");
+                  Future.delayed(Duration(milliseconds: 500), () {
+                    return Get.toNamed(TicketDetailPage.routeName,
+                        arguments: helpdeskTicket.id);
+                  });
+                } else {
+                  //In App - show dialog
+                  print("push received");
+                  Get.dialog(LoadingDialog.dialogMessageWithButtonWidget(
+                      content: body,
+                      btnYes: translation.text("POPUP_CONFIRM.OPEN"),
+                      btnNo: translation.text("POPUP_CONFIRM.CLOSE"),
+                      onTapYes: () {
+                        Get.back();
+                        Get.toNamed(TicketDetailPage.routeName,
+                            arguments: helpdeskTicket.id);
+                      }));
+                }
+                break;
+              default:
+            }
             break;
           default:
         }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/customer.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
-import 'package:ts24care/src/app/pages/help/help_page.dart';
+import 'package:ts24care/src/app/pages/help/help_page_v2.dart';
 import 'package:ts24care/src/app/pages/login/login_page.dart';
 import 'package:ts24care/src/app/pages/setting/userDetail/setting_user_detail_page.dart';
+import 'package:ts24care/src/app/pages/tabs/tabs_page_viewmodel.dart';
 import 'package:ts24care/src/app/widgets/popupConfirm.dart';
 import 'package:ts24care/src/app/widgets/restart_widget.dart';
 import 'web_view_page.dart';
@@ -17,6 +19,7 @@ class SettingPageViewModel extends ViewModelBase {
   String urlLicenses = 'https://web.ts24.com.vn/en_US/dksd';
   String urlPolicy = 'https://web.ts24.com.vn/en_US/csrt';
   CustomPopupMenu selectedLanguage;
+  TabsPageViewModel tabsPageViewModel = TabsPageViewModel();
   List<CustomPopupMenu> listLanguages;
 
   SettingPageViewModel() {
@@ -78,6 +81,7 @@ class SettingPageViewModel extends ViewModelBase {
           Navigator.pop(context);
           customer.clearLocal();
           Navigator.pushReplacementNamed(context, LoginPage.routeName);
+          //  api.getListNotification(offset: 0, limit: 10);
         });
   }
 
@@ -97,6 +101,12 @@ class SettingPageViewModel extends ViewModelBase {
   }
 
   onTapListService() {
-    Navigator.pushNamed(context, HelpPage.routeName);
+    Navigator.pushNamed(context, HelpPage.routeName).then((result) {
+      try {
+        if (result) {
+          tabsPageViewModel.onTap(1);
+        }
+      } catch (e) {}
+    });
   }
 }

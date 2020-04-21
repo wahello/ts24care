@@ -27,7 +27,7 @@ class ShimmerItemTicketsWidget extends StatelessWidget {
             widget: Container(
               decoration: BoxDecoration(
                 color: _color,
-                borderRadius: BorderRadius.circular(45.0),
+                borderRadius: BorderRadius.circular(45),
               ),
               width: MediaQuery.of(context).size.width * 0.33,
               height: MediaQuery.of(context).size.width * 0.33,

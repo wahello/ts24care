@@ -24,8 +24,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    viewModel.emailSetter = 'demo@ts24corp.com';
-    viewModel.passSetter = '123456';
+//    viewModel.emailSetter = 'demo@ts24corp.com';
+//    viewModel.passSetter = '123456';
   }
 
   @override

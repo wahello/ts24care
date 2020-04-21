@@ -57,7 +57,7 @@ class RegisterPageViewModel extends ViewModelBase {
         break;
       case TypeLogin.apple:
         emailEditingController.text = AppleService.currentUser.email;
-        nameEditingController.text = AppleService.currentUser.fullName.toString();
+        nameEditingController.text = '${AppleService.currentUser.fullName.givenName} ${AppleService.currentUser.fullName.familyName}';
         this.updateState();
         break;
       default:

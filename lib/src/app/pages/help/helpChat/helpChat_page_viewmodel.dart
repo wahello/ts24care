@@ -8,9 +8,10 @@ import 'package:ts24care/src/app/models/livezilla.dart';
 
 class HelpChatPageViewModel extends ViewModelBase {
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
-  String url = "http://livechat.ts24.com.vn/livechat/chat.php?v=2&nct=MQ__";
-
-  // String url = "http://demo.livezilla.info/demo_18e1917e/chat.php?v=2";
+//  String url = "https://livechat.ts24.com.vn/chat.php?v=2&nct=MQ__";
+   String url = "http://livechat.ts24.com.vn/livechat/chat.php?v=2&nct=MQ__";
+//  String url =
+//      "https://demo.livezilla.info/demo_1aba4d35/chat.php?v=2&nct=MQ__";
   Map params = Map();
 
   loadHtmlFromAssets() async {
@@ -40,6 +41,7 @@ class HelpChatPageViewModel extends ViewModelBase {
     live.ptq = "";
     live.ptp = customer.phone;
     live.ptc = customer.tin;
+    live.ptl = "vi";
     url += api.convertSerialize(live.toJson());
     print(url);
     this.updateState();

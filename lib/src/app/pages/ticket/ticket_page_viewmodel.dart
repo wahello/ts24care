@@ -52,7 +52,8 @@ class TicketPageViewModel extends ViewModelBase {
     listenTicketCreated();
     controller.addListener(() {
       if (controller.offset == controller.position.maxScrollExtent &&
-          !controller.position.outOfRange) {
+          !controller.position.outOfRange &&
+          !loadingMore) {
         int id = helpDeskCategory.id != -1 ? helpDeskCategory.id : 0;
         int date = isAscendingDate ? 1 : 0;
         onLoadMore(categoryID: id, date: date);
@@ -159,6 +160,11 @@ class TicketPageViewModel extends ViewModelBase {
         //   countItemLoad += historyDriver.listHistory.length;
         // });
         // if (countItemLoad < _take) loadMoreDone = true;
+//        list.forEach((item) {
+//          var listItem =
+//              listTicket.where((ticket) => ticket.id == item.id).toList();
+//          if (listItem.length <= 0) listTicket.insert(listItem.length, item);
+//        });
         listTicket.addAll(list);
         _skip += 10;
         loadingMore = false;
@@ -257,7 +263,12 @@ class TicketPageViewModel extends ViewModelBase {
 //  }
   onTapTicket(HelpdeskTicket helpdeskTicket) {
     Navigator.pushNamed(context, TicketDetailPage.routeName,
-        arguments: helpdeskTicket);
+            arguments: helpdeskTicket.id)
+        .then((result) {
+      try {
+        if (result) onLoad();
+      } catch (e) {}
+    });
   }
 
   onSelected(CustomPopupMenu popupMenu) {

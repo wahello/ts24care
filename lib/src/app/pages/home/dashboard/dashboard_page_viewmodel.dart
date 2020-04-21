@@ -19,6 +19,8 @@ class DashboardPageViewModel extends ViewModelBase {
   Offset offset;
   RenderBox referenceBox;
   GlobalKey paintKey = GlobalKey();
+  bool isShowCustomPainter = true;
+
 
   TicketStatistic ticketObjectForPainter;
   String messageTooltip = "";
@@ -57,8 +59,18 @@ class DashboardPageViewModel extends ViewModelBase {
   final GlobalKey keyTooltip = GlobalKey();
 
   void onRefresh() {
+    isSpinnerInText = true;
+    offset = null;
+    this.updateState();
     getStatisticTicketByCategory(month: monthValueRefresh);
     getStatisticTicket(month: monthValueRefresh);
+    print(paintKey.currentState);
+//    updateIsShowCustomPainter();
+  }
+
+  void updateIsShowCustomPainter(){
+    isShowCustomPainter = false;
+    this.updateState();
   }
 
   void updateForCustomPainter(TicketStatistic ticket) {
@@ -111,11 +123,12 @@ class DashboardPageViewModel extends ViewModelBase {
     dataChart = [];
     this.updateState();
     List<TicketStatistic> listData = await api.statisticTicketByCategory(month);
-    print("hello and helelo");
-    print(listData[0].ticketsDone);
-    print(listData[0].category);
-    print(listData[0].xCatColor);
-    print(listData[0].ticketsAvgTime);
+//    listData = null;
+//    print("hello and helelo");
+//    print(listData[0].ticketsDone);
+//    print(listData[0].category);
+//    print(listData[0].xCatColor);
+//    print(listData[0].ticketsAvgTime);
 
     for (var i = 0; i < listData.length; i++) {
       String categoryName = listData[i].category;
@@ -134,13 +147,14 @@ class DashboardPageViewModel extends ViewModelBase {
               : categoryName));
     }
     seriesList = _createChartData();
-
+    isSpinnerInText = false;
     this.updateState();
   }
 
   Future<void> getStatisticTicket({int month}) async {
     try {
       TicketStatistic data = await api.statisticTicket(month);
+//      data = null;
       if (data != null) {
         double timeAvgToInt = data.ticketsAvgTime;
         ticketStatistic.ticketsDone = data.ticketsDone;

@@ -4,7 +4,8 @@ import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/helper/validator-helper.dart';
 import 'package:ts24care/src/app/models/customer.dart';
-import 'package:ts24care/src/app/pages/help/help_page.dart';
+import 'package:ts24care/src/app/pages/help/help_page_v2.dart';
+import 'package:ts24care/src/app/pages/home/dashboard/dashboard_page.dart';
 import 'package:ts24care/src/app/pages/login/register/register_page.dart';
 import 'package:ts24care/src/app/pages/tabs/tabs_page.dart';
 import 'package:ts24care/src/app/pages/ticket/ticket_page.dart';
@@ -115,8 +116,10 @@ class LoginPageViewModel extends ViewModelBase {
 
         // get info customer
         var customerInfo = await api.getCustomerInfoAfterLogin();
-        if (customerInfo != null) {
-          print("LOGIN OK");
+        if (customerInfo == null) {
+          LoadingDialog.hideLoadingDialog(context);
+          return LoadingDialog.showMsgDialog(
+              context, translation.text("ERROR_MESSAGE.PERMISSION_APP"));
         }
         Customer customer = Customer();
         OneSignalService.sendTags(customer.toJsonOneSignal());
@@ -129,7 +132,7 @@ class LoginPageViewModel extends ViewModelBase {
 
         Future.delayed(const Duration(milliseconds: 300), () {
           Navigator.pushReplacementNamed(context, TabsPage.routeName,
-              arguments: TabsArgument(routeChildName: TicketsPage.routeName));
+              arguments: TabsArgument(routeChildName: Dashboard.routeName));
         });
 //         Navigator.popAndPushNamed(context, TabsPage.routeName,
 //             arguments: TabsArgument(routeChildName: HomePage.routeName));
@@ -195,8 +198,10 @@ class LoginPageViewModel extends ViewModelBase {
       // get info customer
       var customerInfo =
           await api.getCustomerInfoAfterLoginSocial(_checkExist.id);
-      if (customerInfo != null) {
-        print("LOGIN OK");
+      if (customerInfo == null) {
+        LoadingDialog.hideLoadingDialog(context);
+        return LoadingDialog.showMsgDialog(
+            context, translation.text("ERROR_MESSAGE.PERMISSION_APP"));
       }
       Customer customer = Customer();
       OneSignalService.sendTags(customer.toJsonOneSignal());
@@ -209,7 +214,7 @@ class LoginPageViewModel extends ViewModelBase {
 
       Future.delayed(const Duration(milliseconds: 300), () {
         Navigator.pushReplacementNamed(context, TabsPage.routeName,
-            arguments: TabsArgument(routeChildName: TicketsPage.routeName));
+            arguments: TabsArgument(routeChildName: Dashboard.routeName));
       });
 //         Navigator.popAndPushNamed(context, TabsPage.routeName,
 //             arguments: TabsArgument(routeChildName: HomePage.routeName));
