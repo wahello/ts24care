@@ -9,17 +9,17 @@ import 'package:ts24care/src/app/provider/api.dart';
 final LocalStorage localStorage = new LocalStorage("localStorage");
 
 // String domainApi = "https://www.bus2school.vn";
-// String domainApi = "http://14.187.124.176:8069";
+// String domainApi = "http://192.168.11.27:8069";
 
 // const String client_id = '9QGhjXbApupARfpGGsskXUTQjoRD35';
 // const String client_secret = '0wGQ7JkaLT68YMUQJFyUDKLsZutwbC';
-
+//
 // const String password_client_id = 'aeCf27wNJwtTrpO8v59OZNDcjPESyf';
 // const String password_client_secret = 'SlcSGww1jUZPBEYFRPIMLHzDPcyv6z';
 //
 String domainApi = "https://web.ts24.com.vn";
 String domainApiTS24pro = "https://www.ts24.com.vn/ts24id_ws/IDTS24.rest";
-
+//
 const String client_id = 'DwRtKASexsN40ucqk9LXcGcBcXzeEq';
 const String client_secret = 'AOmu1kyDoPtvx2xveu36YoYtzqeD8z';
 

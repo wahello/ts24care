@@ -29,14 +29,14 @@ class TicketPageViewModel extends ViewModelBase {
   int status = 0;
   CustomPopupMenu customPopupMenu = CustomPopupMenu(
       id: 0,
-      color: Colors.grey[400],
+      color: Colors.blue,
       title: translation.text("TICKET_PAGE.STATUS_ALL"),
       state: MenuStatusState.ALL);
   List<Color> listColor = [
-    Colors.blue,
-    Colors.orange,
-    ThemePrimary.primaryColor,
-    Colors.red,
+    Color(0xFFD52A26),
+    Color(0xFFF25022),
+    Color(0xFF66A73D),
+    Color(0xFF666666),
     Colors.purple,
     Colors.pinkAccent,
     Colors.yellow
@@ -184,7 +184,7 @@ class TicketPageViewModel extends ViewModelBase {
     listStatusTicket.clear();
     listStatusTicket.add(CustomPopupMenu(
         id: 0,
-        color: Colors.grey[400],
+        color: Colors.blue,
         title: translation.text("TICKET_PAGE.STATUS_ALL"),
         state: MenuStatusState.ALL));
     int count = 0;
@@ -261,9 +261,9 @@ class TicketPageViewModel extends ViewModelBase {
 //    )
 //        .toList();
 //  }
-  onTapTicket(HelpdeskTicket helpdeskTicket) {
+  onTapTicket(HelpdeskTicket helpdeskTicket, Color color) {
     Navigator.pushNamed(context, TicketDetailPage.routeName,
-            arguments: helpdeskTicket.id)
+            arguments: TicketDetailArgs(id: helpdeskTicket.id, color: color))
         .then((result) {
       try {
         if (result) onLoad();

@@ -505,7 +505,7 @@ class ApiMaster {
     return "$domainApi/web/image?model=res.users&field=image&id=$id&$sessionId";
   }
 
-  //Lấy avatar nhân viên
+  //Lấy image product
   getImageByIdProduct(String id) {
     return "$domainApi/web/image?model=product.product&field=image&id=$id&$sessionId";
   }

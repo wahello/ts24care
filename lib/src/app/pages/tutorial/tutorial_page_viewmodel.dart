@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
-import 'package:ts24care/src/app/models/res-partner.dart';
 import 'package:ts24care/src/app/pages/login/login_page.dart';
 
 class TutorialPageViewModel extends ViewModelBase {
@@ -22,6 +20,11 @@ class TutorialPageViewModel extends ViewModelBase {
     "Dịch vụ chính phủ điện tử cho doanh nghiệp",
     "Dịch vụ quản lý theo nghiệp vụ",
     "Dịch vụ quản lý tổng thể"
+  ];
+  List<String> imageSlide = [
+    "assets/images/TS24Care_BannerApp-01.jpg",
+    "assets/images/TS24Care_BannerApp-02.jpg",
+    "assets/images/TS24Care_BannerApp-03.jpg",
   ];
   TutorialPageViewModel();
 

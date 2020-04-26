@@ -135,8 +135,8 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(2.0)),
             child: Container(
               color: Colors.transparent,
-              constraints: BoxConstraints(
-                  maxWidth: double.infinity, minHeight: height > 550 ? 38 : 30),
+//              constraints: BoxConstraints(
+//                  maxWidth: double.infinity, minHeight: height > 550 ? 38 : 30),
               alignment: Alignment.center,
               child: Text(
                 translation.text("LOGIN_PAGE.LOGIN_BUTTON"),
@@ -366,7 +366,8 @@ class _LoginPageState extends State<LoginPage> {
           margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           decoration: BoxDecoration(
             color: Color(0xffDC4E41),
-            shape: BoxShape.circle,
+            //pe: BoxShape.circle,
+            borderRadius: BorderRadius.circular(5),
             boxShadow: __initBoxShadow(),
           ),
           child: Material(
@@ -585,9 +586,10 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(2.0)),
                 child: Container(
                   color: ThemePrimary.primaryColor,
-                  constraints: BoxConstraints(
-                      maxWidth: double.infinity,
-                      minHeight: height > 550 ? 38 : 30),
+                  constraints:
+                      BoxConstraints(maxWidth: double.infinity, minHeight: 38
+//                      height > 550 ? 38 : 30
+                          ),
                   alignment: Alignment.center,
                   child: Text(
                     translation.text("LOGIN_PAGE.LOGIN_BUTTON"),
@@ -607,6 +609,16 @@ class _LoginPageState extends State<LoginPage> {
             return [
               BoxShadow(
                   color: Colors.black12,
+                  offset: Offset(0.0, 5.0),
+                  blurRadius: 5.0),
+              BoxShadow(
+                  color: Colors.black12,
+                  offset: Offset(0.0, -3.0),
+                  blurRadius: 3.0),
+            ];
+            return [
+              BoxShadow(
+                  color: Colors.black12,
                   offset: Offset(0.0, 15.0),
                   blurRadius: 15.0),
               BoxShadow(
@@ -622,7 +634,8 @@ class _LoginPageState extends State<LoginPage> {
               height: 50,
               decoration: BoxDecoration(
                 color: Color(0xffDC4E41),
-                shape: BoxShape.circle,
+                //shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(10),
                 boxShadow: __initBoxShadow(),
               ),
               child: Material(
@@ -647,8 +660,11 @@ class _LoginPageState extends State<LoginPage> {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
+//                      color: Color(0xffDC4E41),
+                      //shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(10),
                       color: Colors.black,
-                      shape: BoxShape.circle,
+//                      shape: BoxShape.circle,
                       boxShadow: __initBoxShadow(),
                     ),
                     child: Material(
@@ -672,6 +688,7 @@ class _LoginPageState extends State<LoginPage> {
           }
 
           return Container(
+            margin: EdgeInsets.only(top: 25),
             width: MediaQuery.of(context).size.width,
 //        height: 100,
             child: Column(
@@ -681,40 +698,42 @@ class _LoginPageState extends State<LoginPage> {
 //                height: 15,
 //              ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        height: 2,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
+//                    SizedBox(
+//                      width: 30,
+//                    ),
+//                    Expanded(
+//                      flex: 1,
+//                      child: Container(
+//                        height: 2,
+//                        color: Colors.grey[400],
+//                      ),
+//                    ),
+//                    SizedBox(
+//                      width: 5,
+//                    ),
                     Text(
-                      translation.text('LOGIN_PAGE.SOCIAL_LOGIN'),
+//                      translation.text('LOGIN_PAGE.SOCIAL_LOGIN'),
+                      'Hoặc đăng nhập bằng tài khoản',
                       style: TextStyle(
-                          fontWeight: FontWeight.w700,
+                          //fontWeight: FontWeight.w700,
                           fontSize: 16,
                           color: Colors.grey[400]),
                     ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        height: 2,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
+//                    SizedBox(
+//                      width: 5,
+//                    ),
+//                    Expanded(
+//                      flex: 1,
+//                      child: Container(
+//                        height: 2,
+//                        color: Colors.grey[400],
+//                      ),
+//                    ),
+//                    SizedBox(
+//                      width: 30,
+//                    ),
                   ],
                 ),
                 SizedBox(
@@ -785,27 +804,36 @@ class _LoginPageState extends State<LoginPage> {
 
         Widget __formLogin() {
           return Container(
-              color: Colors.white,
+              color: ThemePrimary.backgroundPrimaryColor,
               margin: EdgeInsets.only(top: 15),
               //constraints: BoxConstraints.expand(width: width),
               child: Column(
                 children: <Widget>[
                   Container(
                     height: 50,
+//                    margin: EdgeInsets.only(top: 15, left: 30, right: 30),
                     margin: EdgeInsets.only(top: 15, left: 30, right: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            translation.text("LOGIN_PAGE.EMAIL"),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Icon(
+                            Icons.mail_outline,
+                            color: ThemePrimary.primaryColor,
+                            size: 30,
                           ),
                         ),
+//                        Expanded(
+//                          flex: 2,
+//                          child: Text(
+//                            translation.text("LOGIN_PAGE.EMAIL"),
+//                            style: TextStyle(
+//                              fontWeight: FontWeight.bold,
+//                            ),
+//                          ),
+//                        ),
                         Flexible(
                             flex: 4,
                             child: TextField(
@@ -815,7 +843,8 @@ class _LoginPageState extends State<LoginPage> {
                                   border: InputBorder.none,
                                   errorText: viewModel.errorEmail,
                                   hintText:
-                                      translation.text("LOGIN_PAGE.EMAIL_HINT"),
+//                                      translation.text("LOGIN_PAGE.EMAIL_HINT"),
+                                      translation.text("LOGIN_PAGE.EMAIL"),
                                   hintStyle: TextStyle(
                                     fontSize: 13,
                                   )),
@@ -845,15 +874,24 @@ class _LoginPageState extends State<LoginPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            translation.text("LOGIN_PAGE.PASSWORD"),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Icon(
+                            Icons.lock_outline,
+                            color: ThemePrimary.primaryColor,
+                            size: 30,
                           ),
                         ),
+//                        Expanded(
+//                          flex: 2,
+//                          child: Text(
+//                            translation.text("LOGIN_PAGE.PASSWORD"),
+//                            style: TextStyle(
+//                              fontWeight: FontWeight.bold,
+//                            ),
+//                          ),
+//                        ),
+
                         Flexible(
                             flex: 4,
                             child: Stack(
@@ -865,8 +903,10 @@ class _LoginPageState extends State<LoginPage> {
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
                                       errorText: viewModel.errorPass,
-                                      hintText: translation
-                                          .text("LOGIN_PAGE.PASSWORD_HINT"),
+                                      hintText:
+//                                      translation.text("LOGIN_PAGE.PASSWORD_HINT"),
+                                          translation
+                                              .text("LOGIN_PAGE.PASSWORD"),
                                       hintStyle: TextStyle(
                                         fontSize: 13,
                                       )),
@@ -881,17 +921,25 @@ class _LoginPageState extends State<LoginPage> {
                                       onTap: () {
                                         viewModel.onShowPasswordClicked();
                                       },
-                                      child: Text(
+                                      child: Icon(
                                         viewModel.isSecurePass
-                                            ? translation.text(
-                                                "LOGIN_PAGE.PASSWORD_SHOW")
-                                            : translation.text(
-                                                "LOGIN_PAGE.PASSWORD_HIDE"),
-                                        style: TextStyle(
-                                            color: ThemePrimary.primaryColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12),
-                                      )),
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Colors.grey,
+                                        size: 22,
+                                      )
+//                                      Text(
+//                                        viewModel.isSecurePass
+//                                            ? translation.text(
+//                                                "LOGIN_PAGE.PASSWORD_SHOW")
+//                                            : translation.text(
+//                                                "LOGIN_PAGE.PASSWORD_HIDE"),
+//                                        style: TextStyle(
+//                                            color: ThemePrimary.primaryColor,
+//                                            fontWeight: FontWeight.bold,
+//                                            fontSize: 12),
+//                                      )
+                                      ),
                                 )
                               ],
                             )),
@@ -958,12 +1006,13 @@ class _LoginPageState extends State<LoginPage> {
       return OrientationBuilder(builder: (context, orientation) {
         return Stack(children: <Widget>[
           Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/bgd.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
+            color: ThemePrimary.backgroundPrimaryColor,
+//            decoration: BoxDecoration(
+//              image: DecorationImage(
+//                image: AssetImage("assets/images/bgd.png"),
+//                fit: BoxFit.cover,
+//              ),
+//            ),
           ),
           SingleChildScrollView(
             child: Column(
@@ -978,14 +1027,21 @@ class _LoginPageState extends State<LoginPage> {
 //                  child: __header(),
 //                ),
                 Container(
+                  color: ThemePrimary.primaryColor,
                   height: orientation == Orientation.portrait
                       ? MediaQuery.of(context).size.height * 0.25 + 40
                       : MediaQuery.of(context).size.width * 0.25,
                   child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Image.asset('assets/images/Ts24care-text.png',
-                        width: 150, height: 30),
-                  ),
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Text('Đăng nhập vào TS24care',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 22)),
+                      )
+//                    Image.asset('assets/images/Ts24care-text.png',
+//                        width: 150, height: 30),
+                      ),
                 ),
                 __middle(),
               ],

@@ -13,8 +13,8 @@ import 'package:ts24care/src/app/widgets/ts24SlideWidget/ts24_slide_widget.dart'
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'faqDetail/faqArticleDetail/faq_article_detail_web_view_page.dart';
 
 class HelpPage extends StatefulWidget {

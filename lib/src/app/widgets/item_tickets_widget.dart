@@ -29,10 +29,7 @@ class ItemTicketsWidget extends StatelessWidget {
           Container(
             width: 10,
             decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10))),
+                color: color),
           ),
           Container(
 //          margin: EdgeInsets.only(left: 10, right: 10),
@@ -82,13 +79,12 @@ class ItemTicketsWidget extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                          "${translation.text("TICKET_PAGE.TICKET_NUMBER")} : "),
+                          "${translation.text("TICKET_PAGE.TICKET_NUMBER")} : ",style: TextStyle(color: Colors.grey),),
                       SizedBox(
                         width: 5,
                       ),
                       Text(
                         name,
-                        style: TextStyle(color: Colors.grey),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:open_file/open_file.dart';
+//import 'package:open_file/open_file.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
@@ -51,23 +51,21 @@ class _TS24LoadAttachmentWidgetState extends State<TS24LoadAttachmentWidget> {
                         : FontAwesomeIcons.file;
   }
 
-  bool compareList(List<IrAttachment> listA,List<IrAttachment> listB){
-    if(listA.length!=listB.length)
-      return false;
+  bool compareList(List<IrAttachment> listA, List<IrAttachment> listB) {
+    if (listA.length != listB.length) return false;
     for (var value in listA) {
-      var listItem = listB.where((item)=>item.id==value.id);
-      if(listItem.length == 0)
-        return false;
+      var listItem = listB.where((item) => item.id == value.id);
+      if (listItem.length == 0) return false;
     }
     for (var value in listB) {
-      var listItem = listA.where((item)=>item.id==value.id);
-      if(listItem.length == 0)
-        return false;
+      var listItem = listA.where((item) => item.id == value.id);
+      if (listItem.length == 0) return false;
     }
     return true;
   }
+
   onReLoad() async {
-    if(!compareList(_listIrAttachmentCache, widget.listIrAttachment)){
+    if (!compareList(_listIrAttachmentCache, widget.listIrAttachment)) {
       _listIrAttachment = widget.listIrAttachment;
       onLoad();
     }
@@ -199,7 +197,7 @@ class _TS24LoadAttachmentWidgetState extends State<TS24LoadAttachmentWidget> {
                                           );
                                         },
                                         transitionDuration:
-                                        Duration(milliseconds: 10),
+                                            Duration(milliseconds: 10),
                                         barrierDismissible: true,
                                         barrierLabel: '',
                                         context: context,
@@ -213,7 +211,7 @@ class _TS24LoadAttachmentWidgetState extends State<TS24LoadAttachmentWidget> {
                                               context: context,
                                               duration: Duration(seconds: 2),
                                               message:
-                                              "${translation.text("COMMON.DOWNLOAD_SUCCESSFUL")} : $result");
+                                                  "${translation.text("COMMON.DOWNLOAD_SUCCESSFUL")} : $result");
                                         }
                                       } catch (e) {}
                                     });
@@ -221,13 +219,14 @@ class _TS24LoadAttachmentWidgetState extends State<TS24LoadAttachmentWidget> {
                                     createFileFromString(item.datas, item.name)
                                         .then((dir) {
                                       if (dir != null) {
-                                        OpenFile.open(dir);
+                                        // OpenFile.open(dir);
                                         print("Tải thanh cong + $dir");
                                       } else
                                         ToastController.show(
                                             context: context,
                                             duration: Duration(seconds: 2),
-                                            message: translation.text("COMMON.DOWNLOAD_FAILED"));
+                                            message: translation.text(
+                                                "COMMON.DOWNLOAD_FAILED"));
                                     });
                                   }
                                 },

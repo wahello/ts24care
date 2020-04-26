@@ -405,8 +405,12 @@ class _HelpPageState extends State<HelpPage>
                   fit: StackFit.expand,
                   children: <Widget>[
                     Container(
-                      decoration:
-                          BoxDecoration(image: decorationImageBackground()),
+//                      decoration:
+//                          BoxDecoration(image: decorationImageBackground()),
+
+                      decoration: BoxDecoration(
+                          color: ThemePrimary.backgroundPrimaryColor
+                      ),
                     ),
                     CustomScrollView(
                       slivers: <Widget>[

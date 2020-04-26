@@ -36,9 +36,8 @@ class _TicketsPageState extends State<TicketsPage>
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    image: decorationImageBackground(),
-                  ),
+                  decoration:
+                      BoxDecoration(color: ThemePrimary.backgroundPrimaryColor),
                 ),
                 SingleChildScrollView(
                   controller:
@@ -53,20 +52,28 @@ class _TicketsPageState extends State<TicketsPage>
                           height: 5,
                         ),
                         ...listItemTicket.map((itemTickets) {
-                          List<dynamic> _listCategory = itemTickets.categoryId;
+                          Color _color = itemTickets.categoryId is List
+                              ? (itemTickets.categoryId.length > 2 &&
+                                      !(itemTickets.categoryId[2] is bool))
+                                  ? parseStringToColor(
+                                      itemTickets.categoryId[2].toString())
+                                  : (itemTickets.categoryId.length > 2 &&
+                                          itemTickets.categoryId[2] is bool)
+                                      ? Colors.grey
+                                      : itemTickets.categoryId.length > 0
+                                          ? getColorCategory(
+                                              itemTickets.categoryId[1])
+                                          : Colors.grey
+                              : Colors.grey;
                           return TS24Button(
                             onTap: () {
-                              viewModel.onTapTicket(itemTickets);
+                              viewModel.onTapTicket(itemTickets, _color);
                             },
-                            margin: EdgeInsets.only(
-                                top: 5, bottom: 5, left: 10, right: 10),
+                            margin: EdgeInsets.only(top: 5, bottom: 5),
 //                        padding: EdgeInsets.only(top: 10, bottom: 10),
                             width: MediaQuery.of(context).size.width,
                             height: 110,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
+                            decoration: BoxDecoration(color: Colors.white),
 //                height: 90,
                             child: ItemTicketsWidget(
                               title: itemTickets.subject,
@@ -76,21 +83,8 @@ class _TicketsPageState extends State<TicketsPage>
                                   : null,
 //                content: itemTickets.content,
                               name: itemTickets.name,
-                              time:
-                                  formatTimeV2(itemTickets.createDate),
-                              color: itemTickets.categoryId is List
-                                  ? (itemTickets.categoryId.length > 2 &&
-                                          !(itemTickets.categoryId[2] is bool))
-                                      ? parseStringToColor(
-                                          itemTickets.categoryId[2].toString())
-                                      : (itemTickets.categoryId.length > 2 &&
-                                              itemTickets.categoryId[2] is bool)
-                                          ? Colors.grey
-                                          : itemTickets.categoryId.length > 0
-                                              ? getColorCategory(
-                                                  itemTickets.categoryId[1])
-                                              : Colors.grey
-                                  : Colors.grey,
+                              time: formatTimeV2(itemTickets.createDate),
+                              color: _color,
                             ),
                           );
                         }).toList(),
@@ -125,12 +119,8 @@ class _TicketsPageState extends State<TicketsPage>
             )
           : SingleChildScrollView(
               child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/bgd.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                decoration:
+                    BoxDecoration(color: ThemePrimary.backgroundPrimaryColor),
                 constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height * 0.9),
               ),
@@ -143,9 +133,7 @@ class _TicketsPageState extends State<TicketsPage>
         padding: EdgeInsets.only(top: 10, bottom: 10),
         width: MediaQuery.of(context).size.width,
         height: 110,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(10))),
+        decoration: BoxDecoration(color: Colors.white),
         child: ShimmerItemTicketsWidget(),
       );
     }
@@ -161,12 +149,9 @@ class _TicketsPageState extends State<TicketsPage>
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(
-                        image: decorationImageBackground(),
-                      ),
+                      color: ThemePrimary.backgroundPrimaryColor,
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 10, right: 10),
                       constraints: BoxConstraints(
                           minHeight: MediaQuery.of(context).size.height * 0.8),
                       child: ListView(

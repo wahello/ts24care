@@ -10,6 +10,8 @@ class ThemePrimary {
 
   static const backgroundColor = Colors.white; //Color(0xFFF2F2F2);
 
+  static const backgroundPrimaryColor = Color(0xFFEAEAEA);
+
   static const primaryFontFamily = "SamsungOne";
 
   static const appBar_textTheme = TextTheme(

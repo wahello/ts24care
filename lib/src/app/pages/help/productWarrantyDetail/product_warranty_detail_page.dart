@@ -112,7 +112,10 @@ class _ProductWarrantyDetailPageState extends State<ProductWarrantyDetailPage> {
       fit: StackFit.expand,
       children: <Widget>[
         Container(
-          decoration: BoxDecoration(image: decorationImageBackground()),
+//          decoration: BoxDecoration(image: decorationImageBackground()),
+          decoration: BoxDecoration(
+              color: ThemePrimary.backgroundPrimaryColor
+          ),
         ),
         SingleChildScrollView(
             child: Column(

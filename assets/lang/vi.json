@@ -1,6 +1,6 @@
 {
   "HOME_PAGE": {
-    "TITLE": "Trang chủ",
+    "TITLE": "Bảng tổng hợp",
     "NEW_POSTS": "Bài viết mới"
   },
   "TAB_PAGE": {
@@ -45,7 +45,7 @@
     "HINT_INPUT_TEXT": "Nhập tin nhắn tại đây...",
     "PROPERTIES": "Các thuộc tính",
     "CONTENT": "Nội dung",
-    "CONVERSATION": "Cuộc hội thoại"
+    "CONVERSATION": "Phản hồi"
   },
   "TICKET_NEW_PAGE": {
     "TITLE": "Tạo phiếu hỗ trợ mới",
@@ -63,7 +63,7 @@
   "LOGIN_PAGE": {
     "WELCOME_TITLE": "Chào mừng Quý Khách\nđến với TS24care!",
     "SUB_TITLE": "Vui lòng đăng nhập hoặc đăng ký\nđể chúng tôi có thể phục vụ bạn tốt hơn",
-    "EMAIL": "Địa chỉ email",
+    "EMAIL": "Email",
     "EMAIL_HINT": "Nhập địa chỉ email",
     "PASSWORD": "Mật khẩu",
     "PASSWORD_HINT": "Nhập mật khẩu",
@@ -75,13 +75,15 @@
     "NO_ACCOUNT": "Chưa có tài khoản?",
     "REGISTER": "Đăng ký",
     "SOCIAL_LOGIN": "Đăng nhập bằng tài khoản",
-    "CREATE_ACCOUNT": "Tạo tài khoản",
-    "FORGOT_PASSWORD": "Quên mật khẩu"
+    "CREATE_ACCOUNT" : "Tạo tài khoản",
+    "FORGOT_PASSWORD" : "Quên mật khẩu"
   },
   "REGISTER_PAGE": {
     "TITLE": "Đăng ký",
     "REGISTER": "Đăng ký",
-    "SEND": "Gửi"
+    "SEND": "Gửi",
+    "PASSWORD": "Mật khẩu",
+    "PASSWORD_AGAIN": "Nhập lại mật khẩu"
   },
   "FORGET_PASSWORD_PAGE": {
     "TITLE": "Quên Mật Khẩu",
@@ -91,7 +93,7 @@
     "SUBMIT_BUTTON": "Gửi",
     "NO_ACCOUNT": "Chưa có tài khoản",
     "CREATE_ACCOUNT": "Đăng ký",
-    "RESET_SUCCESS": "Đã gửi password mới tới địa chỉ email của bạn"
+    "RESET_SUCCESS" : "Đã gửi password mới tới địa chỉ email của bạn"
   },
   "CREATE_NEW_PASSWORD_PAGE": {
     "TITLE": "Tạo Mới Mật Khẩu",
@@ -184,7 +186,8 @@
     "RECENT_ITEMS": "Thông báo mới",
     "APPS": "Apps",
     "BLOCKED": "Blocked",
-    "NO_NOTIFICATIONS": "Bạn chưa có thông báo mới"
+    "NO_NOTIFICATIONS": "Bạn chưa có thông báo mới",
+    "ALL" : "Tất cả"
   },
   "SETTINGS_PAGE": {
     "TITLE": "Cài đặt",

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/pages/help/faqDetail/faqArticleDetail/faq_article_detail_web_view_page_viewmodel.dart';
 import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class FaqArticleDetailPage extends StatefulWidget {
   static const String routeName = '/webHtml';
@@ -20,9 +20,8 @@ class _FaqArticleDetailPageState extends State<FaqArticleDetailPage> {
   Widget _body(kHtml) {
     return ListView(
       children: <Widget>[
-        HtmlWidget(
-          kHtml == null ? '' : kHtml,
-          webView: true,
+        Html(
+          data:kHtml == null ? '' : kHtml,
         )
       ],
     );

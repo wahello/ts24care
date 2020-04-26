@@ -19,6 +19,16 @@ class ShimmerItemTicketsWidget extends StatelessWidget {
     return Row(
       children: <Widget>[
         Container(
+          height: 50,
+          child: _shimmer(
+            widget: Container(
+              color: _color,
+              width: 10,
+              height: 50,
+            )
+          ),
+        ),
+        Container(
           margin: EdgeInsets.only(left: 20, right: 10),
           alignment: Alignment.center,
           width: 50,

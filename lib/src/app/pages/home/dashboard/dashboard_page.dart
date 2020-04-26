@@ -299,7 +299,7 @@ class _DashboardState extends State<Dashboard> {
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 2.2, crossAxisCount: 3),
+                            childAspectRatio: 2.8, crossAxisCount: 2),
                     itemCount: viewModel.dataChart.length,
                     itemBuilder: (context, index) {
                       return ___chartColorDescription(
@@ -324,8 +324,12 @@ class _DashboardState extends State<Dashboard> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(image: decorationImageBackground()),
+//            decoration: BoxDecoration(image: decorationImageBackground()),
+          decoration: BoxDecoration(
+            color: ThemePrimary.backgroundPrimaryColor
           ),
+          ),
+
           SingleChildScrollView(
             child: Container(
               constraints: BoxConstraints(

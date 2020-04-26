@@ -22,7 +22,7 @@ class Menu {
     Menu(
       index: 0,
       title: translation.text("HOME_PAGE.TITLE"),
-      iconData: Icons.home,
+      iconData: Icons.pie_chart,
       page: Dashboard(),
       routeChildName: Dashboard.routeName,
     ),
@@ -60,7 +60,7 @@ class Menu {
       Menu(
         index: 0,
         title: translation.text("HOME_PAGE.TITLE"),
-        iconData: Icons.home,
+        iconData: Icons.pie_chart,
         page: Dashboard(),
         routeChildName: Dashboard.routeName,
       ),

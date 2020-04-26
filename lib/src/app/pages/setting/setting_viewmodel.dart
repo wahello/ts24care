@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/customer.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
@@ -81,7 +80,6 @@ class SettingPageViewModel extends ViewModelBase {
           Navigator.pop(context);
           customer.clearLocal();
           Navigator.pushReplacementNamed(context, LoginPage.routeName);
-          //  api.getListNotification(offset: 0, limit: 10);
         });
   }
 
@@ -101,12 +99,12 @@ class SettingPageViewModel extends ViewModelBase {
   }
 
   onTapListService() {
-    Navigator.pushNamed(context, HelpPage.routeName).then((result) {
-      try {
-        if (result) {
+    Navigator.pushNamed(context, HelpPage.routeName).then((result){
+      try{
+        if(result){
           tabsPageViewModel.onTap(1);
         }
-      } catch (e) {}
+      }catch(e){}
     });
   }
 }

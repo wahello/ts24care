@@ -72,9 +72,10 @@ class _ItemNotificationWidgetState extends State<ItemNotificationWidget> {
             width: 10,
             decoration: BoxDecoration(
                 color: widget.color,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10))),
+//                borderRadius: BorderRadius.only(
+//                    topLeft: Radius.circular(10),
+//                    bottomLeft: Radius.circular(10))
+            ),
           ),
 //          Container(
 ////          margin: EdgeInsets.only(left: 10, right: 10),

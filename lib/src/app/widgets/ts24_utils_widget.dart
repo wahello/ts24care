@@ -35,10 +35,11 @@ BoxDecoration boxShaDow() => BoxDecoration(
 //  );
 //}
 DecorationImage decorationImageBackground() => DecorationImage(
-    colorFilter:
-        ColorFilter.mode(Colors.black.withOpacity(.2), BlendMode.darken),
-    image: AssetImage('assets/images/bgd.png'),
-    fit: BoxFit.cover);
+      colorFilter:
+          ColorFilter.mode(Colors.black.withOpacity(.2), BlendMode.darken),
+      image: AssetImage('assets/images/bgd.png'),
+      fit: BoxFit.cover,
+    );
 
 class LoadingDialog {
   static void showLoadingDialog(BuildContext context, String msg,

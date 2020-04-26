@@ -22,6 +22,7 @@ class NotificationsPage extends StatefulWidget {
 class _NotificationsPageState extends State<NotificationsPage>
     with AutomaticKeepAliveClientMixin {
   NotificationPageViewModel viewModel = NotificationPageViewModel();
+  double heightAppbar;
 
   @override
   void initState() {
@@ -34,8 +35,9 @@ class _NotificationsPageState extends State<NotificationsPage>
   Widget build(BuildContext context) {
     super.build(context);
     viewModel.context = context;
+
     Widget _appBar() {
-      return AppBar(
+      AppBar appBar = AppBar(
         // leading: IconButton(icon: Icon(Icons.menu, color: Colors.black)),
         //backgroundColor: ThemePrimary.backgroundColor,
         elevation: 0,
@@ -89,6 +91,8 @@ class _NotificationsPageState extends State<NotificationsPage>
 //          )
 //        ],
       );
+      heightAppbar = appBar.preferredSize.height;
+      return appBar;
     }
 
     Widget _listNotification(
@@ -96,109 +100,135 @@ class _NotificationsPageState extends State<NotificationsPage>
         {bool loadMore = false}) {
       return
 //        viewModel.listNotification.length > 0
-          Stack(
-        children: <Widget>[
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              image: decorationImageBackground(),
+        Stack(
+          children: <Widget>[
+            Container(
+              color: ThemePrimary.backgroundPrimaryColor,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+//            decoration: BoxDecoration(
+//              image: decorationImageBackground(),
+//            ),
             ),
-          ),
-          viewModel.initLoading == 0
-              ? LoadingIndicator.spinner(context: context, loading: true)
-              : viewModel.listNotification.length > 0
-                  ? SingleChildScrollView(
-                      controller:
-                          loadMore ? viewModel.controller : ScrollController(),
-                      child: Container(
-                          constraints: BoxConstraints(
-                              minHeight:
-                                  MediaQuery.of(context).size.height * 0.9),
-                          child: Column(
+            viewModel.initLoading == 0
+                ? LoadingIndicator.spinner(context: context, loading: true)
+                : viewModel.listNotification.length > 0
+                ? SingleChildScrollView(
+              controller:
+              loadMore ? viewModel.controller : ScrollController(),
+              child: Container(
+                  constraints: BoxConstraints(
+                      minHeight:
+                      MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.9),
+                  child: Column(
 //        itemExtent: 110,
-                            children: <Widget>[
-                              SizedBox(
-                                height: 5,
-                              ),
-                              ...listNotification.map((itemNotification) {
-                                return TS24Button(
-                                  onTap: () {
-                                    viewModel
-                                        .onTapNotification(itemNotification);
-                                  },
-                                  margin: EdgeInsets.only(
-                                      top: 5, bottom: 5, left: 10, right: 10),
+                    children: <Widget>[
+                      SizedBox(
+                        height: 5,
+                      ),
+                      ...listNotification.map((itemNotification) {
+                        return TS24Button(
+                          onTap: () {
+                            viewModel
+                                .onTapNotification(itemNotification);
+                          },
+//                                  margin: EdgeInsets.only(
+//                                      top: 5, bottom: 5, left: 10, right: 10),
+                          margin: EdgeInsets.only(top: 5, bottom: 5),
 //                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 110,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          height: 110,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+//                                      borderRadius: BorderRadius.all(
+//                                          Radius.circular(10))
+                          ),
 //                height: 90,
-                                  child: ItemNotificationWidget(
-                                    notification: itemNotification,
-                                    //listNotification: viewModel.choices[0].list,
-                                    color: Colors.grey,
-                                  ),
-                                );
-                              }).toList(),
-                              if (viewModel.loadingMore)
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 50,
-                                  color: Colors.transparent,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                ThemePrimary.primaryColor),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Text(
-                                        translation.text("COMMON.LOADING_DATA"),
-                                        style: TextStyle(
-                                            color: ThemePrimary.primaryColor),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                            ],
-                          )),
-                    )
-                  : SingleChildScrollView(
-                      child: Container(
-                        constraints: BoxConstraints(
-                            minHeight:
-                                MediaQuery.of(context).size.height - 135),
-                        child: Center(
-                          child: Column(
+                          child: ItemNotificationWidget(
+                            notification: itemNotification,
+                            //listNotification: viewModel.choices[0].list,
+                            color: Colors.grey,
+                          ),
+                        );
+                      }).toList(),
+                      if (viewModel.loadingMore)
+                        Container(
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          height: 50,
+                          color: Colors.transparent,
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            //mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Icon(Icons.notifications,
-                                  size: 50, color: const Color(0xff666666)),
-                              SizedBox(height: 15),
+                              CircularProgressIndicator(
+                                valueColor:
+                                AlwaysStoppedAnimation<Color>(
+                                    ThemePrimary.primaryColor),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
                               Text(
-                                translation.text(
-                                    'NOTIFICATIONS_PAGE.NO_NOTIFICATIONS'),
+                                translation.text("COMMON.LOADING_DATA"),
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xff666666)),
-                              )
+                                    color: Color(0xFF999999)),
+                              ),
                             ],
                           ),
                         ),
+                    ],
+                  )),
+            )
+                : SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Center(
+                child: Container(
+                  alignment: Alignment.center,
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery
+                          .of(context)
+                          .size
+                          .height -
+                          heightAppbar -
+                          80),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    //mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(Icons.notifications,
+                          size: 50, color: const Color(0xff666666)
+                        //const Color(0xff666666)
                       ),
-                    ),
-        ],
-      );
+                      SizedBox(height: 15),
+                      Text(
+                        translation.text(
+                            'NOTIFICATIONS_PAGE.NO_NOTIFICATIONS'),
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xff666666)),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        );
 //          : SingleChildScrollView(
 //              child: Container(
 //                decoration: BoxDecoration(
@@ -217,7 +247,10 @@ class _NotificationsPageState extends State<NotificationsPage>
       return Container(
         margin: EdgeInsets.only(top: 5, bottom: 5),
         padding: EdgeInsets.only(top: 10, bottom: 10),
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         height: 110,
         decoration: BoxDecoration(
             color: Colors.white,
@@ -234,45 +267,62 @@ class _NotificationsPageState extends State<NotificationsPage>
           },
           child: viewModel.loading
               ? Stack(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(
-                        image: decorationImageBackground(),
-                      ),
+            children: <Widget>[
+              Container(
+                color: ThemePrimary.backgroundPrimaryColor,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
+//                      decoration: BoxDecoration(
+//                        image: decorationImageBackground(),
+//                      ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 10, right: 10),
+                constraints: BoxConstraints(
+                    minHeight: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.8),
+                child: ListView(
+                  children: [
+                    SizedBox(
+                      height: 5,
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10, right: 10),
-                      constraints: BoxConstraints(
-                          minHeight: MediaQuery.of(context).size.height * 0.8),
-                      child: ListView(
-                        children: [
-                          SizedBox(
-                            height: 5,
-                          ),
-                          _itemShimmer(),
-                          _itemShimmer(),
-                          _itemShimmer(),
-                          _itemShimmer(),
-                        ],
-                      ),
-                    )
+                    _itemShimmer(),
+                    _itemShimmer(),
+                    _itemShimmer(),
+                    _itemShimmer(),
                   ],
-                )
+                ),
+              )
+            ],
+          )
               : Stack(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(
-                        image: decorationImageBackground(),
-                      ),
-                    ),
-                    _listNotification(viewModel.listNotification,
-                        loadMore: true)
-                  ],
-                ));
+            children: <Widget>[
+              Container(
+                color: ThemePrimary.backgroundPrimaryColor,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
+//                      decoration: BoxDecoration(
+//                        image: decorationImageBackground(),
+//                      ),
+              ),
+              _listNotification(viewModel.listNotification,
+                  loadMore: true)
+            ],
+          ));
     }
 
     return ViewModelProvider(

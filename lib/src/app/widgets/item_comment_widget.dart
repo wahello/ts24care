@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/models/ir-attachment.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
@@ -91,9 +91,8 @@ class _ItemCommentWidgetState extends State<ItemCommentWidget> {
       return Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.only(left: 10, right: 10),
-        child: HtmlWidget(
-          content,
-          webView: true,
+        child: Html(
+          data:content,
         ),
       );
     }

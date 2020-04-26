@@ -45,7 +45,7 @@
     "HINT_INPUT_TEXT": "Input the message here...",
     "PROPERTIES": "Properties",
     "CONTENT": "Contents",
-    "CONVERSATION": "Conversations"
+    "CONVERSATION": "Feedback"
   },
   "TICKET_NEW_PAGE": {
     "TITLE": "Create new ticket",
@@ -63,9 +63,9 @@
   "LOGIN_PAGE": {
     "WELCOME_TITLE": "Welcome to\nTS24care!",
     "SUB_TITLE": "Please login or register\nso we can serve you better",
-    "EMAIL": "EMAIL",
+    "EMAIL": "Email",
     "EMAIL_HINT": "Enter your email address",
-    "PASSWORD": "PASSWORD",
+    "PASSWORD": "Password",
     "PASSWORD_HINT": "Enter your password",
     "PASSWORD_AGAIN": "Password again",
     "PASSWORD_SHOW": "Show",
@@ -81,7 +81,9 @@
   "REGISTER_PAGE": {
     "TITLE": "Register",
     "REGISTER": "Register",
-    "SEND": "Send"
+    "SEND": "Send",
+    "PASSWORD": "Password",
+    "PASSWORD_AGAIN": "Password again"
   },
   "FORGET_PASSWORD_PAGE": {
     "TITLE": "Forgot Password",
@@ -187,7 +189,8 @@
     "RECENT_ITEMS": "Recent Items",
     "APPS": "Apps",
     "BLOCKED": "Blocked",
-    "NO_NOTIFICATIONS": "You have no new notifications"
+    "NO_NOTIFICATIONS": "You have no new notifications",
+    "ALL": "ALL"
   },
   "SETTINGS_PAGE": {
     "TITLE": "Settings",

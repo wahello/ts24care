@@ -125,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         focusNode: viewModel.passFocus,
                         controller: viewModel.passEditingController,
                         decoration: InputDecoration(
-                            labelText: translation.text("LOGIN_PAGE.PASSWORD"),
+                            labelText: translation.text("REGISTER_PAGE.PASSWORD"),
                             labelStyle: __styleTextLabel,
 //                            hintText: translation.text("USER_PROFILE.INPUT_EMAIL"),
                             errorText: viewModel.errorPass),
@@ -155,7 +155,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         controller: viewModel.passConfirmEditingController,
                         decoration: InputDecoration(
                             labelText:
-                                translation.text("LOGIN_PAGE.PASSWORD_AGAIN"),
+                                translation.text("REGISTER_PAGE.PASSWORD_AGAIN"),
                             labelStyle: __styleTextLabel,
 //                            hintText: translation.text("USER_PROFILE.INPUT_EMAIL"),
                             errorText: viewModel.errorPassConfirm),
@@ -406,12 +406,13 @@ class _RegisterPageState extends State<RegisterPage> {
       return Stack(
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/bgd.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
+            color: ThemePrimary.backgroundPrimaryColor,
+//            decoration: BoxDecoration(
+//              image: DecorationImage(
+//                image: AssetImage("assets/images/bgd.png"),
+//                fit: BoxFit.cover,
+//              ),
+//            ),
           ),
           SingleChildScrollView(
             controller: viewModel.scrollController,

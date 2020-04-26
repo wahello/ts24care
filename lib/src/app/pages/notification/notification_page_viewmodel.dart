@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/helper/utils.dart';
 import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:ts24care/src/app/models/item_notification_model.dart';
 import 'package:ts24care/src/app/models/onesignal-notification-messages.dart';
@@ -37,6 +38,7 @@ class NotificationPageViewModel extends ViewModelBase {
       if (controller.offset == controller.position.maxScrollExtent &&
           !controller.position.outOfRange &&
           !loadingMore) {
+
 //        int id = helpDeskCategory.id != -1 ? helpDeskCategory.id : 0;
 //        int date = isAscendingDate ? 1 : 0;
         onLoadMore();
@@ -60,10 +62,10 @@ class NotificationPageViewModel extends ViewModelBase {
 //    if (customPopupMenu != null) status = customPopupMenu.id;
     loading = true;
     this.updateState();
-    var _listTicket = await api.getListNotification(offset: 0, limit: 10);
+    var _listNotification = await api.getListNotification(offset: 0, limit: 10);
 //    if (_listTicket.length > 0) {
     listNotification = List();
-    listNotification.addAll(_listTicket);
+    listNotification.addAll(_listNotification);
     loading = false;
     loadingMore = false;
     loadMoreDone = false;
@@ -112,11 +114,25 @@ class NotificationPageViewModel extends ViewModelBase {
             case "model":
               switch (value) {
                 case "helpdesk.ticket":
+
                   HelpdeskTicket helpdeskTicket =
                       HelpdeskTicket.fromJsonPushNotification(mapData);
+                  Color _color = helpdeskTicket.categoryId is List
+                      ? (helpdeskTicket.categoryId.length > 2 &&
+                      !(helpdeskTicket.categoryId[2] is bool))
+                      ? parseStringToColor(
+                      helpdeskTicket.categoryId[2].toString())
+                      : (helpdeskTicket.categoryId.length > 2 &&
+                      helpdeskTicket.categoryId[2] is bool)
+                      ? Colors.grey
+                      : helpdeskTicket.categoryId.length > 0
+                      ? getColorCategory(
+                      helpdeskTicket.categoryId[1])
+                      : Colors.grey
+                      : Colors.grey;
                   //navigate qua page ticket
                   Navigator.pushNamed(context, TicketDetailPage.routeName,
-                      arguments: helpdeskTicket.id);
+                      arguments: TicketDetailArgs(id: helpdeskTicket.id, color: _color));
                   break;
                 default:
               }

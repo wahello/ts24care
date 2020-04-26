@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/models/item_newfeed_model.dart';
 import 'package:ts24care/src/app/pages/home/blogPost/home_blog_post_page_viewmodel.dart';
@@ -82,9 +82,8 @@ class _BlogPostPageState extends State<BlogPostPage> {
                               style: TextStyle(fontWeight: FontWeight.w600),
                             ),
                           ),
-                          HtmlWidget(
-                            addDomainHtml(widget.itemNewFeedModel.content),
-                            webViewJs: true,
+                          Html(
+                            data:addDomainHtml(widget.itemNewFeedModel.content),
                           )
                         ],
                       )
