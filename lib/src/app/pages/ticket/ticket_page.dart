@@ -67,7 +67,7 @@ class _TicketsPageState extends State<TicketsPage>
                               : Colors.grey;
                           return TS24Button(
                             onTap: () {
-                              viewModel.onTapTicket(itemTickets, _color);
+                              viewModel.onTapTicket(itemTickets);
                             },
                             margin: EdgeInsets.only(top: 5, bottom: 5),
 //                        padding: EdgeInsets.only(top: 10, bottom: 10),

@@ -17,7 +17,7 @@ import 'package:html/dom.dart' as dom;
 
 class TicketDetailPage extends StatefulWidget {
   static const String routeName = "/ticketDetailPage";
-  final TicketDetailArgs args;
+  final int args;
 
   const TicketDetailPage({Key key, this.args}) : super(key: key);
   @override
@@ -44,8 +44,8 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
 
   @override
   void initState() {
-    viewModel.onLoadHelpDeskCategory(widget.args.id);
-    viewModel.onLoad(widget.args.id);
+    viewModel.onLoadHelpDeskCategory(widget.args);
+    viewModel.onLoad(widget.args);
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
           _getSize();
         }));
@@ -72,7 +72,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
             : ''),
         bottom: viewModel.helpdeskTicket != null
             ? PreferredSize(
-                child: Container(height: 10, color: widget.args.color),
+                child: Container(height: 10, color: viewModel.statusTicketColor!=null?viewModel.statusTicketColor:Colors.grey),
                 preferredSize: Size(MediaQuery.of(context).size.width, 10),
               )
             : null,
@@ -539,7 +539,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
             height: MediaQuery.of(context).size.height,
             child: RefreshIndicator(
               onRefresh: () async {
-                viewModel.onLoad(widget.args.id);
+                viewModel.onLoad(widget.args);
               },
               child: Container(
 //                color: ThemePrimary.backgroundPrimaryColor,

@@ -57,11 +57,11 @@ class OneSignalService {
   }
 
   static Future<void> setEmail(String email) async {
-    return OneSignal.shared.setEmail(email: email).then((onValue) {
-      print(" ");
-    }).catchError((onError) {
-      print(onError);
-    });
+    // return OneSignal.shared.setEmail(email: email).then((onValue) {
+    //   print(" ");
+    // }).catchError((onError) {
+    //   print(onError);
+    // });
   }
 
   static Future<bool> requestPermission() {

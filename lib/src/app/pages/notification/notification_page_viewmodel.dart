@@ -114,25 +114,11 @@ class NotificationPageViewModel extends ViewModelBase {
             case "model":
               switch (value) {
                 case "helpdesk.ticket":
-
                   HelpdeskTicket helpdeskTicket =
                       HelpdeskTicket.fromJsonPushNotification(mapData);
-                  Color _color = helpdeskTicket.categoryId is List
-                      ? (helpdeskTicket.categoryId.length > 2 &&
-                      !(helpdeskTicket.categoryId[2] is bool))
-                      ? parseStringToColor(
-                      helpdeskTicket.categoryId[2].toString())
-                      : (helpdeskTicket.categoryId.length > 2 &&
-                      helpdeskTicket.categoryId[2] is bool)
-                      ? Colors.grey
-                      : helpdeskTicket.categoryId.length > 0
-                      ? getColorCategory(
-                      helpdeskTicket.categoryId[1])
-                      : Colors.grey
-                      : Colors.grey;
                   //navigate qua page ticket
                   Navigator.pushNamed(context, TicketDetailPage.routeName,
-                      arguments: TicketDetailArgs(id: helpdeskTicket.id, color: _color));
+                      arguments:  helpdeskTicket.id);
                   break;
                 default:
               }

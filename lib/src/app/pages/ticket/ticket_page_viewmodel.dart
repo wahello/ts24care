@@ -10,7 +10,6 @@ import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/pages/ticket/detail/ticket_detail_page.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
-import 'package:ts24care/src/app/theme/theme_primary.dart';
 
 class TicketPageViewModel extends ViewModelBase {
   List<HelpdeskTicket> listTicketFiltered = List();
@@ -261,9 +260,9 @@ class TicketPageViewModel extends ViewModelBase {
 //    )
 //        .toList();
 //  }
-  onTapTicket(HelpdeskTicket helpdeskTicket, Color color) {
+  onTapTicket(HelpdeskTicket helpdeskTicket) {
     Navigator.pushNamed(context, TicketDetailPage.routeName,
-            arguments: TicketDetailArgs(id: helpdeskTicket.id, color: color))
+            arguments: helpdeskTicket.id)
         .then((result) {
       try {
         if (result) onLoad();

@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:ts24care/src/app/core/app_setting.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
@@ -31,6 +30,7 @@ class TicketDetailViewModel extends ViewModelBase {
   TextEditingController descriptionEditingController = TextEditingController();
   List<ItemAddAttachmentModel> listAddAttachmentModel = List();
   bool ticketChanged = false;
+  Color statusTicketColor;
   TicketDetailViewModel() {
     loading = true;
     statusState = MenuStatusState.NEW;
@@ -75,9 +75,20 @@ class TicketDetailViewModel extends ViewModelBase {
     var ticket = await api.getTicketById(id);
     helpdeskTicket = ticket;
     if (helpdeskTicket.categoryId is List) {
+      statusTicketColor = (ticket.categoryId.length > 2 &&
+          !(ticket.categoryId[2] is bool))
+          ? parseStringToColor(
+          ticket.categoryId[2].toString())
+          : (ticket.categoryId.length > 2 &&
+          ticket.categoryId[2] is bool)
+          ? Colors.grey
+          : ticket.categoryId.length > 0
+          ? getColorCategory(
+          ticket.categoryId[1])
+          : Colors.grey;
       helpDeskCategory = HelpDeskCategory(
           id: helpdeskTicket.categoryId[0], name: helpdeskTicket.categoryId[1]);
-    }
+    } else statusTicketColor = Colors.grey;
     customPopupMenu = CustomPopupMenu.getTicket(helpdeskTicket.stageId[0]);
 //    isLoadingListAttachContent = true;
 //    this.updateState();
