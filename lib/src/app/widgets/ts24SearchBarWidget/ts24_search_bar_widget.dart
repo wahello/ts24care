@@ -79,7 +79,7 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
           iconified: true,
           searchHint: translation.text("SEARCH_WIDGET.HINT_SEARCH"),
           onQueryChanged: (query) {
-            viewModel.onQueryChanged(query,widget.onQuerySubmittedCallBack);
+            viewModel.onQueryChanged(query, widget.onQuerySubmittedCallBack);
             widget.onQueryChangedCallBack(query);
           },
           onQuerySubmitted: (query) {
@@ -113,15 +113,25 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
               return TS24Button(
                 onTap: () {
                   widget.onQuerySubmittedCallBack(listHistorySearchText[index]);
-                  viewModel.onTapItemTicketHistory(listHistorySearchText[index]);
+                  viewModel
+                      .onTapItemTicketHistory(listHistorySearchText[index]);
                 },
                 alignment: Alignment.center,
                 child: ListTile(
-                  leading: Icon(Icons.history,color: Colors.grey[600],),
-                  title: Text(listHistorySearchText[index],style: TextStyle(color: Colors.grey[600]),),
+                  leading: Icon(
+                    Icons.history,
+                    color: Colors.grey[600],
+                  ),
+                  title: Text(
+                    listHistorySearchText[index],
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
                   trailing: Transform.rotate(
                     angle: -45,
-                    child: Icon(Icons.arrow_upward,color: Colors.grey[600],),
+                    child: Icon(
+                      Icons.arrow_upward,
+                      color: Colors.grey[600],
+                    ),
                   ),
                 ),
               );
@@ -131,7 +141,7 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
 
     Widget _headerContent(String headerText, IconData iconData) {
       return Container(
-//                color: Colors.white,
+        color: Colors.white,
         padding: EdgeInsets.all(15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -139,7 +149,7 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
             Text(
               headerText,
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.grey[600],
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
             ),
@@ -149,7 +159,7 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
               children: <Widget>[
                 Icon(
                   iconData,
-                  color: Colors.white,
+                  color: Colors.grey[600],
                 ),
               ],
             )

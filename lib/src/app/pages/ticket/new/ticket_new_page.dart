@@ -22,14 +22,12 @@ class _TicketNewPageState extends State<TicketNewPage> {
   Widget build(BuildContext context) {
     viewModel.context = context;
     Widget _appBar() {
-      return TS24AppBar(
-        backgroundColorEnd: ThemePrimary.backgroundColor,
-        backgroundColorStart: ThemePrimary.backgroundColor,
+      return AppBar(
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.close,
-            color: Colors.grey[800],
+//            color: Colors.white,
           ),
           onPressed: () {
             viewModel.onTapBack();
@@ -37,13 +35,13 @@ class _TicketNewPageState extends State<TicketNewPage> {
         ),
         title: Text(
           translation.text("TICKET_NEW_PAGE.TITLE"),
-          style: TextStyle(color: Colors.grey[800]),
+//          style: TextStyle(color: Colors.grey[800]),
         ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
               Icons.send,
-              color: ThemePrimary.primaryColor,
+//              color: ThemePrimary.primaryColor,
             ),
             onPressed: () {
               viewModel.onSend();
@@ -201,10 +199,15 @@ class _TicketNewPageState extends State<TicketNewPage> {
                           fontSize: 26,
                           fontWeight: FontWeight.w600),
                       decoration: InputDecoration(
-                        hintText:
-                            translation.text("TICKET_NEW_PAGE.HINT_TITLE"),
-                        errorText: viewModel.errorSubject,
-                      ),
+                          hintText:
+                              translation.text("TICKET_NEW_PAGE.HINT_TITLE"),
+                          errorText: viewModel.errorSubject,
+                          focusColor: Colors.black,
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 2,
+                          ))),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (v) {

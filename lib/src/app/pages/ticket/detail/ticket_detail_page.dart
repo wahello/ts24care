@@ -58,15 +58,13 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
   Widget build(BuildContext context) {
     viewModel.context = context;
     Widget _appBar() {
-      return TS24AppBar(
-        backgroundColorStart: ThemePrimary.backgroundColor,
-        backgroundColorEnd: ThemePrimary.backgroundColor,
+      return AppBar(
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context, viewModel.ticketChanged),
           icon: Icon(
-            Icons.arrow_back,
-            color: ThemePrimary.primaryColor,
+            Platform.isIOS? Icons.arrow_back_ios:Icons.arrow_back,
+            color: Colors.white,
           ),
         ),
         title: Text(viewModel.helpdeskTicket != null
@@ -614,7 +612,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
         stream: viewModel.stream,
         builder: (context, snapshot) {
           return Platform.isIOS
-              ? TS24Scaffold(
+              ? Scaffold(
                   appBar: _appBar(),
                   body: _body(),
                 )
@@ -623,7 +621,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                     Navigator.pop(context, viewModel.ticketChanged);
                     return false;
                   },
-                  child: TS24Scaffold(
+                  child: Scaffold(
                     appBar: _appBar(),
                     body: _body(),
                   ),

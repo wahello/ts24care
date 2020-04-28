@@ -160,7 +160,7 @@ meterial.Color getColorCategory(String categoryName) {
     result = category.first;
     return result.color;
   }
-  return meterial.Colors.white;
+  return meterial.Colors.grey;
 }
 
 meterial.Color parseStringToColor(String string){

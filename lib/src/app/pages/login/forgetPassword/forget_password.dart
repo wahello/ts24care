@@ -80,6 +80,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
           viewModel.onSubmitClicked();
         },
         color: ThemePrimary.primaryColor,
+        shape: RoundedRectangleBorder(),
 //        shape: RoundedRectangleBorder(
 //          borderRadius: BorderRadius.circular(18.0),
 //        ),
