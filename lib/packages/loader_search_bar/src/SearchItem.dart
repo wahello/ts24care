@@ -32,7 +32,7 @@ class _ActionSearchItem extends SearchItem<Widget> {
 
   @override
   SearchItemBuilder get _defaultBuilder =>
-      (_) => IconButton(icon: Icon(Icons.search,color: Colors.black,), onPressed: () {
+      (_) => IconButton(icon: Icon(Icons.search,color: Colors.white,), onPressed: () {
         print('LENGOCHIEP');
       });
 

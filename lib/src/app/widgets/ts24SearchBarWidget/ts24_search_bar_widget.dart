@@ -5,8 +5,8 @@ import 'package:ts24care/packages/loader_search_bar/src/SearchBar.dart';
 import 'package:ts24care/packages/loader_search_bar/src/SearchBarAttrs.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
+import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24SearchBarWidget/ts24_search_bar_widget_viewmodel.dart';
-import 'package:ts24care/src/app/widgets/ts24_scaffold_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 
 import '../ts24_button_widget.dart';
@@ -104,26 +104,29 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
     }
 
     Widget _historySearchText(List<String> listHistorySearchText) {
-      return ListView.builder(
-          itemExtent: 56,
-          itemCount: listHistorySearchText.length,
-          itemBuilder: (context, index) {
-            return TS24Button(
-              onTap: () {
-                widget.onQuerySubmittedCallBack(listHistorySearchText[index]);
-                viewModel.onTapItemTicketHistory(listHistorySearchText[index]);
-              },
-              alignment: Alignment.center,
-              child: ListTile(
-                leading: Icon(Icons.history),
-                title: Text(listHistorySearchText[index]),
-                trailing: Transform.rotate(
-                  angle: -45,
-                  child: Icon(Icons.arrow_upward),
+      return Container(
+        color: ThemePrimary.backgroundPrimaryColor,
+        child: ListView.builder(
+            itemExtent: 56,
+            itemCount: listHistorySearchText.length,
+            itemBuilder: (context, index) {
+              return TS24Button(
+                onTap: () {
+                  widget.onQuerySubmittedCallBack(listHistorySearchText[index]);
+                  viewModel.onTapItemTicketHistory(listHistorySearchText[index]);
+                },
+                alignment: Alignment.center,
+                child: ListTile(
+                  leading: Icon(Icons.history,color: Colors.grey[600],),
+                  title: Text(listHistorySearchText[index],style: TextStyle(color: Colors.grey[600]),),
+                  trailing: Transform.rotate(
+                    angle: -45,
+                    child: Icon(Icons.arrow_upward,color: Colors.grey[600],),
+                  ),
                 ),
-              ),
-            );
-          });
+              );
+            }),
+      );
     }
 
     Widget _headerContent(String headerText, IconData iconData) {
@@ -136,7 +139,7 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
             Text(
               headerText,
               style: TextStyle(
-                  color: Colors.grey[800],
+                  color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
             ),
@@ -146,7 +149,7 @@ class _TS24SearchBarWidgetState extends State<TS24SearchBarWidget> {
               children: <Widget>[
                 Icon(
                   iconData,
-                  color: Colors.grey[600],
+                  color: Colors.white,
                 ),
               ],
             )

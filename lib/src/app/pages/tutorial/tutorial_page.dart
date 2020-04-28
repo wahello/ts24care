@@ -140,7 +140,7 @@ class _TutorialPageState extends State<TutorialPage> {
                       width: 350,
                       height: 55,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+//                          borderRadius: BorderRadius.all(Radius.circular(10)),
                           color: ThemePrimary.primaryColor),
                       child: Center(
                         child: Text(

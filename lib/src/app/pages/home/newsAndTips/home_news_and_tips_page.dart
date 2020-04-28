@@ -258,7 +258,7 @@ class _NewsAndTipsPageState extends State<NewsAndTipsPage> {
 //                ),
 //                preferredSize: Size(MediaQuery.of(context).size.width, 50),
 //              ),
-            backgroundColor: ThemePrimary.backgroundColor,
+            backgroundColor: ThemePrimary.appBarColor,
             primaryColor: ThemePrimary.primaryColor,
             searchBarStateCallBack: (_) {},
             onQueryChangedCallBack: (_) {},

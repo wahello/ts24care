@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 /// default value if omitted.
 class SearchBarAttrs {
   SearchBarAttrs({
-    Color primaryDetailColor = Colors.black87,
-    this.secondaryDetailColor = Colors.black54,
-    this.disabledDetailColor = Colors.black26,
+    Color primaryDetailColor = Colors.white,
+    this.secondaryDetailColor = Colors.white70,
+    this.disabledDetailColor = Colors.white54,
     this.searchBarColor = Colors.white30,
     this.loaderBottomMargin = 0.0,
     this.textBoxOutlineWidth = 1.0,

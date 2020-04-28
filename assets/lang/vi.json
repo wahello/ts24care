@@ -75,8 +75,8 @@
     "NO_ACCOUNT": "Chưa có tài khoản?",
     "REGISTER": "Đăng ký",
     "SOCIAL_LOGIN": "Đăng nhập bằng tài khoản",
-    "CREATE_ACCOUNT" : "Tạo tài khoản",
-    "FORGOT_PASSWORD" : "Quên mật khẩu"
+    "CREATE_ACCOUNT": "Tạo tài khoản",
+    "FORGOT_PASSWORD": "Quên mật khẩu"
   },
   "REGISTER_PAGE": {
     "TITLE": "Đăng ký",
@@ -93,7 +93,7 @@
     "SUBMIT_BUTTON": "Gửi",
     "NO_ACCOUNT": "Chưa có tài khoản",
     "CREATE_ACCOUNT": "Đăng ký",
-    "RESET_SUCCESS" : "Đã gửi password mới tới địa chỉ email của bạn"
+    "RESET_SUCCESS": "Đã gửi password mới tới địa chỉ email của bạn"
   },
   "CREATE_NEW_PASSWORD_PAGE": {
     "TITLE": "Tạo Mới Mật Khẩu",
@@ -147,7 +147,7 @@
     "EMAIL": "Email",
     "START_DAY": "Ngày đăng ký",
     "END_DAY": "Ngày hết hạn",
-    "ACTIVE_COMPANY":"Công ty kích hoạt",
+    "ACTIVE_COMPANY": "Công ty kích hoạt",
     "CUSTOMER_INFO": "Thông tin khách hàng",
     "SERVICE_INFO": "Thông tin dịch vụ",
     "NAME_SERVICE": "Dịch vụ"
@@ -158,7 +158,7 @@
     "DAY": "ngày",
     "MONTH": "tháng",
     "MINUTE": "phút",
-    "SERVICE_SUPPORT": "Thống kê phân loại dịch vụ đã hổ trợ",
+    "SERVICE_SUPPORT": "Thống kê phân loại dịch vụ đã hỗ trợ",
     "TOTAL_VOTE": "Tổng số phiếu hỗ trợ",
     "VOTE_DONE": "Phiếu hỗ trợ đã hoàn thành",
     "TIME_RESPONSE": "Thời gian phản hồi trung bình",
@@ -187,7 +187,7 @@
     "APPS": "Apps",
     "BLOCKED": "Blocked",
     "NO_NOTIFICATIONS": "Bạn chưa có thông báo mới",
-    "ALL" : "Tất cả"
+    "ALL": "Tất cả"
   },
   "SETTINGS_PAGE": {
     "TITLE": "Cài đặt",

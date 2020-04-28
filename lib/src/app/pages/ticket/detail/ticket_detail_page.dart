@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
@@ -72,7 +74,11 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
             : ''),
         bottom: viewModel.helpdeskTicket != null
             ? PreferredSize(
-                child: Container(height: 10, color: viewModel.statusTicketColor!=null?viewModel.statusTicketColor:Colors.grey),
+                child: Container(
+                    height: 10,
+                    color: viewModel.statusTicketColor != null
+                        ? viewModel.statusTicketColor
+                        : Colors.grey),
                 preferredSize: Size(MediaQuery.of(context).size.width, 10),
               )
             : null,
@@ -135,9 +141,9 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
 //                Container(height: 0.5,color: Colors.grey[400],width: MediaQuery.of(context).size.width*0.3,),
 //                SizedBox(height: 15,),
               Html(
-                data:viewModel.helpdeskTicket.description,
+                data: viewModel.helpdeskTicket.description,
                 customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                    return baseStyle.merge(TextStyle(height: 2));
+                  return baseStyle.merge(TextStyle(height: 2));
                 },
               ),
             ],
@@ -607,16 +613,21 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
       child: StreamBuilder(
         stream: viewModel.stream,
         builder: (context, snapshot) {
-          return WillPopScope(
-            onWillPop: () async {
-              Navigator.pop(context, viewModel.ticketChanged);
-              return false;
-            },
-            child: TS24Scaffold(
-              appBar: _appBar(),
-              body: _body(),
-            ),
-          );
+          return Platform.isIOS
+              ? TS24Scaffold(
+                  appBar: _appBar(),
+                  body: _body(),
+                )
+              : WillPopScope(
+                  onWillPop: () async {
+                    Navigator.pop(context, viewModel.ticketChanged);
+                    return false;
+                  },
+                  child: TS24Scaffold(
+                    appBar: _appBar(),
+                    body: _body(),
+                  ),
+                );
         },
       ),
     );

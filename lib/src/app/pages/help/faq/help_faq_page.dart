@@ -147,7 +147,7 @@ class _FAQPageState extends State<FAQPage> {
                 'FAQ',
                 style: TextStyle(color: Colors.black87, fontSize: 16),
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: ThemePrimary.appBarColor,
               primaryColor: ThemePrimary.primaryColor,
               searchBarStateCallBack: (_) {},
               onQueryChangedCallBack: (_) {},

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ThemePrimary {
   static const primaryColor = Color(0xFFd52a26);
   // static const appBarColor = Color(0xFFECF3FD);
-  static const appBarColor = Color(0xFFFFFFFF);
+  static const appBarColor = Color(0xFF8E8E93);
   static const gradientColor = Color(0xFFc49b29);
 
   static const colorDriverApp = Color(0xFF007658);
@@ -17,11 +17,11 @@ class ThemePrimary {
   static const appBar_textTheme = TextTheme(
     title: TextStyle(
         fontFamily: primaryFontFamily,
-        color: primaryColor,
-        fontSize: 18,
+        color: Colors.white,
+        fontSize: 21,
         fontWeight: FontWeight.bold),
   );
-  static const appBar_iconTheme = IconThemeData(color: primaryColor);
+  static const appBar_iconTheme = IconThemeData(color: Colors.white);
 
   static const Color gradientStart = primaryColor;
   static const Color gradientEnd = gradientColor;

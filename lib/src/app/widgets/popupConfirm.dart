@@ -10,7 +10,7 @@ void popupConfirm({BuildContext context,String title, String desc, String yes,St
     descStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey[700]),
     animationDuration: Duration(milliseconds: 400),
     alertBorder: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(15.0),
+//      borderRadius: BorderRadius.circular(15.0),
       side: BorderSide(
         color: Colors.grey,
       ),
@@ -35,6 +35,7 @@ void popupConfirm({BuildContext context,String title, String desc, String yes,St
 //        gradient: LinearGradient(colors: [Colors.green, Colors.teal]),
         onPressed: () => Navigator.pop(context),
         width: 120,
+        radius: BorderRadius.zero,
       ),
       DialogButton(
         child: Text(
@@ -49,6 +50,7 @@ void popupConfirm({BuildContext context,String title, String desc, String yes,St
 //        ]),
         onPressed: onTap,
         width: 120,
+        radius: BorderRadius.zero,
       )
     ],
   ).show();
