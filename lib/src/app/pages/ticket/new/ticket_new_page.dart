@@ -4,6 +4,7 @@ import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/helper/utils.dart';
 import 'package:ts24care/src/app/models/helpdesk-category.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
+import 'package:ts24care/src/app/models/wk-team.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page_viewmodel.dart';
 import 'package:ts24care/src/app/theme/theme_primary.dart';
 import 'package:ts24care/src/app/widgets/ts24_add_attachment_widget.dart';
@@ -173,6 +174,52 @@ class _TicketNewPageState extends State<TicketNewPage> {
         );
       }
 
+      Widget __buildMenuSupportTeam({void onSelected(WkTeam supportTeam)}) {
+        return PopupMenuButton<WkTeam>(
+          child: Row(
+            children: <Widget>[
+              Container(
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.65,
+                  ),
+                  child: Text(
+                    viewModel.supportTeam.name.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 18, color: Colors.grey[800]),
+                  )),
+              SizedBox(
+                width: 5,
+              ),
+              Icon(
+                Icons.arrow_drop_down,
+                color: Colors.grey[600],
+              )
+            ],
+          ),
+          onSelected: onSelected,
+          itemBuilder: (BuildContext context) {
+            return viewModel.listSupportTeam.map((item) {
+              return PopupMenuItem<WkTeam>(
+                height: 50,
+                value: item,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        item.name.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }).toList();
+          },
+        );
+      }
+
       Widget __background() {
         return Container(
           color: Colors.white,
@@ -223,7 +270,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      translation.text("TICKET_NEW_PAGE.PROPERTIES"),
+                      translation.text("TICKET_NEW_PAGE.REQUIRE_SUPPORT"),
                       style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 20,
@@ -262,6 +309,45 @@ class _TicketNewPageState extends State<TicketNewPage> {
 //                      Text(viewModel.customPopupMenu.title.toString()),
 //                    ],
 //                  )),
+
+              if (viewModel.supportTeam != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+//                      Text(
+//                        translation.text("TICKET_DETAIL_PAGE.SERVICE"),
+//                        style: TextStyle(fontSize: 18, color: Colors.grey[800]),
+//                      ),
+                      __buildMenuSupportTeam(
+                          onSelected: viewModel.onSelectedTeam
+//                  viewModel.onSelectedTicketStatus(customPopupMenu.state);
+                          ),
+                      if (viewModel.errorRequest != null)
+                        Text(
+                          viewModel.errorRequest,
+                          style: TextStyle(color: Colors.red),
+                        )
+                    ],
+                  ),
+                ),
+              if (viewModel.helpDeskCategory != null)
+                Container(
+                  padding: EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        translation.text("TICKET_NEW_PAGE.PROPERTIES"),
+                        style: TextStyle(
+                            color: Colors.grey[800],
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),
               if (viewModel.helpDeskCategory != null)
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
@@ -283,7 +369,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
                         )
                     ],
                   ),
-                )
+                ),
             ],
           ),
         );

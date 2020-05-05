@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:ts24care/src/app/app_handle_ticket_created.dart';
 import 'package:ts24care/src/app/app_handler_push_notification.dart';
+import 'package:ts24care/src/app/models/ticket_status_shared_preference.dart';
 import 'package:ts24care/src/app/provider/api.dart';
 
 final LocalStorage localStorage = new LocalStorage("localStorage");
@@ -41,8 +42,10 @@ const emptyState = {
   'assetImage': AssetImage('assets/images/empty.png'),
   'assetPath': 'assets/images/empty.png',
 };
-const String version = "1.0.5";
+const String version = "1.0.10";
 
 Api api = new Api();
 HandleTicketStatus handleTicketStatus = HandleTicketStatus();
 HandlerPushNotification handlerPushNotification = HandlerPushNotification();
+SharedPreferencesTicketStatus sharedPreferencesTicketStatus =
+    SharedPreferencesTicketStatus();

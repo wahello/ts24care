@@ -12,6 +12,7 @@ class TabsPageViewModel extends ViewModelBase {
 
   TabsPageViewModel() {
     controller = PageController();
+    onLoadTicketStatus();
   }
   onTap(int index) {
     menu = Menu.tabMenu[index];
@@ -58,5 +59,11 @@ class TabsPageViewModel extends ViewModelBase {
 
   onTapChat() {
     Navigator.pushNamed(context, HelpChatPage.routeName);
+  }
+
+  onLoadTicketStatus() async {
+    var _listStatus = await api.getStatusTicket();
+    if (_listStatus.length > 0)
+      sharedPreferencesTicketStatus.setTicketStatus(_listStatus);
   }
 }

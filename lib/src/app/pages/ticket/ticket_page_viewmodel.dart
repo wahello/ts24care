@@ -179,7 +179,7 @@ class TicketPageViewModel extends ViewModelBase {
     });
   }
 
-  onLoadStatusTicket() async {
+  onLoadStatusTicket(){
     listStatusTicket.clear();
     listStatusTicket.add(CustomPopupMenu(
         id: 0,
@@ -187,7 +187,7 @@ class TicketPageViewModel extends ViewModelBase {
         title: translation.text("TICKET_PAGE.STATUS_ALL"),
         state: MenuStatusState.ALL));
     int count = 0;
-    var _listStatus = await api.getStatusTicket();
+    var _listStatus = sharedPreferencesTicketStatus.getTicketStatus();
     if (_listStatus.length > 0)
       _listStatus.forEach((status) {
         listStatusTicket.add(CustomPopupMenu(

@@ -124,7 +124,7 @@ class _DashboardState extends State<Dashboard> {
                       animation: true,
                       percent: viewModel.percentTicketDone / 100,
                       center: Text(
-                        "${viewModel.percentTicketDone.round()}%",
+                        "${viewModel.percentTicketDone == 0 ? 0 : viewModel.percentTicketDone.round()}%",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16.0),
                       ),
@@ -325,16 +325,13 @@ class _DashboardState extends State<Dashboard> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 15),
 //            decoration: BoxDecoration(image: decorationImageBackground()),
-          decoration: BoxDecoration(
-            color: ThemePrimary.backgroundPrimaryColor
+            decoration:
+                BoxDecoration(color: ThemePrimary.backgroundPrimaryColor),
           ),
-          ),
-
           SingleChildScrollView(
             child: Container(
               constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height * 0.9),
-
               margin: EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: <Widget>[

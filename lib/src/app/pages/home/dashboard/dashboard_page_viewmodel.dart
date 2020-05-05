@@ -6,6 +6,7 @@ import 'package:ts24care/src/app/models/ticketStatistic.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:ts24care/src/app/models/ts24_product_category.dart';
 import 'package:ts24care/src/app/pages/tabs/tabs_page_viewmodel.dart';
+import 'package:validators/sanitizers.dart';
 
 class DashboardPageViewModel extends ViewModelBase {
   DashboardPageViewModel() {
@@ -20,7 +21,6 @@ class DashboardPageViewModel extends ViewModelBase {
   RenderBox referenceBox;
   GlobalKey paintKey = GlobalKey();
   bool isShowCustomPainter = true;
-
 
   TicketStatistic ticketObjectForPainter;
   String messageTooltip = "";
@@ -55,7 +55,7 @@ class DashboardPageViewModel extends ViewModelBase {
   TicketStatistic ticketStatistic = TicketStatistic(
       category: "", ticketCount: 0, ticketsAvgTime: 0, ticketsDone: 0);
 
-  double percentTicketDone = 0.0;
+  double percentTicketDone = 0;
   final GlobalKey keyTooltip = GlobalKey();
 
   void onRefresh() {
@@ -68,7 +68,7 @@ class DashboardPageViewModel extends ViewModelBase {
 //    updateIsShowCustomPainter();
   }
 
-  void updateIsShowCustomPainter(){
+  void updateIsShowCustomPainter() {
     isShowCustomPainter = false;
     this.updateState();
   }
@@ -129,11 +129,11 @@ class DashboardPageViewModel extends ViewModelBase {
 //    print(listData[0].category);
 //    print(listData[0].xCatColor);
 //    print(listData[0].ticketsAvgTime);
-
+    // if (listData.length > 0) {
     for (var i = 0; i < listData.length; i++) {
       String categoryName = listData[i].category;
       String xCatColor = listData[i].xCatColor.toString();
-      int ticketCount = listData[i].ticketCount;
+      var ticketCount = listData[i].ticketCount;
       dataChart.add(TicketStatistic(
           index: i,
           ticketCount: ticketCount,
@@ -149,6 +149,7 @@ class DashboardPageViewModel extends ViewModelBase {
     seriesList = _createChartData();
     isSpinnerInText = false;
     this.updateState();
+    // }
   }
 
   Future<void> getStatisticTicket({int month}) async {
@@ -156,11 +157,14 @@ class DashboardPageViewModel extends ViewModelBase {
       TicketStatistic data = await api.statisticTicket(month);
 //      data = null;
       if (data != null) {
-        double timeAvgToInt = data.ticketsAvgTime;
+        var timeAvgToInt = data.ticketsAvgTime;
         ticketStatistic.ticketsDone = data.ticketsDone;
         ticketStatistic.ticketCount = data.ticketCount;
-        ticketStatistic.ticketsAvgTime = timeAvgToInt.round();
-        percentTicketDone = (data.ticketsDone * 100) / data.ticketCount;
+        ticketStatistic.ticketsAvgTime =
+            timeAvgToInt == 0 ? timeAvgToInt : timeAvgToInt.round();
+
+        if (data.ticketCount > 0)
+          percentTicketDone = (data.ticketsDone * 100) / data.ticketCount;
         print("percent");
         print(percentTicketDone / 100);
         this.updateState();

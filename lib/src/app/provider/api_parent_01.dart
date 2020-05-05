@@ -19,6 +19,7 @@ import 'package:ts24care/src/app/models/res-partner.dart';
 import 'package:ts24care/src/app/models/res-users.dart';
 import 'package:ts24care/src/app/models/ticketStatistic.dart';
 import 'package:ts24care/src/app/models/ts24proAccount.dart';
+import 'package:ts24care/src/app/models/wk-team.dart';
 import 'package:validators/sanitizers.dart';
 import 'api_master.dart';
 import 'package:http/http.dart' as http;
@@ -487,11 +488,16 @@ class Api1 extends ApiMaster {
 
   ///Lấy danh sách category của ticket
   ///
-  Future<List<HelpDeskCategory>> getListCategoryOfTicket() async {
+  Future<List<HelpDeskCategory>> getListCategoryOfTicket(
+      {int teamId = 0}) async {
     await this.authorization();
     body = new Map();
     body["fields"] = ["name", "id"];
-
+    if (teamId != 0)
+      body["domain"] = [
+        ['default_team_id', '=', teamId],
+        ['x_mobile_active', '=', true],
+      ];
     var params = convertSerialize(body);
     List<HelpDeskCategory> listResult = new List();
     return http
@@ -505,6 +511,33 @@ class Api1 extends ApiMaster {
         if (list.length > 0)
           listResult =
               list.map((item) => HelpDeskCategory.fromJson(item)).toList();
+      }
+      return listResult;
+    }).catchError((error) {
+      return listResult;
+    });
+  }
+
+  ///Lấy danh sách team của ticket
+  ///
+  Future<List<WkTeam>> getListTeamsOfTicket() async {
+    await this.authorization();
+    body = new Map();
+    body["fields"] = ["name", "id"];
+    body["domain"] = [
+      ['x_mobile_active', '=', true],
+    ];
+    var params = convertSerialize(body);
+    List<WkTeam> listResult = new List();
+    return http
+        .get('${this.api}/search_read/wk.team?$params', headers: this.headers)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        this.updateCookie(response);
+        List list = json.decode(response.body);
+        print(list);
+        if (list.length > 0)
+          listResult = list.map((item) => WkTeam.fromJson(item)).toList();
       }
       return listResult;
     }).catchError((error) {

@@ -15,6 +15,7 @@ import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:ts24care/src/app/models/ir-attachment.dart';
 import 'package:ts24care/src/app/models/item_attachment_model.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
+import 'package:ts24care/src/app/models/wk-team.dart';
 import 'package:ts24care/src/app/widgets/ts24CameraWidget/ts24_camera_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
 import 'package:ts24care/src/app/app_localizations.dart';
@@ -24,27 +25,53 @@ class TicketNewPageViewModel extends ViewModelBase {
   CustomPopupMenu customPopupMenu;
   List<ItemAddAttachmentModel> listAttachmentModel = List();
   List<HelpDeskCategory> listHelpDeskCategory = List();
+  List<WkTeam> listSupportTeam = List();
+  WkTeam supportTeam;
   HelpDeskCategory helpDeskCategory;
   TextEditingController subjectTextEditingController = TextEditingController();
   TextEditingController descriptionEditingController = TextEditingController();
   List<String> listImage = List();
   String errorService;
   String errorSubject;
+  String errorRequest;
   TicketNewPageViewModel() {
     customPopupMenu = CustomPopupMenu.listTicketStatus[0];
     subjectTextEditingController.addListener(() => {isValidSubject()});
     listHelpDeskCategory.add(HelpDeskCategory(
         id: -1, name: translation.text("TICKET_NEW_PAGE.SELECT_SERVICE")));
-    onLoad();
+    listSupportTeam.add(WkTeam(
+        id: -1, name: translation.text("TICKET_NEW_PAGE.SELECT_REQUIRE")));
+//    onLoad();
+    onLoadSupportTeam();
   }
-  onLoad() async {
+  onLoad(int teamId) async {
     listHelpDeskCategory.removeRange(1, listHelpDeskCategory.length);
-    var _listHelpDeskCategory = await api.getListCategoryOfTicket();
+    var _listHelpDeskCategory =
+        await api.getListCategoryOfTicket(teamId: teamId);
     if (_listHelpDeskCategory != null) {
       listHelpDeskCategory.addAll(_listHelpDeskCategory);
       helpDeskCategory = listHelpDeskCategory[0];
       this.updateState();
     }
+  }
+
+  onLoadSupportTeam() async {
+    var _teams = await api.getListTeamsOfTicket();
+    if (_teams.length > 0) {
+      this.listSupportTeam.addAll(_teams);
+      supportTeam = listSupportTeam[0];
+//      onLoad(_teams[1].id);
+    }
+    this.updateState();
+  }
+
+  onSelectedTeam(WkTeam team) {
+    if (team.id != -1) {
+      errorRequest = '';
+      supportTeam = team;
+      onLoad(supportTeam.id);
+    }
+    this.updateState();
   }
 
   onTapBack() {
@@ -203,16 +230,16 @@ class TicketNewPageViewModel extends ViewModelBase {
   }
 
   onSelectedHelpDeskCategory(HelpDeskCategory helpDeskCategory) {
-    this.helpDeskCategory = helpDeskCategory;
-    if (helpDeskCategory.id != -1)
+    if (helpDeskCategory.id != -1) {
       errorService = '';
-    else
-      errorService = 'Bạn chưa chọn dịch vụ';
+      this.helpDeskCategory = helpDeskCategory;
+    }
+//      errorService = 'Bạn chưa chọn dịch vụ';
     this.updateState();
   }
 
   onSend() async {
-    if (isValidSubject() && errorService == '') {
+    if (isValidSubject() && supportTeam.id != -1 && helpDeskCategory.id != -1) {
       LoadingDialog.showLoadingDialog(
           context, translation.text("TICKET_NEW_PAGE.CREATING"));
       String _description = parse(descriptionEditingController.text).outerHtml;
@@ -225,6 +252,7 @@ class TicketNewPageViewModel extends ViewModelBase {
           stageId: customPopupMenu.id,
           createUid: customer.id,
           writeUid: customer.id,
+          teamId: supportTeam.id,
           categoryId: helpDeskCategory.id != -1 ? helpDeskCategory.id : null);
       List<int> _listAttachment =
           listAttachmentModel.map((model) => model.id).toList();
@@ -244,9 +272,17 @@ class TicketNewPageViewModel extends ViewModelBase {
             context, translation.text("TICKET_NEW_PAGE.CREATE_FAIL"));
         print("That bai");
       }
-    } else if (errorService != '') {
-      errorService = 'Bạn chưa chọn dịch vụ';
-      this.updateState();
+    } else {
+      if (errorService != '') {
+        errorService =
+            translation.text("TICKET_NEW_PAGE.NOT_SELECTED_SERVICES");
+
+        if (errorRequest != '') {
+          errorRequest =
+              translation.text("TICKET_NEW_PAGE.NOT_SELECTED_REQUIRE");
+        }
+        this.updateState();
+      }
     }
   }
 
