@@ -14,18 +14,19 @@ final LocalStorage localStorage = new LocalStorage("localStorage");
 
 // const String client_id = '9QGhjXbApupARfpGGsskXUTQjoRD35';
 // const String client_secret = '0wGQ7JkaLT68YMUQJFyUDKLsZutwbC';
-//
+
 // const String password_client_id = 'aeCf27wNJwtTrpO8v59OZNDcjPESyf';
 // const String password_client_secret = 'SlcSGww1jUZPBEYFRPIMLHzDPcyv6z';
 //
 String domainApi = "https://web.ts24.com.vn";
-String domainApiTS24pro = "https://www.ts24.com.vn/ts24id_ws/IDTS24.rest";
 
 const String client_id = 'DwRtKASexsN40ucqk9LXcGcBcXzeEq';
 const String client_secret = 'AOmu1kyDoPtvx2xveu36YoYtzqeD8z';
 
 const String password_client_id = '3Ki6VT43wAjHZRI05A9SNC7JZdkR03';
 const String password_client_secret = '5boqANLglN9TVxNEaPYwy2Hk3kNOOd';
+
+String domainApiTS24pro = "https://www.ts24.com.vn/ts24id_ws/IDTS24.rest";
 
 final String ggKey = "AIzaSyCjB1Kh7OstaDns8ie6uPysWEWa_vwS3iw";
 
@@ -42,7 +43,7 @@ const emptyState = {
   'assetImage': AssetImage('assets/images/empty.png'),
   'assetPath': 'assets/images/empty.png',
 };
-const String version = "1.0.10";
+const String version = "1.0.11";
 
 Api api = new Api();
 HandleTicketStatus handleTicketStatus = HandleTicketStatus();

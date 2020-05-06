@@ -58,7 +58,11 @@
     "CREATE_SUCCESS": "Create a support ticket successfully.",
     "CREATE_FAIL": "Failed to create support ticket, please try again.",
     "INPUT_TITLE": "Title",
-    "ATTACH_FILE": "Attach the file"
+    "ATTACH_FILE": "Attach the file",
+    "REQUIRE_SUPPORT": "Require to be supported",
+    "SELECT_REQUIRE": "Select request",
+    "NOT_SELECTED_SERVICES": "You haven't selected the service",
+    "NOT_SELECTED_REQUIRE": "You haven't selected the request"
   },
   "LOGIN_PAGE": {
     "WELCOME_TITLE": "Welcome to\nTS24care!",

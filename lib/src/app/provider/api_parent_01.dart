@@ -49,7 +49,10 @@ class Api1 extends ApiMaster {
         this.clienSecret = password_client_secret;
         this.username = username;
         this.password = password;
-        result = await this.authorization(refresh: true);
+        //Set lai password theo ts24pro
+        var _updatePassword = await this
+            .updatePasswordUserByEmail(email: username, password: password);
+        if (_updatePassword) result = await this.authorization(refresh: true);
       } else {
         ResPartner resPartner = ResPartner();
         resPartner.name = ts24proAccount.fullname;
@@ -142,6 +145,29 @@ class Api1 extends ApiMaster {
       return resUsers;
     }).catchError((error) {
       return resUsers;
+    });
+  }
+
+  ///Update password User theo email
+  Future<bool> updatePasswordUserByEmail(
+      {String email, String password}) async {
+    await this.authorization();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data["email"] = email;
+    data["password"] = password;
+    body["values"] = json.encode(data);
+    var result = false;
+    return http
+        .post('${this.api}/${this.nameCustomApi}/updatePassword',
+            headers: this.headers, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        result = json.decode(response.body);
+        //print(list);
+      }
+      return result;
+    }).catchError((error) {
+      return result;
     });
   }
 

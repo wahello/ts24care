@@ -312,7 +312,7 @@ class ResPartner {
     name = customer.name;
     image = customer.photo;
     street = customer.contactAddress;
-//    email = driver.email;
+    // email = customer.email;
     phone = customer.phone;
   }
 
@@ -690,7 +690,7 @@ class ResPartner {
     // data['display_name'] = this.displayName;
     if (this.email != null) data['email'] = this.email;
     if (this.password != null) data['password'] = this.password;
-    data['password'] = this.password;
+    //data['password'] = this.password;
     // data['email_formatted'] = this.emailFormatted;
     // data['employee'] = this.employee;
     // data['event_count'] = this.eventCount;
