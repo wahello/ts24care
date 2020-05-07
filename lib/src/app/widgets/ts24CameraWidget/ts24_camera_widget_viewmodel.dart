@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:video_player/video_player.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 class TS24CameraWidgetViewModel extends ViewModelBase {
-  List cameras;
+  List<CameraDescription> cameras;
   CameraController controller;
   int selectedCameraIndex;
   String imagePath;
@@ -23,8 +24,8 @@ class TS24CameraWidgetViewModel extends ViewModelBase {
 
   bool isRecorderStop = true;
   bool isRecorderStarting = false;
-
-
+  // bool mounted = false;
+  TS24CameraWidgetViewModel();
   // chay I dung I Flat
   void fetchCameras(bool mounted) {
     availableCameras().then((availableCameras) {
@@ -42,11 +43,39 @@ class TS24CameraWidgetViewModel extends ViewModelBase {
     });
   }
 
+  // void onNewCameraSelected(CameraDescription cameraDescription) async {
+  //   if (controller != null) {
+  //     await controller.dispose();
+  //   }
+  //   controller = CameraController(
+  //     cameraDescription,
+  //     ResolutionPreset.max,
+  //     enableAudio: enableAudio,
+  //   );
+  //   // If the controller is updated then update the UI.
+  //   controller.addListener(() {
+  //     if (mounted) this.updateState();
+  //     if (controller.value.hasError) {
+  //       print('Camera error ${controller.value.errorDescription}');
+  //     }
+  //   });
+
+  //   try {
+  //     await controller.initialize();
+  //   } on CameraException catch (e) {
+  //     print(e);
+  //   }
+
+  //   if (mounted) {
+  //     this.updateState();
+  //   }
+  // }
+
   Future initCameraController(CameraDescription camera, bool mounted) async {
     if (controller != null) {
       await controller.dispose();
     }
-    controller = CameraController(camera, ResolutionPreset.medium);
+    controller = CameraController(camera, ResolutionPreset.max);
     controller.addListener(() {
       if (mounted) {
         this.updateState();
@@ -92,27 +121,27 @@ class TS24CameraWidgetViewModel extends ViewModelBase {
     initCameraController(selectedCamera, mounted);
   }
 
-
-  void updateTitleCameraAndPicture(String state){
-    if(state == 'picture'){
-       isTakePicture = true;
-       isCamera = false;
-       this.updateState();
+  void updateTitleCameraAndPicture(String state) {
+    if (state == 'picture') {
+      isTakePicture = true;
+      isCamera = false;
+      this.updateState();
     }
-    if(state == 'camera'){
+    if (state == 'camera') {
       isTakePicture = false;
       isCamera = true;
       this.updateState();
     }
-    if(state == 'swipe'){
+    if (state == 'swipe') {
       isTakePicture = !isTakePicture;
       isCamera = !isCamera;
       this.updateState();
     }
-
   }
 
-  void onTakePictureButtonPressed(bool mounted,) {
+  void onTakePictureButtonPressed(
+    bool mounted,
+  ) {
     print('picture');
     takePicture().then((String filePath) {
       if (mounted) {
@@ -122,7 +151,7 @@ class TS24CameraWidgetViewModel extends ViewModelBase {
         this.updateState();
         if (filePath != null) {
           print('Picture saved to $filePath');
-          Navigator.pop(context,filePath);
+          Navigator.pop(context, filePath);
         }
       }
     });
@@ -156,7 +185,6 @@ class TS24CameraWidgetViewModel extends ViewModelBase {
 
 //  recoder
   void onVideoRecordButtonPressed(bool mounted) {
-
     isRecorderStarting = true;
     isRecorderStop = false;
 
@@ -166,11 +194,10 @@ class TS24CameraWidgetViewModel extends ViewModelBase {
     });
   }
 
-  void toogleFlatRunCamera(){
+  void toogleFlatRunCamera() {
     isRecorderStarting = !isRecorderStarting;
     this.updateState();
   }
-
 
   Future<String> startVideoRecording() async {
     if (!controller.value.isInitialized) {
@@ -197,6 +224,7 @@ class TS24CameraWidgetViewModel extends ViewModelBase {
     }
     return filePath;
   }
+
   Future<void> stopVideoRecording() async {
     isRecorderStarting = false;
     isRecorderStop = true;
@@ -214,8 +242,6 @@ class TS24CameraWidgetViewModel extends ViewModelBase {
 
 //    await _startVideoPlayer();
   }
-
-
 
   void updateIsRecorderStop() {
     isRecorderStop = !isRecorderStop;

@@ -222,13 +222,13 @@ class _TicketNewPageState extends State<TicketNewPage> {
 
       Widget __background() {
         return Container(
-          color: Colors.white,
           width: MediaQuery.of(context).size.width,
-//          height: MediaQuery.of(context).size.height * 0.4,
+          height: 250,
           child: Column(
             children: <Widget>[
+              SizedBox(height: 15,),
               Container(
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.only(left: 15,right: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -264,8 +264,9 @@ class _TicketNewPageState extends State<TicketNewPage> {
                   ],
                 ),
               ),
+              SizedBox(height: 20,),
               Container(
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.only(left: 15,right: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -334,7 +335,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
                 ),
               if (viewModel.helpDeskCategory != null)
                 Container(
-                  padding: EdgeInsets.all(15),
+                  padding: EdgeInsets.only(left: 15,right: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -421,130 +422,100 @@ class _TicketNewPageState extends State<TicketNewPage> {
               height: 1,
               color: Colors.grey[300],
             ),
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Column(
-                children: <Widget>[
-//                  Container(
-//                    width: MediaQuery.of(context).size.width,
-//                    child: Row(
-//                      crossAxisAlignment: CrossAxisAlignment.center,
-//                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                      children: <Widget>[
-//                        Row(
-//                          children: <Widget>[
-//                            Text(
-//                              "Trả lời công khai",
-//                              style: TextStyle(
-//                                  color: ThemePrimary.primaryColor,
-//                                  fontSize: 16,
-//                                  fontWeight: FontWeight.bold),
-//                            ),
-//                            IconButton(
-//                              icon: Icon(
-//                                Icons.arrow_drop_down,
-//                                color: ThemePrimary.primaryColor,
-//                              ),
-//                              onPressed: () {},
-//                            )
-//                          ],
-//                        ),
-//                        Row(
-//                          children: <Widget>[
-//                            Icon(
-//                              Icons.add,
-//                              color: ThemePrimary.primaryColor,
-//                              size: 16,
-//                            ),
-//                            Text(
-//                              "CC",
-//                              style: TextStyle(
-//                                  color: ThemePrimary.primaryColor,
-//                                  fontSize: 16,
-//                                  fontWeight: FontWeight.bold),
-//                            )
-//                          ],
-//                        )
-//                      ],
-//                    ),
-//                  ),
-                  SizedBox(
-                    height: 14,
-                  ),
-                  TextField(
-                    controller: viewModel.descriptionEditingController,
-                    decoration: InputDecoration(
-                      hintText:
-                          translation.text("TICKET_NEW_PAGE.HINT_INPUT_TEXT"),
-                      hintStyle: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: viewModel.listAttachmentModel.length > 0 ? 3 : 7,
-                  ),
-                  if (viewModel.listAttachmentModel.length > 0)
-                    TS24AddAttachmentWidget(
-                      listIdAttachment: viewModel.listAttachmentModel,
-                      onCallback: (_) {
-                        viewModel.updateState();
-                      },
-                    ),
-                  if (viewModel.listAttachmentModel.length > 0)
+            Expanded(
+              child: Container(
+//                color: Colors.red,
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: Column(
+                  children: <Widget>[
                     SizedBox(
-                      height: 10,
+                      height: 14,
                     ),
-//                  Container(height: 1,color: Colors.grey,width: MediaQuery.of(context).size.width,),
-                  Container(
-                    child: Text(
-                      translation.text("TICKET_NEW_PAGE.ATTACH_FILE"),
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    alignment: Alignment.centerLeft,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
+                    Expanded(
+                      child: ListView(
                         children: <Widget>[
-                          ___buildMenuIcon(
-                              iconData: Icons.attach_file,
-                              onSelected: (customPopupMenu) {
-                                viewModel.onSelectedAttachment(
-                                    customPopupMenu.state);
-                              }),
-                          SizedBox(
-                            width: 10,
+                          TextField(
+                              controller: viewModel.descriptionEditingController,
+                              decoration: InputDecoration(
+                                hintText:
+                                translation.text("TICKET_NEW_PAGE.HINT_INPUT_TEXT"),
+                                hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                                border: InputBorder.none,
+                              ),
+                              keyboardType: TextInputType.multiline,
+                              textInputAction: TextInputAction.newline,
+                              maxLines: null//viewModel.listAttachmentModel.length > 0 ? 3 : 7,
                           ),
-                          IconButton(
-                            onPressed: () {
-                              viewModel.onSelectedCamera();
-                            },
-                            icon: Icon(
-                              Icons.camera_alt,
-                              color: ThemePrimary.primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
+
+//                  Container(height: 1,color: Colors.grey,width: MediaQuery.of(context).size.width,),
+
+                        ],
+                      ),
+                    ),
+                    if (viewModel.listAttachmentModel.length > 0)
+                      TS24AddAttachmentWidget(
+                        listIdAttachment: viewModel.listAttachmentModel,
+                        onCallback: (_) {
+                          viewModel.updateState();
+                        },
+                      ),
+                    if (viewModel.listAttachmentModel.length > 0)
+                      SizedBox(
+                        height: 10,
+                      ),
+                    Container(
+                      child: Text(
+                        translation.text("TICKET_NEW_PAGE.ATTACH_FILE"),
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              ___buildMenuIcon(
+                                  iconData: Icons.attach_file,
+                                  onSelected: (customPopupMenu) {
+                                    viewModel.onSelectedAttachment(
+                                        customPopupMenu.state);
+                                  }),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  viewModel.onSelectedCamera();
+                                },
+                                icon: Icon(
+                                  Icons.camera_alt,
+                                  color: ThemePrimary.primaryColor,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
 //                          IconButton(
 //                            icon: Icon(Icons.tag_faces),
 //                          ),
-                          SizedBox(
-                            width: 10,
+                              SizedBox(
+                                width: 10,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
 //                      IconButton(
 //                        icon: Icon(Icons.thumb_up),
 //                      )
-                    ],
-                  )
-                ],
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             )
           ],
@@ -561,8 +532,13 @@ class _TicketNewPageState extends State<TicketNewPage> {
                     AppBar().preferredSize.height,
                 child: Column(
                   children: <Widget>[
-                    Expanded(child: __background()),
-                    Container(child: __inputText())
+                    Container(
+                        child: __background()),
+                    Container(
+                      height: MediaQuery.of(context).size.height -
+                          MediaQuery.of(context).padding.top -
+                          AppBar().preferredSize.height - 250,
+                        child: __inputText())
                   ],
                 ),
               )

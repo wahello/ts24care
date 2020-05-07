@@ -13,6 +13,7 @@ import 'package:ts24care/src/app/widgets/shimmer/shimmer_item_ticket.dart';
 import 'package:ts24care/src/app/widgets/ts24SearchBarWidget/ts24_search_bar_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_button_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24_utils_widget.dart';
+import 'package:ts24care/src/app/models/wk-team.dart';
 
 class TicketsPage extends StatefulWidget {
   static const String routeName = "/ticketsPage";
@@ -274,10 +275,13 @@ class _TicketsPageState extends State<TicketsPage>
 //              ),
             Container(
                 constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.65,
+                  maxWidth: MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width * 0.35 : MediaQuery.of(context).size.width * 0.18,
+                  minWidth: MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width * 0.35 : MediaQuery.of(context).size.width * 0.18,
                 ),
                 child: Text(
-                  viewModel.helpDeskCategory.name.toString(),
+                  viewModel.helpDeskCategory.id == -1
+                      ? translation.text("TICKET_PAGE.SELECT")
+                      : viewModel.helpDeskCategory.name.toString(),
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       color: Colors.grey[800],
@@ -299,6 +303,8 @@ class _TicketsPageState extends State<TicketsPage>
         //offset: Offset(50, viewModel.selectedLanguage.id == 0 ? 50 : 100),
         itemBuilder: (BuildContext context) {
           return viewModel.listHelpDeskCategory.map((item) {
+            if (item.id == -1)
+              item.name = translation.text("TICKET_PAGE.SELECT");
             return PopupMenuItem<HelpDeskCategory>(
               height: 50,
               value: item,
@@ -324,6 +330,60 @@ class _TicketsPageState extends State<TicketsPage>
 //                    SizedBox(
 //                      width: 10,
 //                    ),
+                  Expanded(
+                    child: Text(
+                      item.name.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                    ),
+                  )
+                ],
+              ),
+            );
+          }).toList();
+        },
+      );
+    }
+
+    Widget __buildMenuSupportTeam({void onSelected(WkTeam supportTeam)}) {
+      return PopupMenuButton<WkTeam>(
+        child: Row(
+          children: <Widget>[
+            Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width * 0.35 : MediaQuery.of(context).size.width * 0.18,
+                  minWidth: MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width * 0.35 : MediaQuery.of(context).size.width * 0.18,
+                ),
+                child: Text(
+                  viewModel.supportTeam.id == -1
+                      ? translation.text("TICKET_PAGE.SELECT")
+                      : viewModel.supportTeam.name.toString(),
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[800],
+                      fontWeight: FontWeight.w600),
+                )),
+            SizedBox(
+              width: 5,
+            ),
+            Icon(
+              Icons.arrow_drop_down,
+              color: Colors.grey[800],
+            )
+          ],
+        ),
+        onSelected: onSelected,
+        itemBuilder: (BuildContext context) {
+          return viewModel.listSupportTeam.map((item) {
+            if (item.id == -1)
+              item.name = translation.text("TICKET_PAGE.SELECT");
+            return PopupMenuItem<WkTeam>(
+              height: 50,
+              value: item,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
                   Expanded(
                     child: Text(
                       item.name.toString(),
@@ -447,140 +507,190 @@ class _TicketsPageState extends State<TicketsPage>
             drawer: Drawer(
               child: SafeArea(
                 top: true,
-                child: Container(
-                  color: ThemePrimary.backgroundPrimaryColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
+                child: LayoutBuilder(
+                  builder: (context, constraint) {
+                    return SingleChildScrollView(
+                      child: Container(
+                        color: ThemePrimary.backgroundPrimaryColor,
+                        constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
 //                      SizedBox(
 //                        height: 100,
 //                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 15, right: 15),
-                        height: AppBar().preferredSize.height,
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width,
-                        color: ThemePrimary.appBarColor,
-                        child: Text(
-                          translation.text("TICKET_PAGE.SORT_TICKETS"),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 15, right: 15),
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 50,
+                            Container(
+                              padding: EdgeInsets.only(left: 15, right: 15),
+                              height: AppBar().preferredSize.height,
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width,
+                              color: ThemePrimary.appBarColor,
+                              child: Text(
+                                translation.text("TICKET_PAGE.SORT_TICKETS"),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                             Container(
-                              height: 45,
-                              padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                // borderRadius: BorderRadius.circular(10)
-                              ),
-                              child: Row(
+                              padding: EdgeInsets.only(left: 15, right: 15),
+                              child: Column(
                                 children: <Widget>[
-                                  Text(
-                                    "${translation.text("TICKET_PAGE.CATEGORY")} :",
-                                    style: TextStyle(
-                                        color: Colors.grey[800],
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
+                                  SizedBox(
+                                    height: 50,
+                                  ),
+                                  Container(
+                                    height: 45,
+                                    padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      // borderRadius: BorderRadius.circular(10)
+                                    ),
+                                    child: Row(
+                                      children: <Widget>[
+//                                  Text(
+//                                    "${translation.text("TICKET_PAGE.CATEGORY")} :",
+//                                    style: TextStyle(
+//                                        color: Colors.grey[800],
+//                                        fontSize: 16,
+//                                        fontWeight: FontWeight.w600),
+//                                  ),
+                                        Text(
+                                          translation.text(
+                                              "${translation.text("TICKET_PAGE.REQUIRE")} :"),
+                                          style: TextStyle(
+                                              color: Colors.grey[800],
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        if (viewModel.supportTeam != null)
+                                          __buildMenuSupportTeam(
+                                              onSelected: viewModel.onSelectedTeam
+//                  viewModel.onSelectedTicketStatus(customPopupMenu.state);
+                                          ),
+//                          Icon(Icons.arrow_drop_down)
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(
-                                    width: 10,
+                                    height: 15,
                                   ),
-                                  __buildMenuCategory(
-                                      onSelected: (helpDeskCategory) {
-                                    viewModel.onSelectedHelpDeskCategory(
-                                        helpDeskCategory);
-                                  }),
+                                  Container(
+                                    height: 45,
+                                    padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      // borderRadius: BorderRadius.circular(10)
+                                    ),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(
+                                          "${translation.text("TICKET_PAGE.SERVICE")} :",
+                                          style: TextStyle(
+                                              color: Colors.grey[800],
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        __buildMenuCategory(
+                                            onSelected: (helpDeskCategory) {
+                                              viewModel.onSelectedHelpDeskCategory(
+                                                  helpDeskCategory);
+                                            }),
 //                          Icon(Icons.arrow_drop_down)
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      viewModel.changeSortDate();
+                                    },
+                                    child: Container(
+                                      height: 45,
+                                      padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        // borderRadius: BorderRadius.circular(10)
+                                      ),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Text(
+                                            "${translation.text("TICKET_PAGE.DATE")}:",
+                                            style: TextStyle(
+                                                color: Colors.grey[800],
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            viewModel.isAscendingDate
+                                                ? translation
+                                                .text("TICKET_PAGE.ASCENDING")
+                                                : translation
+                                                .text("TICKET_PAGE.DECREASE"),
+                                            style: TextStyle(
+                                                color: Colors.grey[800],
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Icon(
+                                            viewModel.isAscendingDate
+                                                ? Icons.arrow_upward
+                                                : Icons.arrow_downward,
+                                            size: 18,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 100),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        SizedBox(),
+                                        TS24Button(
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: ThemePrimary.primaryColor),
+                                          onTap: () {
+                                            viewModel.onTapHandleSettingSort();
+                                          },
+                                          width: 80,
+                                          height: 40,
+                                          child: Text(
+                                            translation.text("TICKET_PAGE.APPLY"),
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                viewModel.changeSortDate();
-                              },
-                              child: Container(
-                                height: 45,
-                                padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  // borderRadius: BorderRadius.circular(10)
-                                ),
-                                child: Row(
-                                  children: <Widget>[
-                                    Text(
-                                      "${translation.text("TICKET_PAGE.DATE")}:",
-                                      style: TextStyle(
-                                          color: Colors.grey[800],
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      viewModel.isAscendingDate
-                                          ? translation
-                                              .text("TICKET_PAGE.ASCENDING")
-                                          : translation
-                                              .text("TICKET_PAGE.DECREASE"),
-                                      style: TextStyle(
-                                          color: Colors.grey[800],
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Icon(
-                                      viewModel.isAscendingDate
-                                          ? Icons.arrow_upward
-                                          : Icons.arrow_downward,
-                                      size: 18,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                SizedBox(),
-                                TS24Button(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: ThemePrimary.primaryColor),
-                                  onTap: () {
-                                    viewModel.onTapHandleSettingSort();
-                                  },
-                                  width: 80,
-                                  height: 40,
-                                  child: Text(
-                                    translation.text("TICKET_PAGE.APPLY"),
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                )
-                              ],
                             )
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
+                      ),
+                    );
+                  }
+                )
+                ,
               ),
             ),
             scaffoldKey: _scaffoldKey,

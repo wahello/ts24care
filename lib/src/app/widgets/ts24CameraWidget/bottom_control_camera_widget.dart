@@ -201,15 +201,17 @@ class _BottomControlCameraWidgetState extends State<BottomControlCameraWidget> {
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * .18,
+      //height: MediaQuery.of(context).size.height * .18,
+      constraints:
+          BoxConstraints(minHeight: MediaQuery.of(context).size.height * 0.18),
       color: Colors.black12,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
 //          _bottomTitleCameraType(),
-          SizedBox(
-            height: 15,
-          ),
+          // SizedBox(
+          //   height: 15,
+          // ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

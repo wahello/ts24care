@@ -1,6 +1,10 @@
+import 'dart:ui';
+
 import 'package:camera/camera.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:native_device_orientation/native_device_orientation.dart';
 import 'package:ts24care/src/app/core/baseViewModel.dart';
 import 'package:ts24care/src/app/widgets/ts24CameraWidget/top_control_camera_widget.dart';
 import 'package:ts24care/src/app/widgets/ts24CameraWidget/ts24_camera_widget_viewmodel.dart';
@@ -16,16 +20,33 @@ class _TS24CameraWidgetState extends State<TS24CameraWidget>
     with WidgetsBindingObserver {
   TS24CameraWidgetViewModel viewModel = TS24CameraWidgetViewModel();
 
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   // App state changed before we got the chance to initialize.
+  //   if (viewModel.controller == null ||
+  //       !viewModel.controller.value.isInitialized) {
+  //     return;
+  //   }
+  //   if (state == AppLifecycleState.inactive) {
+  //     viewModel.controller?.dispose();
+  //   } else if (state == AppLifecycleState.resumed) {
+  //     if (viewModel.controller != null) {
+  //       viewModel.onNewCameraSelected(viewModel.controller.description);
+  //     }
+  //   }
+  // }
+
   @override
   void initState() {
-    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    //viewModel.mounted = mounted;
     viewModel.fetchCameras(mounted);
+    super.initState();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-
     super.dispose();
   }
 
@@ -49,7 +70,7 @@ class _TS24CameraWidgetState extends State<TS24CameraWidget>
   @override
   Widget build(BuildContext context) {
     viewModel.context = context;
-    var mediaTool = MediaQuery.of(context);
+    // var mediaTool = MediaQuery.of(context);
 
 //    Widget _cameraPreviewWidget() {
 //      if (viewModel.controller == null ||
@@ -74,7 +95,7 @@ class _TS24CameraWidgetState extends State<TS24CameraWidget>
 //      }
 //    }
 
-    Widget _cameraPreviewWidget() {
+    Widget _cameraPreviewWidget(int turns) {
       if (viewModel.controller == null ||
           !viewModel.controller.value.isInitialized) {
         return const Text(
@@ -86,15 +107,20 @@ class _TS24CameraWidgetState extends State<TS24CameraWidget>
           ),
         );
       }
-
-      return Container(
-        width: mediaTool.size.width,
-        height: mediaTool.size.height,
+      // if (orientation == Orientation.portrait) {
+      //   return AspectRatio(
+      //     aspectRatio: viewModel.controller.value.aspectRatio,
+      //     child: CameraPreview(viewModel.controller),
+      //   );
+      // } else {
+      return RotatedBox(
+        quarterTurns: turns,
         child: AspectRatio(
           aspectRatio: viewModel.controller.value.aspectRatio,
           child: CameraPreview(viewModel.controller),
         ),
       );
+      // }
     }
 
     Widget _bottomControlWidget(viewModel) {
@@ -102,9 +128,11 @@ class _TS24CameraWidgetState extends State<TS24CameraWidget>
           left: 0,
           right: 0,
           bottom: 0,
-          child: BottomControlCameraWidget(onShoot: (){
-            viewModel.onTakePictureButtonPressed(mounted);
-          },));
+          child: BottomControlCameraWidget(
+            onShoot: () {
+              viewModel.onTakePictureButtonPressed(mounted);
+            },
+          ));
     }
 
     Widget _topControllerWidget(viewModel) {
@@ -118,18 +146,42 @@ class _TS24CameraWidgetState extends State<TS24CameraWidget>
         stream: viewModel.stream,
         builder: (context, snapshot) {
           return Scaffold(
-            body: Stack(
-              children: <Widget>[
-                GestureDetector(
-                  child: _cameraPreviewWidget(),
-                  onHorizontalDragEnd: (_) {
-//                    viewModel.updateTitleCameraAndPicture('swipe');
-                  },
+            body: NativeDeviceOrientationReader(builder: (context) {
+              NativeDeviceOrientation orientation =
+                  NativeDeviceOrientationReader.orientation(context);
+              int turns;
+              switch (orientation) {
+                case NativeDeviceOrientation.landscapeLeft:
+                  turns = -1;
+                  break;
+                case NativeDeviceOrientation.landscapeRight:
+                  turns = 1;
+                  break;
+                case NativeDeviceOrientation.portraitDown:
+                  turns = 2;
+                  break;
+                default:
+                  turns = 0;
+                  break;
+              }
+              return Container(
+                color: Colors.black,
+                alignment: Alignment.center,
+                child: Stack(
+                  children: <Widget>[
+//                   GestureDetector(
+//                     child: _cameraPreviewWidget(),
+//                     onHorizontalDragEnd: (_) {
+// //                    viewModel.updateTitleCameraAndPicture('swipe');
+//                     },
+//                   ),
+                    _cameraPreviewWidget(turns),
+                    _topControllerWidget(viewModel),
+                    _bottomControlWidget(viewModel),
+                  ],
                 ),
-                _topControllerWidget(viewModel),
-                _bottomControlWidget(viewModel),
-              ],
-            ),
+              );
+            }),
           );
         },
       ),

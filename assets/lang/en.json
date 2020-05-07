@@ -31,12 +31,15 @@
     "FILE": "File",
     "SORT": "Sort",
     "SORT_TICKETS": "Arrange support tickets",
+    "SERVICE": "Service",
     "CATEGORY": "Category",
+    "REQUIRE" :  "Require",
     "DATE": "Time",
     "ASCENDING": "ascending",
     "DECREASE": "decrease",
     "APPLY": "Apply",
-    "TICKET_NUMBER": "Ticket number"
+    "TICKET_NUMBER": "Ticket number",
+    "SELECT": "Select"
   },
   "TICKET_DETAIL_PAGE": {
     "FROM": "From",
@@ -50,7 +53,7 @@
   "TICKET_NEW_PAGE": {
     "TITLE": "Create new ticket",
     "HINT_TITLE": "Input text...",
-    "PROPERTIES": "Service needs assistance",
+    "PROPERTIES": "Service",
     "STATUS": "Status",
     "SELECT_SERVICE": "Choose service",
     "HINT_INPUT_TEXT": "Input the content here...",
@@ -59,7 +62,7 @@
     "CREATE_FAIL": "Failed to create support ticket, please try again.",
     "INPUT_TITLE": "Title",
     "ATTACH_FILE": "Attach the file",
-    "REQUIRE_SUPPORT": "Require to be supported",
+    "REQUIRE_SUPPORT": "Require",
     "SELECT_REQUIRE": "Select request",
     "NOT_SELECTED_SERVICES": "You haven't selected the service",
     "NOT_SELECTED_REQUIRE": "You haven't selected the request"

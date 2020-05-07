@@ -50,7 +50,7 @@
   "TICKET_NEW_PAGE": {
     "TITLE": "Tạo phiếu hỗ trợ mới",
     "HINT_TITLE": "Vui lòng nhập...",
-    "PROPERTIES": "Dịch vụ hỗ trợ",
+    "PROPERTIES": "Dịch vụ",
     "STATUS": "Trạng thái",
     "SELECT_SERVICE": "Chọn dịch vụ",
     "HINT_INPUT_TEXT": "Nhập nội dung tại đây...",
@@ -59,7 +59,7 @@
     "CREATE_FAIL": "Tạo phiếu hỗ trợ thất bại, vui lòng thử lại.",
     "INPUT_TITLE": "Tiêu đề",
     "ATTACH_FILE": "Đính kèm tập tin",
-    "REQUIRE_SUPPORT": "Yêu cầu hỗ trợ",
+    "REQUIRE_SUPPORT": "Yêu cầu",
     "SELECT_REQUIRE": "Chọn yêu cầu",
     "NOT_SELECTED_SERVICES": "Bạn chưa chọn dịch vụ",
     "NOT_SELECTED_REQUIRE": "Bạn chưa chọn yêu cầu"

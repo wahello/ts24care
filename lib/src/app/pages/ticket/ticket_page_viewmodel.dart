@@ -10,6 +10,7 @@ import 'package:ts24care/src/app/models/helpdesk-ticket.dart';
 import 'package:ts24care/src/app/models/item_custom_popup_menu.dart';
 import 'package:ts24care/src/app/pages/ticket/detail/ticket_detail_page.dart';
 import 'package:ts24care/src/app/pages/ticket/new/ticket_new_page.dart';
+import 'package:ts24care/src/app/models/wk-team.dart';
 
 class TicketPageViewModel extends ViewModelBase {
   List<HelpdeskTicket> listTicketFiltered = List();
@@ -40,11 +41,17 @@ class TicketPageViewModel extends ViewModelBase {
     Colors.pinkAccent,
     Colors.yellow
   ];
+
+  WkTeam supportTeam;
+  List<WkTeam> listSupportTeam = List();
   TicketPageViewModel() {
-    listHelpDeskCategory.add(HelpDeskCategory(
-        id: -1, name: translation.text("TICKET_NEW_PAGE.SELECT_SERVICE")));
+    listHelpDeskCategory.add(
+        HelpDeskCategory(id: -1, name: translation.text("TICKET_PAGE.SELECT")));
+    listSupportTeam
+        .add(WkTeam(id: -1, name: translation.text("TICKET_PAGE.SELECT")));
     helpDeskCategory = listHelpDeskCategory[0];
     onLoadListCategory();
+    onLoadSupportTeam();
     saveLocal();
     onLoadStatusTicket();
     onLoad();
@@ -59,6 +66,39 @@ class TicketPageViewModel extends ViewModelBase {
       }
     });
   }
+  onLoadSupportTeam() async {
+    listSupportTeam.removeRange(1, listSupportTeam.length);
+    var _teams = await api.getListTeamsOfTicket();
+    if (_teams.length > 0) {
+      this.listSupportTeam.addAll(_teams);
+      supportTeam = listSupportTeam[0];
+//      onLoad(_teams[1].id);
+    }
+    this.updateState();
+  }
+
+  onSelectedTeam(WkTeam team) {
+    supportTeam = team;
+    if (team.id != -1) {
+      //errorRequest = '';
+      onLoadToGetHelpDesk(supportTeam.id);
+    } else {
+      onLoadListCategory();
+    }
+    //this.updateState();
+  }
+
+  onLoadToGetHelpDesk(int teamId) async {
+    listHelpDeskCategory.removeRange(1, listHelpDeskCategory.length);
+    var _listHelpDeskCategory =
+        await api.getListCategoryOfTicket(teamId: teamId);
+    if (_listHelpDeskCategory != null) {
+      listHelpDeskCategory.addAll(_listHelpDeskCategory);
+      helpDeskCategory = listHelpDeskCategory[0];
+      this.updateState();
+    }
+  }
+
   onLoadListCategory() async {
     listHelpDeskCategory.removeRange(1, listHelpDeskCategory.length);
     var _listHelpDeskCategory = await api.getListCategoryOfTicket();
@@ -179,7 +219,7 @@ class TicketPageViewModel extends ViewModelBase {
     });
   }
 
-  onLoadStatusTicket(){
+  onLoadStatusTicket() {
     listStatusTicket.clear();
     listStatusTicket.add(CustomPopupMenu(
         id: 0,
