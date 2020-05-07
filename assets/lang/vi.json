@@ -31,12 +31,15 @@
     "FILE": "Tệp tin",
     "SORT": "Sắp xếp",
     "SORT_TICKETS": "Sắp xếp danh sách phiếu hỗ trợ",
+    "SERVICE": "Dịch vụ",
     "CATEGORY": "Danh mục",
+    "REQUIRE": "Yêu cầu",
     "DATE": "Thời gian",
     "ASCENDING": "tăng dần",
     "DECREASE": "giảm dần",
     "APPLY": "Áp dụng",
-    "TICKET_NUMBER": "Số phiếu"
+    "TICKET_NUMBER": "Số phiếu",
+    "SELECT": "Vui lòng chọn"
   },
   "TICKET_DETAIL_PAGE": {
     "FROM": "Người gửi",
