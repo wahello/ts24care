@@ -50,6 +50,7 @@ class TicketPageViewModel extends ViewModelBase {
     listSupportTeam
         .add(WkTeam(id: -1, name: translation.text("TICKET_PAGE.SELECT")));
     helpDeskCategory = listHelpDeskCategory[0];
+    supportTeam = listSupportTeam[0];
     onLoadListCategory();
     onLoadSupportTeam();
     saveLocal();

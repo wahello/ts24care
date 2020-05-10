@@ -132,15 +132,15 @@ class _TicketNewPageState extends State<TicketNewPage> {
         return PopupMenuButton<HelpDeskCategory>(
           child: Row(
             children: <Widget>[
-              Container(
-                  constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 0.65,
-                  ),
-                  child: Text(
-                    viewModel.helpDeskCategory.name.toString(),
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 18, color: Colors.grey[800]),
-                  )),
+              Expanded(
+                child: Container(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      viewModel.helpDeskCategory.name.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 18, color: Colors.grey[800]),
+                    )),
+              ),
               SizedBox(
                 width: 5,
               ),
@@ -157,7 +157,7 @@ class _TicketNewPageState extends State<TicketNewPage> {
                 height: 50,
                 value: item,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Expanded(
                       child: Text(
@@ -178,15 +178,15 @@ class _TicketNewPageState extends State<TicketNewPage> {
         return PopupMenuButton<WkTeam>(
           child: Row(
             children: <Widget>[
-              Container(
-                  constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 0.65,
-                  ),
-                  child: Text(
-                    viewModel.supportTeam.name.toString(),
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 18, color: Colors.grey[800]),
-                  )),
+              Expanded(
+                child: Container(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      viewModel.supportTeam.name.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 18, color: Colors.grey[800]),
+                    )),
+              ),
               SizedBox(
                 width: 5,
               ),
@@ -226,9 +226,11 @@ class _TicketNewPageState extends State<TicketNewPage> {
           height: 250,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Container(
-                padding: EdgeInsets.only(left: 15,right: 15),
+                padding: EdgeInsets.only(left: 15, right: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -264,9 +266,11 @@ class _TicketNewPageState extends State<TicketNewPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 40,
+              ),
               Container(
-                padding: EdgeInsets.only(left: 15,right: 15),
+                padding: EdgeInsets.only(left: 15, right: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -277,6 +281,27 @@ class _TicketNewPageState extends State<TicketNewPage> {
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                     ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    if (viewModel.supportTeam != null)
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            children: <Widget>[
+                              __buildMenuSupportTeam(
+                                  onSelected: viewModel.onSelectedTeam),
+                              if (viewModel.errorRequest != null &&
+                                  viewModel.errorRequest != '')
+                                Text(
+                                  viewModel.errorRequest,
+                                  style: TextStyle(color: Colors.red),
+                                )
+                            ],
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -310,33 +335,14 @@ class _TicketNewPageState extends State<TicketNewPage> {
 //                      Text(viewModel.customPopupMenu.title.toString()),
 //                    ],
 //                  )),
-
-              if (viewModel.supportTeam != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-//                      Text(
-//                        translation.text("TICKET_DETAIL_PAGE.SERVICE"),
-//                        style: TextStyle(fontSize: 18, color: Colors.grey[800]),
-//                      ),
-                      __buildMenuSupportTeam(
-                          onSelected: viewModel.onSelectedTeam
-//                  viewModel.onSelectedTicketStatus(customPopupMenu.state);
-                          ),
-                      if (viewModel.errorRequest != null)
-                        Text(
-                          viewModel.errorRequest,
-                          style: TextStyle(color: Colors.red),
-                        )
-                    ],
-                  ),
-                ),
+              SizedBox(
+                height: 25,
+              ),
               if (viewModel.helpDeskCategory != null)
                 Container(
-                  padding: EdgeInsets.only(left: 15,right: 15),
+                  padding: EdgeInsets.only(left: 15, right: 15),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
@@ -346,28 +352,30 @@ class _TicketNewPageState extends State<TicketNewPage> {
                             fontSize: 20,
                             fontWeight: FontWeight.w600),
                       ),
-                    ],
-                  ),
-                ),
-              if (viewModel.helpDeskCategory != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-//                      Text(
-//                        translation.text("TICKET_DETAIL_PAGE.SERVICE"),
-//                        style: TextStyle(fontSize: 18, color: Colors.grey[800]),
-//                      ),
-                      __buildMenuCategory(onSelected: (helpDeskCategory) {
-                        viewModel.onSelectedHelpDeskCategory(helpDeskCategory);
-//                  viewModel.onSelectedTicketStatus(customPopupMenu.state);
-                      }),
-                      if (viewModel.errorService != null)
-                        Text(
-                          viewModel.errorService,
-                          style: TextStyle(color: Colors.red),
-                        )
+                      SizedBox(
+                        width: 15,
+                      ),
+                      if (viewModel.helpDeskCategory != null)
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            child: Column(
+                              children: <Widget>[
+                                __buildMenuCategory(
+                                    onSelected: (helpDeskCategory) {
+                                  viewModel.onSelectedHelpDeskCategory(
+                                      helpDeskCategory);
+                                }),
+                                if (viewModel.errorService != null &&
+                                    viewModel.errorService != '')
+                                  Text(
+                                    viewModel.errorService,
+                                    style: TextStyle(color: Colors.red),
+                                  )
+                              ],
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -422,135 +430,140 @@ class _TicketNewPageState extends State<TicketNewPage> {
               height: 1,
               color: Colors.grey[300],
             ),
-            Expanded(
-              child: Container(
+            Container(
 //                color: Colors.red,
-                padding: EdgeInsets.only(left: 15, right: 15),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 14,
+              padding: EdgeInsets.only(left: 15, right: 15),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 14,
+                  ),
+                  Container(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height -
+                          MediaQuery.of(context).padding.top -
+                          AppBar().preferredSize.height -
+                          ((viewModel.listAttachmentModel.length > 0)
+                              ? 405
+                              : 330),
                     ),
-                    Expanded(
-                      child: ListView(
-                        children: <Widget>[
-                          TextField(
-                              controller: viewModel.descriptionEditingController,
-                              decoration: InputDecoration(
-                                hintText:
-                                translation.text("TICKET_NEW_PAGE.HINT_INPUT_TEXT"),
-                                hintStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                                border: InputBorder.none,
-                              ),
-                              keyboardType: TextInputType.multiline,
-                              textInputAction: TextInputAction.newline,
-                              maxLines: null//viewModel.listAttachmentModel.length > 0 ? 3 : 7,
+                    child: TextField(
+                        scrollPhysics: NeverScrollableScrollPhysics(),
+                        controller: viewModel.descriptionEditingController,
+                        decoration: InputDecoration(
+                          hintText: translation
+                              .text("TICKET_NEW_PAGE.HINT_INPUT_TEXT"),
+                          hintStyle: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
                           ),
-
-//                  Container(height: 1,color: Colors.grey,width: MediaQuery.of(context).size.width,),
-
-                        ],
-                      ),
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.multiline,
+                        textInputAction: TextInputAction.newline,
+                        maxLines:
+                            null //viewModel.listAttachmentModel.length > 0 ? 3 : 7,
+                        ),
+                  ),
+                  if (viewModel.listAttachmentModel.length > 0)
+                    TS24AddAttachmentWidget(
+                      listIdAttachment: viewModel.listAttachmentModel,
+                      onCallback: (_) {
+                        viewModel.updateState();
+                      },
                     ),
-                    if (viewModel.listAttachmentModel.length > 0)
-                      TS24AddAttachmentWidget(
-                        listIdAttachment: viewModel.listAttachmentModel,
-                        onCallback: (_) {
-                          viewModel.updateState();
-                        },
-                      ),
-                    if (viewModel.listAttachmentModel.length > 0)
-                      SizedBox(
-                        height: 10,
-                      ),
-                    Container(
-                      child: Text(
-                        translation.text("TICKET_NEW_PAGE.ATTACH_FILE"),
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      alignment: Alignment.centerLeft,
+                  if (viewModel.listAttachmentModel.length > 0)
+                    SizedBox(
+                      height: 10,
                     ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              ___buildMenuIcon(
-                                  iconData: Icons.attach_file,
-                                  onSelected: (customPopupMenu) {
-                                    viewModel.onSelectedAttachment(
-                                        customPopupMenu.state);
-                                  }),
-                              SizedBox(
-                                width: 10,
+                  Container(
+                    child: Text(
+                      translation.text("TICKET_NEW_PAGE.ATTACH_FILE"),
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    alignment: Alignment.centerLeft,
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            ___buildMenuIcon(
+                                iconData: Icons.attach_file,
+                                onSelected: (customPopupMenu) {
+                                  viewModel.onSelectedAttachment(
+                                      customPopupMenu.state);
+                                }),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                viewModel.onSelectedCamera();
+                              },
+                              icon: Icon(
+                                Icons.camera_alt,
+                                color: ThemePrimary.primaryColor,
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  viewModel.onSelectedCamera();
-                                },
-                                icon: Icon(
-                                  Icons.camera_alt,
-                                  color: ThemePrimary.primaryColor,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
 //                          IconButton(
 //                            icon: Icon(Icons.tag_faces),
 //                          ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                            ],
-                          ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        ),
 //                      IconButton(
 //                        icon: Icon(Icons.thumb_up),
 //                      )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             )
           ],
         );
       }
 
-      return SingleChildScrollView(
-        reverse: true,
-        child: (MediaQuery.of(context).orientation == Orientation.portrait)
-            ? Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height -
-                    MediaQuery.of(context).padding.top -
-                    AppBar().preferredSize.height,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                        child: __background()),
-                    Container(
-                      height: MediaQuery.of(context).size.height -
-                          MediaQuery.of(context).padding.top -
-                          AppBar().preferredSize.height - 250,
-                        child: __inputText())
-                  ],
+      return InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () {
+          viewModel.unfTextView();
+        },
+        child: SingleChildScrollView(
+          reverse: true,
+          child: (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? Container(
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).padding.top -
+                        AppBar().preferredSize.height,
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: <Widget>[
+                      Container(child: __background()),
+                      Container(child: __inputText())
+                    ],
+                  ),
+                )
+              : Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: <Widget>[
+                      Container(height: 250, child: __background()),
+                      Container(height: 300, child: __inputText())
+                    ],
+                  ),
                 ),
-              )
-            : Container(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: <Widget>[
-                    Container(height: 250, child: __background()),
-                    Container(height: 300, child: __inputText())
-                  ],
-                ),
-              ),
+        ),
       );
     }
 

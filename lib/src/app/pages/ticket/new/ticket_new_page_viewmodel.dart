@@ -226,6 +226,7 @@ class TicketNewPageViewModel extends ViewModelBase {
 
   onSelectedTicketStatus(CustomPopupMenu customPopupMenu) {
     this.customPopupMenu = customPopupMenu;
+    unfTextView();
     this.updateState();
   }
 
@@ -234,6 +235,7 @@ class TicketNewPageViewModel extends ViewModelBase {
       errorService = '';
       this.helpDeskCategory = helpDeskCategory;
     }
+    unfTextView();
 //      errorService = 'Bạn chưa chọn dịch vụ';
     this.updateState();
   }
@@ -291,5 +293,9 @@ class TicketNewPageViewModel extends ViewModelBase {
     subjectTextEditingController.dispose();
     descriptionEditingController.dispose();
     super.dispose();
+  }
+
+  unfTextView() {
+    FocusScope.of(context).unfocus();
   }
 }
